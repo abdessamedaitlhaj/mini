@@ -6,11 +6,11 @@
 /*   By: aait-lha <aait-lha@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/08 17:48:09 by aait-lha          #+#    #+#             */
-/*   Updated: 2024/07/06 22:17:11 by aait-lha         ###   ########.fr       */
+/*   Updated: 2024/07/07 09:46:53 by aait-lha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "executor.h"
+#include "../includes/minishell.h"
 
 int ft_isdigit(int c)
 {

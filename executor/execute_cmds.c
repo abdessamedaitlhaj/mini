@@ -6,11 +6,11 @@
 /*   By: aait-lha <aait-lha@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/22 19:09:09 by aait-lha          #+#    #+#             */
-/*   Updated: 2024/07/07 01:04:54 by aait-lha         ###   ########.fr       */
+/*   Updated: 2024/07/07 09:49:06 by aait-lha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "executor.h"
+#include "../includes/minishell.h"
 
 int	ft_close(int fd)
 {
@@ -48,6 +48,7 @@ int	open_files(char *file, int index)
 {
 	int fd;
 
+	fd = -12;
 	if (index == 0)
 		fd = open(file, O_WRONLY | O_CREAT | O_TRUNC, 0644);
 	else if (index == 1)
@@ -282,9 +283,7 @@ int	execute_multiple_nodes(t_data *data)
 {
 	int	i;
 	int	fd[2];
-	pid_t	pid;
 	int	prev_fd;
-	char	**args;
 
 	i = -1;
 	prev_fd = -1;

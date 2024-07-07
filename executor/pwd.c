@@ -6,11 +6,11 @@
 /*   By: aait-lha <aait-lha@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/15 16:18:45 by aait-lha          #+#    #+#             */
-/*   Updated: 2024/07/06 20:42:33 by aait-lha         ###   ########.fr       */
+/*   Updated: 2024/07/07 09:46:53 by aait-lha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-# include "executor.h"
+#include "../includes/minishell.h"
 
 char	*ft_pwd(t_data *data)
 {

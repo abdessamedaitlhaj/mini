@@ -6,11 +6,11 @@
 /*   By: aait-lha <aait-lha@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/07 12:08:33 by aait-lha          #+#    #+#             */
-/*   Updated: 2024/07/07 01:04:38 by aait-lha         ###   ########.fr       */
+/*   Updated: 2024/07/07 09:46:53 by aait-lha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "executor.h"
+#include "../includes/minishell.h"
 
 char	*ft_strjoin2(char *s1, char *s2, char *s3)
 {

@@ -6,11 +6,11 @@
 /*   By: aait-lha <aait-lha@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/15 16:20:01 by aait-lha          #+#    #+#             */
-/*   Updated: 2024/07/06 20:15:29 by aait-lha         ###   ########.fr       */
+/*   Updated: 2024/07/07 09:46:53 by aait-lha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-# include "executor.h"
+#include "../includes/minishell.h"
 
 int	ft_echo(char **args, int n, int status)
 {

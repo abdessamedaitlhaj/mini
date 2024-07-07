@@ -6,11 +6,11 @@
 /*   By: aait-lha <aait-lha@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/15 13:04:10 by aait-lha          #+#    #+#             */
-/*   Updated: 2024/07/06 20:54:01 by aait-lha         ###   ########.fr       */
+/*   Updated: 2024/07/07 09:47:24 by aait-lha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-# include "executor.h"
+#include "../includes/minishell.h"
 
 int		ft_chdir(char *path)
 {
@@ -25,7 +25,7 @@ int		ft_chdir(char *path)
 	return (0);
 }
 
-int	set_home(char *home, char *pwd, char *oldpwd, t_data *data)
+int	set_home(char *home, char *pwd, t_data *data)
 {
 	if (home)
 	{
@@ -68,7 +68,7 @@ int	ft_cd(char *path, t_data *data)
 	if (!path || !path[0] || !ft_strcmp(path, "~") || \
 		!ft_strcmp(path, "--"))
 	{
-		if (set_home(home, pwd, oldpwd, data) == -1)
+		if (set_home(home, pwd, data) == -1)
 			return (-1);
 	}
 	else if (path[0] == '-' && !path[1])

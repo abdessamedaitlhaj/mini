@@ -1,29 +1,54 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   utils_one.c                                        :+:      :+:    :+:   */
+/*   quotes.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: aait-lha <aait-lha@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/05/21 15:07:17 by aait-lha          #+#    #+#             */
+/*   Created: 2024/05/15 18:08:22 by ael-hara          #+#    #+#             */
 /*   Updated: 2024/07/07 09:46:53 by aait-lha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-void	ft_putstr_fd(char *s, int fd)
+t_parsing_status pair_quotes(char *line)
 {
-	write(fd, s, ft_strlen(s));
+	int					i;
+	char				quote;
+	t_parsing_status	status ;
+
+	status.index = -1;
+	status.error = 0;
+	i = 0;
+	while (line[i])
+	{
+		if (line[i] == '"' || line[i] == '\'')
+		{
+			quote = line[i];
+			i++;
+			while (line[i] && line[i] != quote)
+				i++;
+			if (!line[i])  
+			{
+				status.error = 1;
+				status.index = i;
+				return (status);
+			}
+			i++;
+		}
+		else
+			i++;
+	}
+	return (status);
 }
 
-int	ft_isalpha(char c)
+void	skip_quotes(int *i, char *str)
 {
-	return ((c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z'));
-}
+	char	c;
 
-void	ft_putendl_fd(char *s, int fd)
-{
-	ft_putstr_fd(s, fd);
-	ft_putstr_fd("\n", fd);
+	c = str[*i];
+	(*i)++;
+	while (str[*i] && str[*i] != c)
+		(*i)++;
 }

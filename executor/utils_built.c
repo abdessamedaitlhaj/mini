@@ -6,11 +6,11 @@
 /*   By: aait-lha <aait-lha@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/20 09:00:36 by aait-lha          #+#    #+#             */
-/*   Updated: 2024/07/06 20:11:20 by aait-lha         ###   ########.fr       */
+/*   Updated: 2024/07/07 09:46:53 by aait-lha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-# include "executor.h"
+#include "../includes/minishell.h"
 
 char	*ft_getenv(char *key, t_list *env)
 {
