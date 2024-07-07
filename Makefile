@@ -2,6 +2,7 @@ CC = cc
 S =  -fsanitize=address -ggdb3
 CFLAGS = -Wall -Wextra -Werror 
 NAME = minishell
+
 SRCS = 	parser/main.c					\
 		parser/parsing_line.c 			\
 		parser/pipe.c 					\
