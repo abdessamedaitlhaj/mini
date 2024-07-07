@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipe.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aait-lha <aait-lha@student.1337.ma>        +#+  +:+       +#+        */
+/*   By: ael-hara <ael-hara@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/15 18:09:39 by ael-hara          #+#    #+#             */
-/*   Updated: 2024/07/07 09:46:53 by aait-lha         ###   ########.fr       */
+/*   Updated: 2024/07/07 11:32:49 by ael-hara         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,22 +20,17 @@ int	ft_isspace(char c)
 	return (0);
 }
 
-t_parsing_status parsing_pipe(char *str)
+t_parsing_status	parsing_pipe(char *str)
 {
 	int					i;
 	t_parsing_status	status;
 
-	status.index = -1;
-	status.error = 0;
+	(1) && (status.index = -1, status.error = 0);
 	i = 0;
 	while (str[i] && ft_isspace(str[i]))
 		i++;
 	if (str[i] == '|')
-	{
-		status.error = 1; 
-		status.index = i; 
-		return (status);
-	}
+		return ((t_parsing_status){1, i, 0, NULL});
 	while (str[i])
 	{
 		if (str[i] == '"' || str[i] == '\'')
@@ -46,11 +41,7 @@ t_parsing_status parsing_pipe(char *str)
 			while (str[i] && ft_isspace(str[i]))
 				i++;
 			if (str[i] == '|' || str[i] == '\0')
-			{
-				status.error = 1;
-				status.index = i;
-				return (status);
-			}
+				return ((t_parsing_status){1, i, 0, NULL});
 		}
 		i++;
 	}

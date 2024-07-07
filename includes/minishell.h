@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aait-lha <aait-lha@student.1337.ma>        +#+  +:+       +#+        */
+/*   By: ael-hara <ael-hara@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/15 18:13:05 by ael-hara          #+#    #+#             */
-/*   Updated: 2024/07/07 09:58:45 by aait-lha         ###   ########.fr       */
+/*   Updated: 2024/07/07 11:11:49 by ael-hara         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,6 +81,11 @@ typedef struct s_data
 	
 }	t_data;
 
+typedef struct s_split_args {
+    char const *s;
+    char const *delimiters;
+} t_split_args;
+
 typedef struct s_indexes
 {
 	int	i;
@@ -139,7 +144,7 @@ char				*expanding_inside (char *pipe, t_data *data);
 char				*remove_q(char* str, t_data *data);
 void				empty_line(char *limiter);
 void				push_line_expand(int fd, char *limiter, t_data *data);
-void				push_line(int fd, char *limiter);
+void				push_line(int fd, char *limiter, t_data *data);
 char				*expanding_final(char *pipe, t_data *data);
 
 void				*ft_lstnew(void *content);

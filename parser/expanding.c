@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expanding.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aait-lha <aait-lha@student.1337.ma>        +#+  +:+       +#+        */
+/*   By: ael-hara <ael-hara@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/22 15:05:58 by ael-hara          #+#    #+#             */
-/*   Updated: 2024/07/07 09:46:53 by aait-lha         ###   ########.fr       */
+/*   Updated: 2024/07/07 11:52:26 by ael-hara         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,9 +58,6 @@ int ft_isalnum(char c)
 	return (0);
 }
 
-
-// if <<  don't expand	 if > or < or >> the last else prints errorr ambigiout lets just flag it in data for the moment the struct element int flag_ambig
-
 char *expanding_outside (char *pipe, t_data *data)
 {
 	
@@ -90,26 +87,17 @@ char *expanding_outside (char *pipe, t_data *data)
 				char *before = ft_substr(pipe, 0, i, data); // get the part before the $
 				char *after = ft_substr(pipe, i + 2, ft_strlen(pipe) - (i + 2), data); // get the part after the $ and the first number
 				char *tmp = ft_strjoin(before, after, data); // join before and after
-				// free(pipe);
 				pipe = tmp;
-				// free(before);
-				// free(after);
 			}
 			else if (pipe[i + 1] && pipe[i + 1] && (pipe[i + 1] == '"' || pipe[i + 1] == '\''))
 			{
 				char *before = ft_substr(pipe, 0, i, data); // get the part before the $
                             char *after = ft_substr(pipe, i + 1, ft_strlen(pipe) - (i + 1), data); // get the part after the $ (including the quote)
                             char *tmp = ft_strjoin(before, after, data); // join before and after
-                            // free(pipe);
                             pipe = tmp;
-                            // free(before);
-                            // free(after);
 			}
 			else if (pipe[i + 1] && pipe[i + 1] && ft_isspace(pipe[i + 1]))
-			{
-				//just skip this $ and the space
-				i++;
-			}		
+				i++;		
 				else 
 				{
 					int j = i + 1;
@@ -124,10 +112,7 @@ char *expanding_outside (char *pipe, t_data *data)
 						char *after = ft_substr(pipe, j, ft_strlen(pipe) - j, data); // get the part after the variable name
 						char *tmp = ft_strjoin(before, var_value, data); // join before and variable value
 						tmp = ft_strjoin(tmp, after, data); // join with the part after the variable name
-						// free(pipe);
 						pipe = tmp;
-						// free(before);
-						// free(after);
 					}
 					else
 					{
@@ -190,9 +175,8 @@ char *expanding_final(char *pipe, t_data *data)
 		}
 	}
 
-	return result;
+	return (result);
 }
-
 
 char *expanding_inside (char *pipe, t_data *data)
 {
@@ -212,26 +196,17 @@ char *expanding_inside (char *pipe, t_data *data)
 				char *before = ft_substr(pipe, 0, i, data); // get the part before the $
 				char *after = ft_substr(pipe, i + 2, ft_strlen(pipe) - (i + 2), data); // get the part after the $ and the first number
 				char *tmp = ft_strjoin(before, after, data); // join before and after
-				// free(pipe);
 				pipe = tmp;
-				// free(before);
-				// free(after);
 			}
 			else if (pipe[i + 1] && (pipe[i + 1] == '"' || pipe[i + 1] == '\''))
 			{
 				char *before = ft_substr(pipe, 0, i, data); // get the part before the $
                             char *after = ft_substr(pipe, i , ft_strlen(pipe) - (i), data); // get the part after the $ (including the quote)
                             char *tmp = ft_strjoin(before, after, data); // join before and after
-                            // free(pipe);
                             pipe = tmp;
-                            // free(before);
-                            // free(after);
 			}
 			else if (pipe[i + 1] && ft_isspace(pipe[i + 1]))
-			{
-				//just skip this $ and the space
 				i++;
-			}		
 				else 
 				{
 					int j = i + 1;
@@ -246,10 +221,7 @@ char *expanding_inside (char *pipe, t_data *data)
 						char *after = ft_substr(pipe, j, ft_strlen(pipe) - j, data); // get the part after the variable name
 						char *tmp = ft_strjoin(before, var_value, data); // join before and variable value
 						tmp = ft_strjoin(tmp, after, data); // join with the part after the variable name
-						// free(pipe);
 						pipe = tmp;
-						// free(before);
-						// free(after);
 					}
 					else
 					{	
@@ -264,74 +236,3 @@ char *expanding_inside (char *pipe, t_data *data)
 	}
 	return (pipe);
 }
-
-// char *expanding_outside (char *pipe, t_data *data)
-// {
-// 	int i = 0;
-// 	while (pipe[i])
-// 	{
-// 		if (pipe[i] == '$')
-// 		{
-// 			if (pipe[i + 1] && ft_isnum(pipe[i + 1]))
-// 			{
-// 				char *before = ft_substr(pipe, 0, i, data); // get the part before the $
-// 				char *after = ft_substr(pipe, i + 2, ft_strlen(pipe) - (i + 2), data); // get the part after the $ and the first number
-// 				char *tmp = ft_strjoin(before, after, data); // join before and after
-// 				// free(pipe);
-// 				pipe = tmp;
-// 				// free(before);
-// 				// free(after);
-// 			}
-// 			else if (pipe[i + 1] && (pipe[i + 1] == '"' || pipe[i + 1] == '\''))
-// 			{
-// 				char *before = ft_substr(pipe, 0, i, data); // get the part before the $
-//                             char *after = ft_substr(pipe, i + 1, ft_strlen(pipe) - (i + 1), data); // get the part after the $ (including the quote)
-//                             char *tmp = ft_strjoin(before, after, data); // join before and after
-//                             // free(pipe);
-//                             pipe = tmp;
-//                             // free(before);
-//                             // free(after);
-// 			}
-// 			else if (pipe[i + 1] && ft_isspace(pipe[i + 1]))
-// 			{
-// 				//just skip this $ and the space
-// 				i++;
-// 			}		
-// 				else 
-// 				{
-// 					int j = i + 1;
-// 					while (pipe[j] && (ft_isalnum(pipe[j]) || pipe[j] == '_'))
-// 						j++;
-// 					char *var_name = ft_substr(pipe, i + 1, j - i - 1, data); // get the variable name
-// 					char *var_value = getenv(var_name); // get the value of the variable from the environment
-// 					if (var_value)
-// 					{
-// 						char *before = ft_substr(pipe, 0, i, data); // get the part before the $
-// 						char *after = ft_substr(pipe, j, ft_strlen(pipe) - j, data); // get the part after the variable name
-// 						char *tmp = ft_strjoin(before, var_value, data); // join before and variable value
-// 						tmp = ft_strjoin(tmp, after, data); // join with the part after the variable name
-// 						// free(pipe);
-// 						pipe = tmp;
-// 						// free(before);
-// 						// free(after);
-// 					}
-// 					else
-// 					{
-// 						// remove the variable name ($var) for example ls -la $var la  becomes ls -la la
-// 						// If the environment variable does not exist, remove it from the string
-// 							char *before = ft_substr(pipe, 0, i, data); // Get the part before the $
-// 							char *after = ft_substr(pipe, j, ft_strlen(pipe) - j, data); // Get the part after the variable name
-// 							char *tmp = ft_strjoin(before, after, data); // Join before and after, effectively removing the variable name
-
-// 							free(pipe); // Free the original pipe string
-// 							free(before); // Free the before part
-// 							free(after); // Free the after part
-// 							pipe = tmp; // Update pipe to the new string without the variable name
-											
-// 					}
-// 				}
-// 			}
-// 			i++;
-// 	}
-// 	return (pipe);
-// }

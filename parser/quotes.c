@@ -3,33 +3,31 @@
 /*                                                        :::      ::::::::   */
 /*   quotes.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aait-lha <aait-lha@student.1337.ma>        +#+  +:+       +#+        */
+/*   By: ael-hara <ael-hara@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/15 18:08:22 by ael-hara          #+#    #+#             */
-/*   Updated: 2024/07/07 09:46:53 by aait-lha         ###   ########.fr       */
+/*   Updated: 2024/07/07 11:23:17 by ael-hara         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-t_parsing_status pair_quotes(char *line)
+t_parsing_status	pair_quotes(char *line)
 {
 	int					i;
 	char				quote;
 	t_parsing_status	status ;
 
-	status.index = -1;
-	status.error = 0;
+	(1) && (status.index = -1, status.error = 0);
 	i = 0;
 	while (line[i])
 	{
 		if (line[i] == '"' || line[i] == '\'')
 		{
-			quote = line[i];
-			i++;
+			quote = line[i++];
 			while (line[i] && line[i] != quote)
 				i++;
-			if (!line[i])  
+			if (!line[i])
 			{
 				status.error = 1;
 				status.index = i;

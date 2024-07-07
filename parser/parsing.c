@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aait-lha <aait-lha@student.1337.ma>        +#+  +:+       +#+        */
+/*   By: ael-hara <ael-hara@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/22 15:04:15 by ael-hara          #+#    #+#             */
-/*   Updated: 2024/07/07 09:52:52 by aait-lha         ###   ########.fr       */
+/*   Updated: 2024/07/07 11:37:58 by ael-hara         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,20 +84,16 @@ void	open_heredoc(t_data *data)
 					path = ft_strjoin(base_path, index_str, data);
 					index++;
 					fd = open(path, O_CREAT | O_RDWR | O_TRUNC, 0644);
-					// if (fd == -1)
-					// 	return;
-					// dup2(fd, 0);
-					// close(fd);    //  understanding
-					if (data->cmds[i].files[j]->expanding_heredoc == 1)
+					if (data->cmds[i].files[j]->expanding_heredoc == 0)
 						push_line_expand(fd, data->cmds[i].files[j]->file,
 							data);
 					else
 					{
-						push_line(fd, data->cmds[i].files[j]->file);
+						push_line(fd, data->cmds[i].files[j]->file, data);
 					}
+					close(fd);
+					fd = open(path, O_RDONLY);
 					data->cmds[i].files[j]->fd = fd;
-					//printf("%s'\n", path);
-					//printf("%d\n", fd);
 				}
 				z++;
 			}
@@ -178,7 +174,7 @@ void herdoc_delimiters(char *line, int min, t_data *data)
 	data->delimiter_count = delimiter_count;
 	j = 0;
 	data->heredoc = malloc((delimiter_count + 1) * sizeof(char *));
-	data->heredoc[delimiter_count] = NULL; 
+	data->heredoc[delimiter_count] = NULL;
 	i = 0;
 	while (i < min) 
 	{
@@ -210,7 +206,7 @@ int	parsing(char *line, t_data *data)
 {
 	char	**pipes;
 	int		i;
-	int 	min;
+	int		min;
 
 	if (line[0] == '\0')
 		return (free(line), 0);
@@ -224,12 +220,8 @@ int	parsing(char *line, t_data *data)
 	{
 		if (pair_quotes(line).index != -1 || parsing_pipe(line).index != -1 || parsing_redir(line).index != -1)
 		{
-			// printf("pair_quotes: %d\n", pair_quotes(line).index);
-			// printf("parsing_pipe: %d\n", parsing_pipe(line).index);
-			// printf("parsing_redir: %d\n", parsing_redir(line).index);
 			min = ft_min(pair_quotes(line).index, parsing_pipe(line).index, parsing_redir(line).index);
 			herdoc_delimiters(line, min, data);
-			// print_heredoc(data);
 		}
 		i = 0;
 		while (i < data->delimiter_count)
@@ -243,7 +235,6 @@ int	parsing(char *line, t_data *data)
 	quote_replace(line, -8, ' ');
 	quote_replace(line, -42, '\t');
 	line = add_space_redir(line, data);
-	//printf("%s\n", line);
 	quote_replace(line, -6, '>');
 	quote_replace(line, -7, '<');
 	quote_replace(line, '$', -11);
@@ -262,10 +253,9 @@ int	parsing(char *line, t_data *data)
 		quote_replace(pipes[i], ' ', -6);
 		quote_replace(pipes[i], '\t', -42);
 		pipes[i] = expanding_outside(pipes[i], data);
-		//printf("pipes[%d]: %s\n", i, pipes[i]);
 		i++;
 	}
 	fill_command(data);
 	open_heredoc(data);
 	return (1);
-}			
+}

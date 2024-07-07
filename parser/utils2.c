@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils2.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aait-lha <aait-lha@student.1337.ma>        +#+  +:+       +#+        */
+/*   By: ael-hara <ael-hara@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/22 15:01:38 by ael-hara          #+#    #+#             */
-/*   Updated: 2024/07/07 09:46:53 by aait-lha         ###   ########.fr       */
+/*   Updated: 2024/07/07 11:05:02 by ael-hara         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,7 @@ char	*ft_strjoin(char *s1, char *s2, t_data *data)
 		i++;
 		j++;
 	}
-	str[i] = '\0'; 
+	str[i] = '\0';
 	return (str);
 }
 

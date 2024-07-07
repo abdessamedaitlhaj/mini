@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing_redir.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aait-lha <aait-lha@student.1337.ma>        +#+  +:+       +#+        */
+/*   By: ael-hara <ael-hara@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/26 23:21:23 by ael-hara          #+#    #+#             */
-/*   Updated: 2024/07/07 09:46:53 by aait-lha         ###   ########.fr       */
+/*   Updated: 2024/07/07 11:40:12 by ael-hara         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -128,7 +128,7 @@ t_parsing_status	parsing_redir(char *line)
 
 	status.index = -1;
 	status.error = 0;
-	i = 0;
+	(1) && (status.index = -1, status.error = 0, i = 0);
 	while (line[i])
 	{
 		if (line[i] == '>' || line[i] == '<')
@@ -141,8 +141,7 @@ t_parsing_status	parsing_redir(char *line)
 			if (line[i] == '\0' || line[i] == '|' || line[i] == '<'
 				|| line[i] == '>')
 			{
-				status.error = 1;
-				status.index = i;
+				(1) && (status.error = 1, status.index = i);
 				return (status);
 			}
 		}

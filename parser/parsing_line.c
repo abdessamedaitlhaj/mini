@@ -3,62 +3,67 @@
 /*                                                        :::      ::::::::   */
 /*   parsing_line.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aait-lha <aait-lha@student.1337.ma>        +#+  +:+       +#+        */
+/*   By: ael-hara <ael-hara@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/15 18:37:48 by ael-hara          #+#    #+#             */
-/*   Updated: 2024/07/07 09:53:11 by aait-lha         ###   ########.fr       */
+/*   Updated: 2024/07/07 11:46:18 by ael-hara         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-char *ft_strdup_quotes(char *s1, t_data *data)
+char	*ft_strdup_quotes(char *s1, t_data *data)
 {
-	int len = ft_strlen(s1);
-	char *dup = ft_malloc(sizeof(char) * (len + 1), &data->allocated);
+	int		len;
+	char	*dup;
+	int		i;
+
+	len = ft_strlen(s1);
+	dup = ft_malloc(sizeof(char) * (len + 1), &data->allocated);
 	if (dup == NULL)
-		return NULL;
-	int i = 0;
-	while (i < len) {
+		return (NULL);
+	i = 0;
+	while (i < len)
+	{
 		dup[i] = s1[i];
 		i++;
 	}
 	dup[len] = '\0';
-	return dup;
+	return (dup);
 }
-char *remove_q(char* str, t_data *data)
+char	*remove_q(char* str, t_data *data)
 {
 	int len = ft_strlen(str);
 	char *new_str = ft_malloc(sizeof(char) * (len + 1), &data->allocated);
 	int i = 0, j = 0;
 
-	while (i < len) {
+	while (i < len) 
+	{
 		char c = str[i];
-		if (str[i] == '"' || str[i] == '\'') 
+		if (str[i] == '"' || str[i] == '\'')
 		{
 			c = str[i];
 			i++;
-			while (str[i]  && str[i] != c) 
-			{  
-				new_str[j] = str[i];  // copy to new string
+			while (str[i] && str[i] != c)
+			{ 
+				new_str[j] = str[i];
 				j++;
 				i++;
 			}
-			if (str[i] == c) // skip the closing quote
+			if (str[i] == c)
 			{
 				i++;
 			}
 		}
 		else
 		{
-			new_str[j] = str[i];  // copy to new string
+			new_str[j] = str[i];
 			j++;
 			i++;
 		}
 	}
-	new_str[j] = '\0';  // null terminate the new string
-	// printf("new_str: %s\n", new_str);
-	return new_str;
+	new_str[j] = '\0';
+	return (new_str);
 }
 
 
@@ -107,11 +112,15 @@ void remove_quotes(t_cmd *cmd, t_data *data)
 		int j = 0;
 		while (j < cmd[i].outfile + cmd[i].infile + cmd[i].heredoc + cmd[i].append)
 		{
-			if ((cmd[i].files[j]->file[0] == '"' || cmd[i].files[j]->file[0] == '\'') 
-				&& cmd[i].files[j]->type == HEREDOC)
-				cmd[i].files[j]->expanding_heredoc = 1;
-			else
-				cmd[i].files[j]->expanding_heredoc = 0;	
+			int k = 0;
+			while (cmd[i].files[j]->file[k] != '\0') {
+				if ((cmd[i].files[j]->file[k] == '"' || cmd[i].files[j]->file[k] == '\'') 
+					&& cmd[i].files[j]->type == HEREDOC)
+					cmd[i].files[j]->expanding_heredoc = 1;
+				else
+					cmd[i].files[j]->expanding_heredoc = 0;    
+				k++;
+			}
 			cmd[i].files[j]->file = remove_q(cmd[i].files[j]->file, data);
 			j++;
 		}
@@ -214,7 +223,6 @@ void	initialize_cmd_and_set_flags(t_cmd *cmds,
 
 void	fill_command(t_data *data)
 {
-	// t_cmd		cmds[data->counter_command];
 	char		**split;
 	t_indexes	indexes;
 	t_cmd* cmds = ft_malloc(sizeof(t_cmd) * data->counter_command, &data->allocated);
@@ -247,15 +255,7 @@ void	fill_command(t_data *data)
 		handle_cmd_args(&cmds[indexes.i], &indexes.j, &indexes.k, split);
 		indexes.i++;
 	}
-	
 	ambigious(cmds, data);
 	remove_quotes(cmds, data);
-	// printf("ttttt%s\n", cmds[0].cmd);
 	data->cmds = cmds;
-	// indexes.i = 0;
-	// while (indexes.i < data->counter_command)
-	// {
-	// 	print_cmd(&cmds[indexes.i]);
-	// 	indexes.i++;
-	// }
 }
