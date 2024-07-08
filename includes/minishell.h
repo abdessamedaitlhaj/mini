@@ -6,7 +6,7 @@
 /*   By: aait-lha <aait-lha@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/15 18:13:05 by ael-hara          #+#    #+#             */
-/*   Updated: 2024/07/07 09:58:45 by aait-lha         ###   ########.fr       */
+/*   Updated: 2024/07/07 10:00:52 by aait-lha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -141,7 +141,6 @@ void				empty_line(char *limiter);
 void				push_line_expand(int fd, char *limiter, t_data *data);
 void				push_line(int fd, char *limiter);
 char				*expanding_final(char *pipe, t_data *data);
-
 void				*ft_lstnew(void *content);
 void				ft_lstadd_back(t_list **list, t_list *new);
 
