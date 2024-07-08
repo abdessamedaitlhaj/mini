@@ -6,7 +6,7 @@
 /*   By: aait-lha <aait-lha@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/22 19:09:09 by aait-lha          #+#    #+#             */
-/*   Updated: 2024/07/07 09:49:06 by aait-lha         ###   ########.fr       */
+/*   Updated: 2024/07/08 00:07:34 by aait-lha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,6 +101,11 @@ int	setting_redir(t_data *data, t_cmd *cmd)
 	i = 0;
 	while (cmd->files[i])
 	{
+		if (cmd->files[i]->expand_error)
+		{
+			printf("adsa\n");
+			return (1);
+		}
 		if (cmd->files[i]->type == OUTFILE)
 			fd[i] = open_files(cmd->files[i]->file, 0);
 		else if (cmd->files[i]->type == APPEND)

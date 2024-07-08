@@ -6,17 +6,31 @@
 /*   By: aait-lha <aait-lha@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/15 16:55:14 by aait-lha          #+#    #+#             */
-/*   Updated: 2024/07/07 09:46:53 by aait-lha         ###   ########.fr       */
+/*   Updated: 2024/07/07 23:58:55 by aait-lha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
+void	print_env(t_list *env, t_data *data)
+{
+	t_list	*tmp;
+	char	*key;
+	char	*value;
+
+	tmp = env;
+	while (tmp)
+	{
+		key = ft_substr((char *)tmp->content, 0, \
+		ft_strchr((char *)tmp->content, '=') - (char *)tmp->content, data);
+		value = ft_strchr((char *)tmp->content, '=') + 1;
+		printf("declare -x %s=\"%s\"\n", key, value);
+		tmp = tmp->next;
+	}
+}
+
 int	is_key_valid(char *key)
 {
-	int	i;
-
-	i = 0;
 	if (!ft_isalpha(key[0]) && key[0] != '_')
 	{
 		ft_putstr_fd("export: `", 2);
@@ -55,7 +69,7 @@ int	ft_export(char **args, t_data *data)
 
 	if (!args[0])
 	{
-		write (2, "export: not enough arguments\n", 29);
+		print_env(data->env, data);
 		return (-1);
 	}
 	i = 0;

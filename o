@@ -1,6 +1,7 @@
 Makefile
-d
 executor
 includes
 minishell
+o
+p
 parser
