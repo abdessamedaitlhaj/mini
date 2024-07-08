@@ -6,7 +6,7 @@
 /*   By: aait-lha <aait-lha@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/22 19:09:09 by aait-lha          #+#    #+#             */
-/*   Updated: 2024/07/07 09:49:06 by aait-lha         ###   ########.fr       */
+/*   Updated: 2024/07/08 11:51:39 by aait-lha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,58 +63,50 @@ int	open_files(char *file, int index)
 	return (fd);
 }
 
-int	dup_files(t_cmd *cmd, int *fd)
+int	dup_file(t_aa file, int fd)
 {
-	int	i;
-
-	i = 0;
-	while (cmd->files[i])
+	if (file == OUTFILE || file == APPEND)
 	{
-		if (cmd->files[i]->type == OUTFILE || cmd->files[i]->type == APPEND)
-		{
-			if (dup2(fd[i], 1) == -1)
-				return (error_one(NULL, "dup2", fd[i]));
-		}
-		else if (cmd->files[i]->type == INFILE || \
-			cmd->files[i]->type == HEREDOC)
-		{
-			if (dup2(fd[i], 0) == -1)
-				return (error_one(NULL, "dup2", fd[i]));
-		}
-		if (ft_close(fd[i]))
-			return (1);
-		i++;
+		if (dup2(fd, 1) == -1)
+			return (error_one(NULL, "dup2", fd));
 	}
+	else if (file == INFILE || file == HEREDOC)
+	{
+		if (dup2(fd, 0) == -1)
+			return (error_one(NULL, "dup2", fd));
+	}
+	if (ft_close(fd))
+		return (1);
 	return (0);
 }
 
-int	setting_redir(t_data *data, t_cmd *cmd)
+int	setting_redir(t_cmd *cmd)
 {
 	int	i;
-	int	*fd;
-	int count_files;
+	int	fd;
 
-	count_files = cmd->infile + cmd->outfile + cmd->append;
-	fd = (int *)ft_malloc(sizeof(int) * count_files, &data->allocated);
-	if (!fd)
-		return (1);
 	i = 0;
 	while (cmd->files[i])
 	{
+		if (cmd->files[i]->expand_error)
+		{
+			perror("expand error");
+			return (1);
+		}
 		if (cmd->files[i]->type == OUTFILE)
-			fd[i] = open_files(cmd->files[i]->file, 0);
+			fd = open_files(cmd->files[i]->file, 0);
 		else if (cmd->files[i]->type == APPEND)
-			fd[i] = open_files(cmd->files[i]->file, 1);
+			fd = open_files(cmd->files[i]->file, 1);
 		else if (cmd->files[i]->type == INFILE)
-			fd[i] = open_files(cmd->files[i]->file, 2);
+			fd = open_files(cmd->files[i]->file, 2);
 		else if (cmd->files[i]->type == HEREDOC)
-			fd[i] = cmd->files[i]->fd;
-		if (fd[i] == -1)
+			fd = cmd->files[i]->fd;
+		if (fd == -1)
+			return (1);
+		if (dup_file(cmd->files[i]->type, fd))
 			return (1);
 		i++;
 	}
-	if (dup_files(cmd, fd))
-		return (1);
 	return (0);
 }
 
@@ -225,32 +217,16 @@ int	dup_redir(t_data *data, int i, int *fd, int prev_fd)
 	return (0);
 }
 
-int	fork_process(t_data *data, int i, int *fd, int prev_fd)
-{
-	pid_t	pid;
-
-	pid = fork();
-	if (pid == -1)
-		return (error_one(fd, "fork", prev_fd));
-	if (pid == 0)
-	{
-		if (dup_redir(data, i, fd, prev_fd))
-			return (1);
-		if (child_process(data, &data->cmds[i]))
-			return (1);
-	}
-	return (0);
-}
 
 int	execute_one_node(t_data *data)
 {
-	t_cmd	*cmd;      
+	t_cmd	*cmd;
 	pid_t	pid;
 	int		status;
 
 	status = 0;
 	if (data->cmds[0].files)
-		if (setting_redir(data, &data->cmds[0]))
+		if (setting_redir(&data->cmds[0]))
 			return (1);
 	cmd = &data->cmds[0];
 	if (is_builtin(cmd))
@@ -279,6 +255,23 @@ int	execute_one_node(t_data *data)
 	return (status);
 }
 
+int	fork_process(t_data *data, int i, int *fd, int prev_fd)
+{
+	pid_t	pid;
+
+	pid = fork();
+	if (pid == -1)
+		return (error_one(fd, "fork", prev_fd));
+	if (pid == 0)
+	{
+		if (dup_redir(data, i, fd, prev_fd))
+			return (1);
+		if (child_process(data, &data->cmds[i]))
+			return (1);
+	}
+	return (0);
+}
+
 int	execute_multiple_nodes(t_data *data)
 {
 	int	i;
@@ -292,7 +285,7 @@ int	execute_multiple_nodes(t_data *data)
 		if (i < data->counter_command - 1)
 			if (pipe(fd) == -1)
 				return (error_one(fd, "pipe", prev_fd));
-		if (setting_redir(data, &data->cmds[i]))
+		if (setting_redir(&data->cmds[i]))
 			return (1);
 		if (fork_process(data, i, fd, prev_fd))
 			return (1);
@@ -305,6 +298,8 @@ int	execute_multiple_nodes(t_data *data)
 			if (ft_close(fd[1]))
 				return (1);
 		}
+		if (dup2(data->stdin_copy, 0) == -1 || dup2(data->stdout_copy, 1) == -1)
+			return (error_two("dup2"));
 	}
 	return (0);
 }
@@ -321,15 +316,15 @@ void	check_exit(t_data *data)
 
 int	execute_cmds(t_data *data)
 {
-	int	stdin_copy;
-	int	stdout_copy;
+	// int	stdin_copy;
+	// int	stdout_copy;
 	int	status;
 
-	status = 0;
-	stdin_copy = dup(0);
-	stdout_copy = dup(1);
-	if (stdin_copy == -1 || stdout_copy == -1)
-		return (error_two("dup error"));
+	// status = 0;
+	// stdin_copy = dup(0);
+	// stdout_copy = dup(1);
+	// if (stdin_copy == -1 || stdout_copy == -1)
+	// 	return (error_two("dup error"));
 	check_exit(data);
 	if (data->counter_command == 1)
 	{
@@ -342,12 +337,12 @@ int	execute_cmds(t_data *data)
 		status = execute_multiple_nodes(data);
 		if (status == -1)
 			return (1);
-		while (waitpid(-1, &data->exit_status, 0) > 0)
-		;
+		while (waitpid(-1, &status, 0) > 0)
+			data->exit_status = WEXITSTATUS(status);
 	}
-	if (dup2(stdin_copy, 0) == -1 || dup2(stdout_copy, 1) == -1)
-		return (error_two("dup2 error22"));
-	if (ft_close(stdin_copy) == 1 || ft_close(stdout_copy) == 1)
-		return (1);
+	// if (dup2(stdin_copy, 0) == -1 || dup2(stdout_copy, 1) == -1)
+	// 	return (error_two("dup2 error22"));
+	// if (ft_close(stdin_copy) == 1 || ft_close(stdout_copy) == 1)
+	// 	return (1);
 	return (status);
 }
