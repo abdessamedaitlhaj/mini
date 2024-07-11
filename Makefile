@@ -3,7 +3,7 @@ S =  -fsanitize=address -ggdb3
 CFLAGS = -Wall -Wextra -Werror 
 NAME = minishell
 
-SRCS = 	parser/main.c					\
+SRCS = 	minishell.c 					\
 		parser/parsing_line.c 			\
 		parser/pipe.c 					\
 		parser/quotes.c					\

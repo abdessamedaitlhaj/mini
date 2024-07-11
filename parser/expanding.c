@@ -6,7 +6,7 @@
 /*   By: ael-hara <ael-hara@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/22 15:05:58 by ael-hara          #+#    #+#             */
-/*   Updated: 2024/07/07 11:52:26 by ael-hara         ###   ########.fr       */
+/*   Updated: 2024/07/11 06:30:06 by ael-hara         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,20 +53,16 @@ int ft_isnum(char c)
 
 int ft_isalnum(char c)
 {
-	if ((c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z'))
+	if ((c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z') || ft_isnum(c))
 		return (1);
 	return (0);
 }
 
 char *expanding_outside (char *pipe, t_data *data)
 {
-	
 	int i = 0;
 	while (pipe[i])
 	{
-		
-						// printf("segmenddfdfdfdtation fault\n");	
-		// if << skip the spaces and the next string of characters 
 		if (pipe[i] == '<' &&  pipe[i + 1] && pipe[i + 1] && pipe[i + 1] == '<')
 		{
 			i += 2;
@@ -77,12 +73,23 @@ char *expanding_outside (char *pipe, t_data *data)
 		}
 		else if (pipe[i] == '$')
 		{
-			 if ((pipe[i + 1] && !(ft_isalnum(pipe[i + 1]) || pipe[i + 1] == '_')) || !pipe[i + 1])
-    		{
-        		i++;
-        		continue;
-			}
-			if (pipe[i + 1] && pipe[i + 1] && ft_isnum(pipe[i + 1]))
+		if (pipe[i + 1] &&  pipe[i + 1] == '?') // if the character following $ is ?
+    	{
+        char *exit_status_str = ft_itoa(data->exit_status, data); // convert the exit status to a string
+        char *before = ft_substr(pipe, 0, i, data); // get the part of the string before $?
+        char *after = ft_substr(pipe, i + 2, ft_strlen(pipe) - i - 2, data); // get the part of the string after $?
+        char *new_pipe = ft_strjoin(before, exit_status_str, data); // join the part before $? and the exit status
+        pipe = ft_strjoin(new_pipe, after, data); // join the previous string and the part after $?
+        // free(pipe); // free the old string
+        // pipe = new_pipe; // assign the new string to pipe
+        i += ft_strlen(exit_status_str) - 1; // adjust i based on the length of the exit status string
+    	}
+		else if ((pipe[i + 1] && !(ft_isalnum(pipe[i + 1]) || pipe[i + 1] == '_' || pipe[i + 1] == '"' || pipe[i + 1] == '\'')) || !pipe[i + 1])
+    	{
+    		i++;
+       		continue;
+		}
+			else if (pipe[i + 1] && pipe[i + 1] && ft_isnum(pipe[i + 1]))
 			{
 				char *before = ft_substr(pipe, 0, i, data); // get the part before the $
 				char *after = ft_substr(pipe, i + 2, ft_strlen(pipe) - (i + 2), data); // get the part after the $ and the first number
@@ -91,8 +98,10 @@ char *expanding_outside (char *pipe, t_data *data)
 			}
 			else if (pipe[i + 1] && pipe[i + 1] && (pipe[i + 1] == '"' || pipe[i + 1] == '\''))
 			{
-				char *before = ft_substr(pipe, 0, i, data); // get the part before the $
+							char *before = ft_substr(pipe, 0, i, data); // get the part before the $
                             char *after = ft_substr(pipe, i + 1, ft_strlen(pipe) - (i + 1), data); // get the part after the $ (including the quote)
+							// printf("before: %s\n", before);
+							// printf("after: %s\n", after);
                             char *tmp = ft_strjoin(before, after, data); // join before and after
                             pipe = tmp;
 			}
@@ -128,12 +137,14 @@ char *expanding_outside (char *pipe, t_data *data)
 							char *after = ft_substr(pipe, j, ft_strlen(pipe) - j, data); // Get the part after the variable name
 							char *tmp = ft_strjoin(before, after, data); 
 							pipe = tmp; // Update pipe to the new string without the variable name
+							continue ;
 							}			
 					}
 				}
 			}
 			i++;
 	}
+
 	return (pipe);
 }
 
@@ -143,55 +154,180 @@ char *expanding_final(char *pipe, t_data *data)
 	int inside_double_quotes = 0;
 	int inside_single_quotes = 0;
 	char *result = ft_strdup("", &data->allocated); // initialize result to an empty string
-
 	while (pipe[i])
 	{
 		if (pipe[i] == '"')
 		{
 			inside_double_quotes = !inside_double_quotes; // toggle the inside_double_quotes flag
+			if (inside_double_quotes) // if we are inside double quotes
+			{
+				int j = i + 1;
+				while (pipe[j] && pipe[j] != '"') // find the end of the content inside double quotes
+					j++;
+				char *content = ft_substr(pipe, i, j - i + 1, data); // get the content inside double quotes, including the quotes
+				char *expanded = expanding_inside(content, data);  // expand the content
+				result = ft_strjoin(result, expanded, data); // append the expanded content to result
+				i = j; // move i to the end of the content inside double quotes
+			}
 		}
 		else if (pipe[i] == '\'')
 		{
 			inside_single_quotes = !inside_single_quotes; // toggle the inside_single_quotes flag
-		}
-
-		if (!inside_single_quotes && inside_double_quotes && pipe[i] == '$')
-		{
-			int j = i;
-			while (pipe[j] && pipe[j] != '"' && pipe[j] != ' ') // find the end of the variable
-				j++;
-			char *var = ft_substr(pipe, i, j - i, data); // get the variable
-			char *expanded = expanding_inside(var, data);  // expand the variable
-			result = ft_strjoin(result, expanded, data); // append the expanded variable to result
-			i = j - 1; // move i to the end of the expanded variable
-			return result;
+			if (inside_single_quotes) // if we are inside single quotes
+			{
+				int j = i + 1;
+				while (pipe[j] && pipe[j] != '\'') // find the end of the content inside single quotes
+					j++;
+				char *content = ft_substr(pipe, i, j - i + 1, data); // get the content inside single quotes, including the quotes
+				result = ft_strjoin(result, content, data); // append the content to result
+				i = j; // move i to the end of the content inside single quotes
+			}
 		}
 		else
 		{
 			char *tmp = ft_substr(pipe, i, 1, data); // get the current character
 			result = ft_strjoin(result, tmp, data); // append to result
-			// printf("expanded: %s\n", result);
-			i++;
 		}
+		if (!inside_double_quotes && !inside_single_quotes) // only increment i if we're not inside quotes
+			i++;
 	}
-
 	return (result);
 }
 
+// char *expanding_final(char *pipe, t_data *data)
+// {
+// 	int i = 0;
+// 	int inside_double_quotes = 0;
+// 	int inside_single_quotes = 0;
+// 	char *result = ft_strdup("", &data->allocated); // initialize result to an empty string
+// 	printf("pipe: %s\n", pipe);
+// 	while (pipe[i])
+// 	{
+// 		if (pipe[i] == '"')
+// 		{
+// 			inside_double_quotes = !inside_double_quotes; // toggle the inside_double_quotes flag
+// 			if (inside_double_quotes) // if we are inside double quotes
+// 			{
+// 				int j = i + 1;
+// 				while (pipe[j] && pipe[j] != '"') // find the end of the content inside double quotes
+// 					j++;
+// 				char *content = ft_substr(pipe, i, j - i + 1, data); // get the content inside double quotes, including the quotes
+// 				char *expanded = expanding_inside(content, data);  // expand the content
+// 				result = ft_strjoin(result, expanded, data); // append the expanded content to result
+// 				i = j; // move i to the end of the content inside double quotes
+// 			}
+// 		}
+// 		// else if (pipe[i] == '\'')
+// 		// {
+// 		// 	inside_single_quotes = !inside_single_quotes; // toggle the inside_single_quotes flag
+// 		// 	if (inside_single_quotes) // if we are inside single quotes
+// 		// 	{
+// 		// 		int j = i + 1;
+// 		// 		while (pipe[j] && pipe[j] != '\'') // find the end of the content inside single quotes
+// 		// 			j++;
+// 		// 		i = j; // move i to the end of the content inside single quotes
+// 		// 	}
+// 		// }
+// 		else if (pipe[i] == '\'')
+// 		{
+// 			inside_single_quotes = !inside_single_quotes; // toggle the inside_single_quotes flag
+// 			if (inside_single_quotes) // if we are inside single quotes
+// 			{
+// 				int j = i + 1;
+// 				while (pipe[j] && pipe[j] != '\'') // find the end of the content inside single quotes
+// 					j++;
+// 				char *content = ft_substr(pipe, i, j - i + 1, data); // get the content inside single quotes, including the quotes
+// 				result = ft_strjoin(result, content, data); // append the content to result
+// 				i = j; // move i to the end of the content inside single quotes
+// 			}
+// 		}
+// 		else
+// 		{
+// 			char *tmp = ft_substr(pipe, i, 1, data); // get the current character
+// 			result = ft_strjoin(result, tmp, data); // append to result
+// 			i++;
+// 		}
+// 	}
+// 	printf("res: %s\n", result);
+// 	return (result);
+// }
+
+
+
+// char *expanding_final(char *pipe, t_data *data)
+// {
+// 	int i = 0;
+// 	int inside_double_quotes = 0;
+// 	int inside_single_quotes = 0;
+// 	char *result = ft_strdup("", &data->allocated); // initialize result to an empty string
+
+// 	while (pipe[i])
+// 	{
+// 		if (pipe[i] == '"')
+// 		{
+// 			inside_double_quotes = !inside_double_quotes; // toggle the inside_double_quotes flag
+// 			if (inside_double_quotes) // if we are inside double quotes
+// 			{
+// 				int j = i + 1;
+// 				while (pipe[j] && pipe[j] != '"') // find the end of the content inside double quotes
+// 					j++;
+// 				char *content = ft_substr(pipe, i + 1, j - i - 1, data); // get the content inside double quotes
+// 				char *expanded = expanding_inside(content, data);  // expand the content
+// 				// char *old_result = result;
+// 				result = ft_strjoin(result, expanded, data); // append the expanded content to result
+// 				// free(old_result); // free the old result
+// 				i = j; // move i to the end of the content inside double quotes
+// 			}
+// 		}
+// 		else if (pipe[i] == '\'')
+// 		{
+// 			inside_single_quotes = !inside_single_quotes; // toggle the inside_single_quotes flag
+// 			if (inside_single_quotes) // if we are inside single quotes
+// 			{
+// 				int j = i + 1;
+// 				while (pipe[j] && pipe[j] != '\'') // find the end of the content inside single quotes
+// 					j++;
+// 				i = j; // move i to the end of the content inside single quotes
+// 			}
+// 		}
+// 		else
+// 		{
+// 			char *tmp = ft_substr(pipe, i, 1, data); // get the current character
+// 			char *old_result = result;
+// 			result = ft_strjoin(result, tmp, data); // append to result
+// 			free(old_result); // free the old result
+// 			i++;
+// 		}
+// 	}
+// 	printf("result: %s\n", result);
+// 	return (result);
+// }
+
+
 char *expanding_inside (char *pipe, t_data *data)
 {
-	
 	int i = 0;
 	while (pipe[i])
 	{
 		if (pipe[i] == '$')
 		{
-			 if ((pipe[i + 1] && !(ft_isalnum(pipe[i + 1]) || pipe[i + 1] == '_')) || !pipe[i + 1])
+			if (pipe[i + 1] &&  pipe[i + 1] == '?') // if the character following $ is ?
+    		{
+        	char *exit_status_str = ft_itoa(data->exit_status, data); // convert the exit status to a string
+        	char *before = ft_substr(pipe, 0, i, data); // get the part of the string before $?
+        	char *after = ft_substr(pipe, i + 2, ft_strlen(pipe) - i - 2, data); // get the part of the string after $?
+        	char *new_pipe = ft_strjoin(before, exit_status_str, data); // join the part before $? and the exit status
+        	pipe = ft_strjoin(new_pipe, after, data); // join the previous string and the part after $?
+        	// free(pipe); // free the old string
+        	// pipe = new_pipe; // assign the new string to pipe
+        	i += ft_strlen(exit_status_str) - 1; // adjust i based on the length of the exit status string
+    		}
+			else if ((pipe[i + 1] && !(ft_isalnum(pipe[i + 1]) || pipe[i + 1] == '_')) || !pipe[i + 1])
     		{
         		i++;
         		continue;
 			}
-			if (pipe[i + 1] && ft_isnum(pipe[i + 1]))
+			else if (pipe[i + 1] && ft_isnum(pipe[i + 1]))
 			{
 				char *before = ft_substr(pipe, 0, i, data); // get the part before the $
 				char *after = ft_substr(pipe, i + 2, ft_strlen(pipe) - (i + 2), data); // get the part after the $ and the first number

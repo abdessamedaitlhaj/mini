@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aait-lha <aait-lha@student.1337.ma>        +#+  +:+       +#+        */
+/*   By: ael-hara <ael-hara@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/15 18:13:05 by ael-hara          #+#    #+#             */
-/*   Updated: 2024/07/08 11:11:27 by aait-lha         ###   ########.fr       */
+/*   Updated: 2024/07/11 05:49:33 by ael-hara         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,10 +78,8 @@ typedef struct s_data
 	int		delimiter_count;
 	char	**envp;
 	int		exit_status;
-	int		stdin_copy;
-	int		stdout_copy;
+	
 }	t_data;
-
 typedef struct s_split_args {
     char const *s;
     char const *delimiters;
@@ -93,6 +91,7 @@ typedef struct s_indexes
 	int	j;
 	int	k;
 	int	l;
+	int index;
 }	t_indexes;
 
 t_parsing_status	pair_quotes(char *line);
@@ -147,6 +146,8 @@ void				empty_line(char *limiter);
 void				push_line_expand(int fd, char *limiter, t_data *data);
 void				push_line(int fd, char *limiter, t_data *data);
 char				*expanding_final(char *pipe, t_data *data);
+char	*ft_itoa(int n, t_data *data);
+
 void				*ft_lstnew(void *content);
 void				ft_lstadd_back(t_list **list, t_list *new);
 
@@ -195,6 +196,5 @@ int					execute_cmds(t_data *data);
 void				free_allocated(t_list **garbage_collector);
 int					execute_one_node(t_data *data);
 int					ft_strcmp(const char *s1, const char *s2);
-void				copy_fds(t_data *data);
 
 #endif

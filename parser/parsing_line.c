@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing_line.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ael-hara <ael-hara@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aait-lha <aait-lha@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/15 18:37:48 by ael-hara          #+#    #+#             */
-/*   Updated: 2024/07/07 11:46:18 by ael-hara         ###   ########.fr       */
+/*   Updated: 2024/07/11 22:50:46 by aait-lha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,11 +36,10 @@ char	*remove_q(char* str, t_data *data)
 	int len = ft_strlen(str);
 	char *new_str = ft_malloc(sizeof(char) * (len + 1), &data->allocated);
 	int i = 0, j = 0;
-
 	while (i < len) 
 	{
 		char c = str[i];
-		if (str[i] == '"' || str[i] == '\'')
+		if ((str[i] == '"' || str[i] == '\''))
 		{
 			c = str[i];
 			i++;
@@ -226,7 +225,7 @@ void	fill_command(t_data *data)
 	char		**split;
 	t_indexes	indexes;
 	t_cmd* cmds = ft_malloc(sizeof(t_cmd) * data->counter_command, &data->allocated);
-	indexes = (t_indexes){0, 0, 0, 0};
+	indexes = (t_indexes){0, 0, 0, 0, 0};
 	while (indexes.i < data->counter_command)
 	{
 		indexes.j = 0;

@@ -1,4 +1,4 @@
-#include "../includes/minishell.h"
+#include "includes/minishell.h"
 
 void	init_envs(char **envp, t_data *data)
 {
@@ -32,25 +32,13 @@ void	free_env(t_list **env)
 	}
 }
 
-void	copy_fds(t_data *data)
-{
-	data->stdin_copy = dup(0);
-	data->stdout_copy = dup(1);
-	if (data->stdin_copy == -1 || data->stdout_copy == -1)
-	{
-		perror("dup");
-		exit(1);
-	}
-}
-
 int main (int ac, char **av, char **envp)
 {
 	(void)ac;
 	(void)av;
 	char	*line;
 	t_data	data;
-	data = (t_data){NULL, NULL, 0, NULL, NULL, NULL, 0, NULL, 0, envp, 0, 0, 0};
-	copy_fds(&data);
+	data = (t_data){NULL, NULL, 0, NULL, NULL, NULL, 0, NULL, 0, envp, 0};
 	init_envs(envp, &data);
 	while (77)
 	{

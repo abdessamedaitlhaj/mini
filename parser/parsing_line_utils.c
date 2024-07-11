@@ -3,14 +3,23 @@
 /*                                                        :::      ::::::::   */
 /*   parsing_line_utils.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aait-lha <aait-lha@student.1337.ma>        +#+  +:+       +#+        */
+/*   By: ael-hara <ael-hara@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/22 15:15:14 by ael-hara          #+#    #+#             */
-/*   Updated: 2024/07/07 09:46:53 by aait-lha         ###   ########.fr       */
+/*   Updated: 2024/07/08 00:37:12 by ael-hara         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
+
+void	process_heredoc_infile(t_cmd *cmds,
+				t_indexes *indexes, char **split, t_data *data)
+{
+	cmds[indexes->i].files[indexes->k]->file = split[indexes->j + 1];
+	cmds[indexes->i].files[indexes->k]->type = HEREDOC;
+	split[indexes->j] = ft_strdup("|", &data->allocated);
+	split[indexes->j + 1] = ft_strdup("|", &data->allocated);
+}
 
 void	handle_heredoc_and_infile(t_cmd *cmds, t_indexes *indexes,
 		char **split, t_data *data) {
@@ -21,10 +30,7 @@ void	handle_heredoc_and_infile(t_cmd *cmds, t_indexes *indexes,
 		quote_replace(split[indexes->j + 1], -42, '\t');
 		cmds[indexes->i].files[indexes->k]
 			= ft_malloc(sizeof(t_redir), &data->allocated);
-		cmds[indexes->i].files[indexes->k]->file = split[indexes->j + 1];
-		cmds[indexes->i].files[indexes->k]->type = HEREDOC;
-		split[indexes->j] = ft_strdup("|", &data->allocated);
-		split[indexes->j + 1] = ft_strdup("|", &data->allocated);
+		process_heredoc_infile(cmds, indexes, split, data);
 		indexes->k++;
 	}
 	else if ((ft_strcmp(split[indexes->j], "<") == 0)
@@ -40,6 +46,15 @@ void	handle_heredoc_and_infile(t_cmd *cmds, t_indexes *indexes,
 		split[indexes->j + 1] = ft_strdup("|", &data->allocated);
 		indexes->k++;
 	}
+}
+
+void	process_append(t_cmd *cmds,
+				t_indexes *indexes, char **split, t_data *data)
+{
+	cmds[indexes->i].files[indexes->k]->file = split[indexes->j + 1];
+	cmds[indexes->i].files[indexes->k]->type = APPEND;
+	split[indexes->j] = ft_strdup("|", &data->allocated);
+	split[indexes->j + 1] = ft_strdup("|", &data->allocated);
 }
 
 void	handle_redirections(t_cmd *cmds, t_indexes *indexes,
@@ -65,10 +80,7 @@ void	handle_redirections(t_cmd *cmds, t_indexes *indexes,
 		quote_replace(split[indexes->j + 1], -42, '\t');
 		cmds[indexes->i].files[indexes->k]
 			= ft_malloc(sizeof(t_redir), &data->allocated);
-		cmds[indexes->i].files[indexes->k]->file = split[indexes->j + 1];
-		cmds[indexes->i].files[indexes->k]->type = APPEND;
-		split[indexes->j] = ft_strdup("|", &data->allocated);
-		split[indexes->j + 1] = ft_strdup("|", &data->allocated);
+		process_append(cmds, indexes, split, data);
 		indexes->k++;
 	}
 	else
