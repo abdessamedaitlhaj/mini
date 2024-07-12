@@ -6,7 +6,7 @@
 /*   By: aait-lha <aait-lha@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/08 17:48:09 by aait-lha          #+#    #+#             */
-/*   Updated: 2024/07/07 09:46:53 by aait-lha         ###   ########.fr       */
+/*   Updated: 2024/07/12 20:14:37 by aait-lha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,11 @@ void	ft_exit(char *number)
 	int	len2;
 	int	status;
 
-
+	if (!number[0])
+	{
+		ft_putendl_fd("exit", 1);
+		exit(0);
+	}
 	len1 = ft_strlen(number);
 	len2 = ft_strlen("9223372036854775807");
 

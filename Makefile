@@ -1,6 +1,6 @@
 CC = cc
 S =  -fsanitize=address -ggdb3
-CFLAGS = -Wall -Wextra -Werror 
+CFLAGS = -Wall -Wextra -Werror
 NAME = minishell
 
 SRCS = 	minishell.c 					\
@@ -29,7 +29,11 @@ SRCS = 	minishell.c 					\
 		executor/execute_cmds.c			\
 		executor/find_exec.c			\
 		executor/ft_split.c				\
-		executor/exit.c
+		executor/exit.c					\
+		executor/errors.c				\
+		executor/redirections.c			\
+		executor/check_builtins.c		\
+		executor/dup_fds.c				\
 
 OBJS = $(SRCS:.c=.o)
 

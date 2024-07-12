@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ael-hara <ael-hara@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aait-lha <aait-lha@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/15 18:13:05 by ael-hara          #+#    #+#             */
-/*   Updated: 2024/07/11 05:49:33 by ael-hara         ###   ########.fr       */
+/*   Updated: 2024/07/12 20:15:08 by aait-lha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -156,7 +156,7 @@ void				ft_lstadd_back(t_list **list, t_list *new);
 void				ft_lstadd_back(t_list **list, t_list *new);
 void				*ft_lstnew(void *content);
 char				*ft_pwd(t_data *data);
-int					ft_echo(char **args, int n, int status);
+int					ft_echo(char **args, int n);
 int					ft_env(t_list *env);
 int					ft_cd(char *path, t_data *data);
 
@@ -196,5 +196,22 @@ int					execute_cmds(t_data *data);
 void				free_allocated(t_list **garbage_collector);
 int					execute_one_node(t_data *data);
 int					ft_strcmp(const char *s1, const char *s2);
+
+int					error_one(int *fd, char *str, int prev_fd);
+int					error_two(char *str);
+int					setting_redir_out(t_cmd *cmd);
+int					setting_redir_in(t_cmd *cmd);
+int					is_builtin(t_cmd *cmd);
+int					other_builtins(t_data *data, t_cmd *cmd);
+int					ft_exec_builtin(t_cmd *cmd, t_data *data);
+int					ft_close(int fd);
+int					dup_file(t_aa file, int fd);
+int					dup_cmd_in(int *fd, int prev_fd);
+int					dup_cmd_out(int *fd);
+int					dup_redir(t_data *data, int i, int *fd, int prev_fd);
+int					open_files(char *file, int index);
+char				**allocate_cmd_args(t_data *data, t_cmd *cmd);
+void				free_arr(char **arr);
+int					error_three(char *str);
 
 #endif

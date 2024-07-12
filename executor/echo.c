@@ -6,13 +6,13 @@
 /*   By: aait-lha <aait-lha@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/15 16:20:01 by aait-lha          #+#    #+#             */
-/*   Updated: 2024/07/07 09:46:53 by aait-lha         ###   ########.fr       */
+/*   Updated: 2024/07/12 18:24:19 by aait-lha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-int	ft_echo(char **args, int n, int status)
+int	ft_echo(char **args, int n)
 {
 	int	i;
 	int	n_flag;
@@ -20,18 +20,15 @@ int	ft_echo(char **args, int n, int status)
 
 	i = 0;
 	n_flag = 0;
-	if (ft_strcmp(args[0], "$?") == 0 && n == 1)
-	{
-		printf("%d\n", status);
-		return (0);
-	}
-	while (n && !ft_strncmp(args[i], "-n", 2))
+	while (i < n && !ft_strncmp(args[i], "-n", 2))
 	{
 		j = 2;
-		while (args[i][j] == 'n')
+		while (args[i][j] && args[i][j] == 'n')
 			j++;
-		if (args[i][j] == '\0')
+		if (!args[i][j])
 			n_flag = 1;
+		else
+			break ;
 		i++;
 	}
 	while (i < n)

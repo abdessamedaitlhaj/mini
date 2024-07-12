@@ -3,46 +3,53 @@
 /*                                                        :::      ::::::::   */
 /*   find_exec.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ael-hara <ael-hara@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aait-lha <aait-lha@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/07 12:08:33 by aait-lha          #+#    #+#             */
-/*   Updated: 2024/07/07 10:23:22 by ael-hara         ###   ########.fr       */
+/*   Updated: 2024/07/12 18:16:00 by aait-lha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-char	*ft_strjoin2(char *s1, char *s2, char *s3)
+int	open_files(char *file, int index)
 {
-	int		len;
-	int		i;
-	char	*str;
+	int fd;
 
-	if (!s1 || !s2 || !s3)
-		return (NULL);
-	i = 0;
-	len = ft_strlen(s1) + ft_strlen(s2) + ft_strlen(s3);
-	str = (char *)malloc(len + 1);
-	if (!str)
-		return (NULL);
-	while (*s1)
-		str[i++] = *s1++;
-	while (*s2)
-		str[i++] = *s2++;
-	while (*s3)
-		str[i++] = *s3++;
-	str[i] = '\0';
-	return (str);
+	fd = -1;
+	if (index == 0)
+		fd = open(file, O_WRONLY | O_CREAT | O_TRUNC, 0644);
+	else if (index == 1)
+		fd = open(file, O_WRONLY | O_CREAT | O_APPEND, 0644);
+	else if (index == 2)
+		fd = open(file, O_RDONLY);
+	return (fd);
 }
 
-void	free_arr(char **arr)
+char **allocate_cmd_args(t_data *data, t_cmd *cmd)
 {
-	int	i;
+	char	**args;
+	int		i;
+	int		j;
 
 	i = 0;
-	while (arr[i])
-		free(arr[i++]);
-	free(arr);
+	j = 0;
+	args = ft_malloc(sizeof(char *) * (cmd->args_number + 2), \
+		&data->allocated);
+	if (!args)
+		return (NULL);
+	args[0] = ft_strdup(cmd->cmd, &data->allocated);
+	if (!args[0])
+		return (NULL);
+	i = 1;
+	while (j < cmd->args_number)
+	{
+		args[i] = cmd->args[j];
+		i++;
+		j++;
+	}
+	args[i] = NULL;
+	return (args);
 }
 
 char	*find_cmd(t_data *data, char *cmd)

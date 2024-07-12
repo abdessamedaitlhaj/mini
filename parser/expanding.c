@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expanding.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ael-hara <ael-hara@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aait-lha <aait-lha@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/22 15:05:58 by ael-hara          #+#    #+#             */
-/*   Updated: 2024/07/11 06:30:06 by ael-hara         ###   ########.fr       */
+/*   Updated: 2024/07/12 17:14:08 by aait-lha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,8 @@ char *get_env_value(char *key, t_list *env)
 		int i = 0;
 		while (env_str[i] != '\0' && env_str[i] != '=')
 			i++;
-		if (env_str[i] == '=' && ft_strncmp(env_str, key, i) == 0 && key[i] == '\0')
+		if (env_str[i] == '=' && \
+			ft_strncmp(env_str, key, i) == 0 && key[i] == '\0')
 		{
 			return env_str + i + 1;
 		}
