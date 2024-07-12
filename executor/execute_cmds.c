@@ -6,7 +6,7 @@
 /*   By: aait-lha <aait-lha@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/22 19:09:09 by aait-lha          #+#    #+#             */
-/*   Updated: 2024/07/13 00:03:13 by aait-lha         ###   ########.fr       */
+/*   Updated: 2024/07/13 00:10:44 by aait-lha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,10 +84,14 @@ int	execute_multiple_nodes(t_data *data)
 	int	fd[2];
 	int	prev_fd;
 	int	error_file;
+	int stdout_copy;
 
 	i = -1;
 	prev_fd = -1;
 	error_file = 0;
+	stdout_copy = dup(STDOUT_FILENO);
+	if (stdout_copy == -1)
+		return (error_two("dup"));
 	while (++i < data->counter_command)
 	{
 		if (!data->cmds[i].cmd[0])
@@ -105,6 +109,8 @@ int	execute_multiple_nodes(t_data *data)
 					setting_redir_out(&data->cmds[i]);
 			}
 			if (i < data->counter_command - 1 && dup2(fd[1], STDOUT_FILENO) == -1)
+				error_three("dup2");
+			if (i == data->counter_command - 1 && dup2(stdout_copy, STDOUT_FILENO) == -1)
 				error_three("dup2");
 			data->exit_status = ft_exec_builtin(&data->cmds[i], data);
 		}
