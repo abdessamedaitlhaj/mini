@@ -6,7 +6,7 @@
 /*   By: aait-lha <aait-lha@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/11 23:33:03 by aait-lha          #+#    #+#             */
-/*   Updated: 2024/07/11 23:33:37 by aait-lha         ###   ########.fr       */
+/*   Updated: 2024/07/13 09:57:39 by aait-lha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,6 @@ int	dup_file(t_aa file, int fd)
 		if (dup2(fd, STDIN_FILENO) == -1)
 			error_one(NULL, "dup2", fd);
 	}
-	ft_close(fd);
 	return (0);
 }
 int	dup_cmd_in(int *fd, int prev_fd)
@@ -46,12 +45,12 @@ int	dup_cmd_out(int *fd)
 
 int	dup_redir(t_data *data, int i, int *fd, int prev_fd)
 {
-	if (data->cmds[i].infile || data->cmds[i].heredoc)
-		setting_redir_in(&data->cmds[i]);
+	if ((data->cmds[i].infile && data->fd_in != -1) || data->cmds[i].heredoc)
+		dup_file(INFILE, data->fd_in);
 	else if (i > 0)
 		dup_cmd_in(fd, prev_fd);
-	if (data->cmds[i].outfile || data->cmds[i].append)
-		setting_redir_out(&data->cmds[i]);
+	if ((data->cmds[i].outfile || data->cmds[i].append) && data->fd_out != -1)
+		dup_file(OUTFILE, data->fd_out);
 	else if(i < data->counter_command - 1)
 		dup_cmd_out(fd);
 	return (0);

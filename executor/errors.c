@@ -6,7 +6,7 @@
 /*   By: aait-lha <aait-lha@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/11 23:28:08 by aait-lha          #+#    #+#             */
-/*   Updated: 2024/07/12 18:45:33 by aait-lha         ###   ########.fr       */
+/*   Updated: 2024/07/13 11:44:05 by aait-lha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,10 +43,25 @@ int	error_three(char *str)
 
 int	ft_close(int fd)
 {
-	if (close(fd) == -1)
+	if (fd != -1 && close(fd) == -1)
 	{
 		perror("close");
-		exit (1);
+		return (1);
+	}
+	return (0);
+}
+
+int	ft_close_two(int fd1, int fd2)
+{
+	if (fd1 != -1 && close(fd1) == -1)
+	{
+		perror("close");
+		return (1);
+	}
+	if (fd2 != -1 && close(fd2) == -1)
+	{
+		perror("close");
+		return (1);
 	}
 	return (0);
 }

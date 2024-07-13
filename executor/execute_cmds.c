@@ -6,7 +6,7 @@
 /*   By: aait-lha <aait-lha@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/22 19:09:09 by aait-lha          #+#    #+#             */
-/*   Updated: 2024/07/13 00:10:44 by aait-lha         ###   ########.fr       */
+/*   Updated: 2024/07/13 12:26:06 by aait-lha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,13 +33,20 @@ int	execute_one_node(t_data *data)
 	status = 0;
 	error_file = 0;
 	if (data->cmds[0].files)
-	{	
+	{
 		if (data->cmds[0].infile || data->cmds[0].heredoc)
-			error_file = setting_redir_in(&data->cmds[0]);
-		if (!error_file && (data->cmds[0].outfile || data->cmds[0].append))
-			setting_redir_out(&data->cmds[0]);
+			 status = init_fd_in(data, &data->cmds[0]);
+		if (!status && (data->cmds[0].outfile || data->cmds[0].append))
+			status = init_fd_out(data, &data->cmds[0]);
+		if (status)
+			return (ft_close_two(data->fd_in, data->fd_out));
 	}
 	cmd = &data->cmds[0];
+	if (!cmd->cmd[0])
+		return (0);
+	if (cmd->files)
+		if (cmd->outfile || cmd->append)
+			dup_file(OUTFILE, data->fd_out);
 	if (is_builtin(cmd))
 		data->exit_status = ft_exec_builtin(cmd, data);
 	else
@@ -71,7 +78,10 @@ int	fork_process(t_data *data, int i, int *fd, int prev_fd)
 	{
 		dup_redir(data, i, fd, prev_fd);
 		if (is_builtin(&data->cmds[i]))
+		{
 			data->exit_status = ft_exec_builtin(&data->cmds[i], data);
+			exit(data->exit_status);
+		}
 		else
 			child_process(data, &data->cmds[i]);
 	}
@@ -83,39 +93,31 @@ int	execute_multiple_nodes(t_data *data)
 	int	i;
 	int	fd[2];
 	int	prev_fd;
-	int	error_file;
-	int stdout_copy;
 
 	i = -1;
 	prev_fd = -1;
-	error_file = 0;
-	stdout_copy = dup(STDOUT_FILENO);
-	if (stdout_copy == -1)
-		return (error_two("dup"));
+	fd[0] = -1;
+	fd[1] = -1;
 	while (++i < data->counter_command)
 	{
-		if (!data->cmds[i].cmd[0])
+		data->exit_status = 0;
+		if (data->cmds[i].files)
+		{
+			if (data->cmds[i].infile || data->cmds[i].heredoc)
+				data->exit_status = init_fd_in(data, &data->cmds[i]);
+			if (data->exit_status != -2 && (data->cmds[i].outfile || data->cmds[i].append))
+				data->exit_status = init_fd_out(data, &data->cmds[i]);
+		}
+		if (!data->cmds[i].cmd[0] || data->exit_status == -2)
+		{
+			ft_close_two(data->fd_in, data->fd_out);
 			continue ;
+		}
 		if (i < data->counter_command - 1)
 			if (pipe(fd) == -1)
 				error_one(fd, "pipe", prev_fd);
-		if (is_builtin(&data->cmds[i]) && ft_strcmp(data->cmds[i].cmd, "exit"))
-		{
-			if (data->cmds[i].files)
-			{
-				if (data->cmds[i].infile || data->cmds[i].heredoc)
-					error_file = setting_redir_in(&data->cmds[i]);
-				if (!error_file && (data->cmds[i].outfile || data->cmds[i].append))
-					setting_redir_out(&data->cmds[i]);
-			}
-			if (i < data->counter_command - 1 && dup2(fd[1], STDOUT_FILENO) == -1)
-				error_three("dup2");
-			if (i == data->counter_command - 1 && dup2(stdout_copy, STDOUT_FILENO) == -1)
-				error_three("dup2");
-			data->exit_status = ft_exec_builtin(&data->cmds[i], data);
-		}
-		else
-			fork_process(data, i, fd, prev_fd);
+		fork_process(data, i, fd, prev_fd);
+		ft_close_two(data->fd_in, data->fd_out);
 		if (i > 0)
 			ft_close(prev_fd);
 		if (i < data->counter_command - 1)
@@ -138,8 +140,8 @@ int	execute_cmds(t_data *data)
 	if (stdin_copy == -1 || stdout_copy == -1)
 		return (error_two("dup"));
 	status = 0;
-	if (!data->cmds[0].cmd[0])
-		return (0);
+	// if (!data->cmds[0].cmd[0])
+	// 	return (0);
 	if (data->counter_command == 1)
 		execute_one_node(data);
 	else

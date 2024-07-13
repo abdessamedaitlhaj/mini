@@ -6,7 +6,7 @@
 /*   By: aait-lha <aait-lha@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/15 18:13:05 by ael-hara          #+#    #+#             */
-/*   Updated: 2024/07/12 20:15:08 by aait-lha         ###   ########.fr       */
+/*   Updated: 2024/07/13 11:42:18 by aait-lha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,6 +76,8 @@ typedef struct s_data
 	int		heredoc_error;
 	t_list	*env;
 	int		delimiter_count;
+	int		fd_in;
+	int		fd_out;
 	char	**envp;
 	int		exit_status;
 	
@@ -199,8 +201,8 @@ int					ft_strcmp(const char *s1, const char *s2);
 
 int					error_one(int *fd, char *str, int prev_fd);
 int					error_two(char *str);
-int					setting_redir_out(t_cmd *cmd);
-int					setting_redir_in(t_cmd *cmd);
+int					init_fd_out(t_data *data, t_cmd *cmd);
+int					init_fd_in(t_data *data, t_cmd *cmd);
 int					is_builtin(t_cmd *cmd);
 int					other_builtins(t_data *data, t_cmd *cmd);
 int					ft_exec_builtin(t_cmd *cmd, t_data *data);
@@ -213,5 +215,6 @@ int					open_files(char *file, int index);
 char				**allocate_cmd_args(t_data *data, t_cmd *cmd);
 void				free_arr(char **arr);
 int					error_three(char *str);
+int					ft_close_two(int fd1, int fd2);
 
 #endif
