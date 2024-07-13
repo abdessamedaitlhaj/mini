@@ -6,7 +6,7 @@
 /*   By: aait-lha <aait-lha@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/22 19:09:09 by aait-lha          #+#    #+#             */
-/*   Updated: 2024/07/13 12:26:06 by aait-lha         ###   ########.fr       */
+/*   Updated: 2024/07/13 20:08:30 by aait-lha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,17 +28,11 @@ int	execute_one_node(t_data *data)
 	t_cmd	*cmd;
 	pid_t	pid;
 	int		status;
-	int		error_file;
 
 	status = 0;
-	error_file = 0;
 	if (data->cmds[0].files)
 	{
-		if (data->cmds[0].infile || data->cmds[0].heredoc)
-			 status = init_fd_in(data, &data->cmds[0]);
-		if (!status && (data->cmds[0].outfile || data->cmds[0].append))
-			status = init_fd_out(data, &data->cmds[0]);
-		if (status)
+		if (init_fds(data, &data->cmds[0]))
 			return (ft_close_two(data->fd_in, data->fd_out));
 	}
 	cmd = &data->cmds[0];
@@ -103,10 +97,11 @@ int	execute_multiple_nodes(t_data *data)
 		data->exit_status = 0;
 		if (data->cmds[i].files)
 		{
-			if (data->cmds[i].infile || data->cmds[i].heredoc)
-				data->exit_status = init_fd_in(data, &data->cmds[i]);
-			if (data->exit_status != -2 && (data->cmds[i].outfile || data->cmds[i].append))
-				data->exit_status = init_fd_out(data, &data->cmds[i]);
+			if (init_fds(data, &data->cmds[i]))
+			{
+				ft_close_two(data->fd_in, data->fd_out);
+				continue ;
+			}
 		}
 		if (!data->cmds[i].cmd[0] || data->exit_status == -2)
 		{

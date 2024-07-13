@@ -6,7 +6,7 @@
 /*   By: aait-lha <aait-lha@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/15 18:13:05 by ael-hara          #+#    #+#             */
-/*   Updated: 2024/07/13 11:42:18 by aait-lha         ###   ########.fr       */
+/*   Updated: 2024/07/13 20:08:08 by aait-lha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -216,5 +216,6 @@ char				**allocate_cmd_args(t_data *data, t_cmd *cmd);
 void				free_arr(char **arr);
 int					error_three(char *str);
 int					ft_close_two(int fd1, int fd2);
+int					init_fds(t_data *data, t_cmd *cmd);
 
 #endif
