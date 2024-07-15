@@ -6,7 +6,7 @@
 /*   By: aait-lha <aait-lha@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/11 23:28:08 by aait-lha          #+#    #+#             */
-/*   Updated: 2024/07/13 20:15:12 by aait-lha         ###   ########.fr       */
+/*   Updated: 2024/07/15 16:41:56 by aait-lha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,16 +15,16 @@
 int	error_one(int *fd, char *str, int prev_fd)
 {
 
-	if (prev_fd != -1)
-		ft_close(prev_fd);
+	if (prev_fd > 2)
+		close(prev_fd);
 	if (fd)
 	{
-		ft_close(fd[0]);
-		ft_close(fd[1]);
+		close(fd[0]);
+		close(fd[1]);
 	}
 	if (str)
 		perror(str);
-	exit(1);
+	return (1);
 }
 
 int	error_two(char *str)
@@ -41,27 +41,11 @@ int	error_three(char *str)
 	exit(1);
 }
 
-int	ft_close(int fd)
-{
-	if (fd != -1 && close(fd) == -1)
-	{
-		perror("close");
-		return (1);
-	}
-	return (0);
-}
-
 int	ft_close_two(int fd1, int fd2)
 {
-	if (fd1 != -1 && close(fd1) == -1)
-	{
-		perror("close");
-		return (1);
-	}
-	if (fd2 != -1 && close(fd2) == -1)
-	{
-		perror("close");
-		return (1);
-	}
+	if (fd1 > 2)
+		close(fd1);
+	if (fd2 > 2)
+		close(fd2);
 	return (0);
 }

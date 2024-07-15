@@ -6,13 +6,12 @@
 /*   By: aait-lha <aait-lha@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/15 18:13:05 by ael-hara          #+#    #+#             */
-/*   Updated: 2024/07/13 20:08:08 by aait-lha         ###   ########.fr       */
+/*   Updated: 2024/07/15 16:52:34 by aait-lha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef MINISHELL_H
 # define MINISHELL_H
-
 # include <fcntl.h>
 # include <stdio.h>
 # include <stdlib.h>
@@ -140,7 +139,7 @@ void				handle_cmd_args(t_cmd *cmds, int *j, int *k, char **split);
 void				count_cmd_args(int *j, int *k, char **split);
 int					ft_min(int a, int b, int c);
 char				*ft_strndup( char *s, size_t n);
-char* 				expanding_outside (char *pipe, t_data *data);
+char				*expanding_outside (char *pipe, t_data *data);
 void				ambigious (t_cmd *cmd, t_data *data);
 char				*expanding_inside (char *pipe, t_data *data);
 char				*remove_q(char* str, t_data *data);
@@ -148,8 +147,7 @@ void				empty_line(char *limiter);
 void				push_line_expand(int fd, char *limiter, t_data *data);
 void				push_line(int fd, char *limiter, t_data *data);
 char				*expanding_final(char *pipe, t_data *data);
-char	*ft_itoa(int n, t_data *data);
-
+char				*ft_itoa(int n, t_data *data);
 void				*ft_lstnew(void *content);
 void				ft_lstadd_back(t_list **list, t_list *new);
 
@@ -206,7 +204,6 @@ int					init_fd_in(t_data *data, t_cmd *cmd);
 int					is_builtin(t_cmd *cmd);
 int					other_builtins(t_data *data, t_cmd *cmd);
 int					ft_exec_builtin(t_cmd *cmd, t_data *data);
-int					ft_close(int fd);
 int					dup_file(t_aa file, int fd);
 int					dup_cmd_in(int *fd, int prev_fd);
 int					dup_cmd_out(int *fd);

@@ -6,7 +6,7 @@
 /*   By: aait-lha <aait-lha@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/07 12:08:33 by aait-lha          #+#    #+#             */
-/*   Updated: 2024/07/12 18:16:00 by aait-lha         ###   ########.fr       */
+/*   Updated: 2024/07/15 18:05:42 by aait-lha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,11 +73,31 @@ char	*find_cmd(t_data *data, char *cmd)
 		if (!path)
 			(free_arr(paths), perror("malloc error"), \
 				exit(1));
-		if (access(path, F_OK | X_OK) == 0)
-			return (free_arr(paths), path);
+		if (access(path, F_OK) == 0)
+		{
+		printf("%s\n", path);
+			if (access(path, X_OK) == 0)
+			{	
+				return (free_arr(paths), path);
+			}
+			else
+			{
+			printf("dddd\n");
+				ft_putstr_fd("minishell: ", 2);
+				ft_putstr_fd(cmd, 2);
+				ft_putendl_fd(": Permission denied", 2);
+				data->exit_status = 126;
+				exit(126);
+			}
+		}
 		free(path);
 		i++;
 	}
+			ft_putstr_fd("minishell: ", 2);
+			ft_putstr_fd(cmd, 2);
+			ft_putendl_fd(": command not found", 2);
+			data->exit_status = 127;
+			exit(127);
 	return (free_arr(paths), NULL);
 }
 
@@ -93,13 +113,5 @@ void	exec_cmd(t_data *data, char *cmd, char **args)
 	}
 	else
 		path = find_cmd(data, cmd);
-	// while (1)
-	// 	;
-	if (execve(path, args, data->envp) == -1)
-	{
-		write(2, "minishell: ", 11);
-		write(2, cmd, ft_strlen(cmd));
-		write(2, ": command not found\n", 20);
-		exit(127);
-	}
+	execve(path, args, data->envp);
 }

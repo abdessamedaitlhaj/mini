@@ -1,6 +1,6 @@
 CC = cc
 S =  -fsanitize=address -ggdb3
-CFLAGS = -Wall -Wextra -Werror $(S)
+CFLAGS = -Wall -Wextra -Werror
 NAME = minishell
 
 SRCS = 	minishell.c 					\

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing_line.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aait-lha <aait-lha@student.1337.ma>        +#+  +:+       +#+        */
+/*   By: ael-hara <ael-hara@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/15 18:37:48 by ael-hara          #+#    #+#             */
-/*   Updated: 2024/07/11 22:50:46 by aait-lha         ###   ########.fr       */
+/*   Updated: 2024/07/14 07:33:17 by ael-hara         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -142,14 +142,25 @@ void ambigious (t_cmd *cmd, t_data *data)
 		int j = 0;
 		while (j < cmd[i].outfile + cmd[i].infile + cmd[i].heredoc + cmd[i].append)
 		{
-			
-			if (cmd[i].files[j]->file[0] == '$')
+			// printf("%d\n",cmd[i].outfile + cmd[i].infile + cmd[i].heredoc + cmd[i].append);
+			// if(!cmd[i].files[j])
+			// 	printf("printed\n");	
+			// printf("22222\n");
+			// printf("%s\n",cmd[i].files[j]->file);
+			if (cmd[i].files[j] && cmd[i].files[j]->file[0] == '$')
+			{
 				cmd[i].files[j]->expand_error = 1;
+			}
 			else
+			{	
 				cmd[i].files[j]->expand_error = 0;
+			}
+			// printf("expand_error: %d\n", cmd[i].files[j]->expand_error);
 			quote_replace(cmd[i].files[j]->file, -11, '$');
 			if (cmd[i].files[j]->file && cmd[i].files[j]->type != HEREDOC)
+			{
 				cmd[i].files[j]->file = expanding_final(cmd[i].files[j]->file, data);
+			}
 			j++;
 		}
 		j = 0;
@@ -225,7 +236,7 @@ void	fill_command(t_data *data)
 	char		**split;
 	t_indexes	indexes;
 	t_cmd* cmds = ft_malloc(sizeof(t_cmd) * data->counter_command, &data->allocated);
-	indexes = (t_indexes){0, 0, 0, 0, 0};
+	indexes = (t_indexes){0, 0, 0, 0,0};
 	while (indexes.i < data->counter_command)
 	{
 		indexes.j = 0;
@@ -254,6 +265,8 @@ void	fill_command(t_data *data)
 		handle_cmd_args(&cmds[indexes.i], &indexes.j, &indexes.k, split);
 		indexes.i++;
 	}
+	//find why cmd[i]files[j] is NUll
+	
 	ambigious(cmds, data);
 	remove_quotes(cmds, data);
 	data->cmds = cmds;

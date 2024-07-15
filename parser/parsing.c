@@ -6,7 +6,7 @@
 /*   By: aait-lha <aait-lha@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/22 15:04:15 by ael-hara          #+#    #+#             */
-/*   Updated: 2024/07/12 00:58:50 by aait-lha         ###   ########.fr       */
+/*   Updated: 2024/07/14 22:57:44 by aait-lha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,7 +78,6 @@ void	handle_heredoc(t_indexes indexes, t_data *data)
 		close(indexes.l);
 		indexes.l = open(path, O_RDONLY);
 		data->cmds[indexes.i].files[indexes.j]->fd = indexes.l;
-		data->cmds[indexes.i].files[indexes.j]->file = path;
 	}
 }
 
