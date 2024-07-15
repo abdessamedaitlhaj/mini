@@ -6,11 +6,25 @@
 /*   By: aait-lha <aait-lha@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/11 23:33:03 by aait-lha          #+#    #+#             */
-/*   Updated: 2024/07/15 16:43:00 by aait-lha         ###   ########.fr       */
+/*   Updated: 2024/07/15 19:59:21 by aait-lha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 # include "../includes/minishell.h"
+
+int	open_files(char *file, int index)
+{
+	int fd;
+
+	fd = -1;
+	if (index == 0)
+		fd = open(file, O_WRONLY | O_CREAT | O_TRUNC, 0644);
+	else if (index == 1)
+		fd = open(file, O_WRONLY | O_CREAT | O_APPEND, 0644);
+	else if (index == 2)
+		fd = open(file, O_RDONLY);
+	return (fd);
+}
 
 int	dup_file(t_aa file, int fd)
 {

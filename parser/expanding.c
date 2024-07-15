@@ -6,7 +6,7 @@
 /*   By: ael-hara <ael-hara@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/22 15:05:58 by ael-hara          #+#    #+#             */
-/*   Updated: 2024/07/13 12:13:28 by ael-hara         ###   ########.fr       */
+/*   Updated: 2024/07/15 06:51:41 by ael-hara         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,9 +62,12 @@ int	ft_isalnum(char c)
 	return (0);
 }
 
-int	skip_redirection(char *pipe, int i)
+int	skip_redirection(char *pipe, int i, int flag)
 {
-	i += 2;
+	if (!flag)
+		i += 2;
+	else 
+		i++;
 	while (pipe[i] && ft_isspace(pipe[i]))
 		i++;
 	while (pipe[i] && !ft_isspace(pipe[i]))
@@ -203,8 +206,15 @@ char *expanding_outside(char *pipe, t_data *data)
 	i = -1;
 	while (pipe[++i])
 	{
-		if (pipe[i] == '<' && pipe[i + 1] && pipe[i + 1] && pipe[i + 1] == '<')
-			i = skip_redirection(pipe, i);
+		if ((pipe[i] == '<' || pipe[i] =='>') && pipe[i + 1] &&( pipe[i + 1] == '<' || pipe[i + 1] == '>'))
+	{			
+	i = skip_redirection(pipe, i, 0);
+			printf("pipe[i]: %s\n", pipe + i);
+	}		
+			else if (pipe[i] == '<'  || pipe[i] == '>')
+			{
+			i = skip_redirection(pipe, i, 1);
+			}
 		else if (pipe[i] == '$')
 		{
 			if (expand_help(&pipe, &i, data) == -1)

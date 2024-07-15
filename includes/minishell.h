@@ -6,12 +6,13 @@
 /*   By: aait-lha <aait-lha@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/15 18:13:05 by ael-hara          #+#    #+#             */
-/*   Updated: 2024/07/15 16:52:34 by aait-lha         ###   ########.fr       */
+/*   Updated: 2024/07/15 23:29:05 by aait-lha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef MINISHELL_H
 # define MINISHELL_H
+
 # include <fcntl.h>
 # include <stdio.h>
 # include <stdlib.h>
@@ -182,7 +183,7 @@ char				*ft_strchr(const char *s, int c);
 
 char				*find_cmd(t_data *data, char *cmd);
 int					execute_cmds(t_data *data);
-void				ft_exit(char *number);
+void				ft_exit(char *number, char **args);
 void				exec_cmd(t_data *data, char *cmd, char **args);
 
 void				set_last_cmd(char *outfile, int *fd, int her);
@@ -214,5 +215,9 @@ void				free_arr(char **arr);
 int					error_three(char *str);
 int					ft_close_two(int fd1, int fd2);
 int					init_fds(t_data *data, t_cmd *cmd);
+void				perm_denied(char *cmd);
+void				cmd_not_found(char *cmd);
+void				get_status(int *status, t_data *data)
+void				sig_handler(int signo);
 
 #endif

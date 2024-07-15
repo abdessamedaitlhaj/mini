@@ -38,8 +38,6 @@ int main (int ac, char **av, char **envp)
 	
 	while (77)
 	{
-		data.fd_in = -2;
-		data.fd_out = -2;
 		line = readline("minishell$ ");
 		if (!parsing(line, &data))
 			continue ;

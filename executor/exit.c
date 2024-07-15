@@ -6,7 +6,7 @@
 /*   By: aait-lha <aait-lha@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/08 17:48:09 by aait-lha          #+#    #+#             */
-/*   Updated: 2024/07/12 20:14:37 by aait-lha         ###   ########.fr       */
+/*   Updated: 2024/07/15 23:26:51 by aait-lha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,12 +48,18 @@ int	ft_atoi(char const *str)
 	return (sum);
 }
 
-void	ft_exit(char *number)
+void	ft_exit(char *number, char **args)
 {
 	int	len1;
 	int	len2;
 	int	status;
 
+	if (args[1])
+	{
+		ft_putendl_fd("exit", 2);
+		ft_putendl_fd("minishell: exit: too many arguments", 2);
+		exit(1);
+	}
 	if (!number[0])
 	{
 		ft_putendl_fd("exit", 1);
@@ -75,4 +81,14 @@ void	ft_exit(char *number)
 		status = status % 256;
 	ft_putendl_fd("exit", 1);
 	exit(status);
+}
+
+void	get_status(int *status, t_data *data)
+{
+	if (WIFEXITED(status))
+		data->exit_status = WEXITSTATUS(status);
+	else if (WIFSIGNALED(status))
+		data->exit_status = WTERMSIG(status) + 128;
+	if (WIFSIGNALED(status) && WTERMSIG(status) == SIGQUIT)
+		printf("quit: %d\n", WTERMSIG(status));
 }

@@ -34,6 +34,7 @@ SRCS = 	minishell.c 					\
 		executor/redirections.c			\
 		executor/check_builtins.c		\
 		executor/dup_fds.c				\
+		executor/sigs.c				
 
 OBJS = $(SRCS:.c=.o)
 

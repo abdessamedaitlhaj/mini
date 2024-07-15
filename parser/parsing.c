@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aait-lha <aait-lha@student.1337.ma>        +#+  +:+       +#+        */
+/*   By: ael-hara <ael-hara@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/22 15:04:15 by ael-hara          #+#    #+#             */
-/*   Updated: 2024/07/14 22:57:44 by aait-lha         ###   ########.fr       */
+/*   Updated: 2024/07/15 06:51:02 by ael-hara         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -174,9 +174,13 @@ void process_heredoc_line(char *line, int min, t_data *data)
 void herdoc_delimiters(char *line, int min, t_data *data)
 {
 	int	i;
+	int	j;
+	int	start;
 	int	delimiter_count;
 
 	i = 0;
+	j = 0;
+	start = 0;
 	delimiter_count = 0;
 	data->heredoc_error = 1;
 	while (i < min)
@@ -249,6 +253,7 @@ static int process_errors(char *line, t_data *data)
 		empty_line(data->heredoc[i]);
 		i++;
 	}
+	data->exit_status = 258;
 	write(2, "minishell: syntax error\n", 24);
 	return (free(line), 0);
 }

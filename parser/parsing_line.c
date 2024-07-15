@@ -6,7 +6,7 @@
 /*   By: ael-hara <ael-hara@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/15 18:37:48 by ael-hara          #+#    #+#             */
-/*   Updated: 2024/07/14 07:33:17 by ael-hara         ###   ########.fr       */
+/*   Updated: 2024/07/14 20:57:17 by ael-hara         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -134,6 +134,23 @@ void remove_quotes(t_cmd *cmd, t_data *data)
 	}
 }
 
+// function that checks if the string is null has spaces or new line or wildcards
+
+
+int check_null(char *str)
+{
+	int i = 0;
+	if (!str || !str[0])
+		return (0);
+	while (str[i])
+	{
+		if (str[i] == ' ' && str[i] == '\n' && str[i] == '\t' && str[i] == '*')
+			return (0);
+		i++;
+	}
+	return (1);
+}
+
 void ambigious (t_cmd *cmd, t_data *data)
 {
 	int i = 0;
@@ -147,7 +164,10 @@ void ambigious (t_cmd *cmd, t_data *data)
 			// 	printf("printed\n");	
 			// printf("22222\n");
 			// printf("%s\n",cmd[i].files[j]->file);
-			if (cmd[i].files[j] && cmd[i].files[j]->file[0] == '$')
+			if (cmd[i].files[j]->type != HEREDOC)
+				cmd[i].files[j]->file = expanding_outside(cmd[i].files[j]->file, data);
+			printf("file: %s\n", cmd[i].files[j]->file);
+			if (cmd[i].files[j] && check_null(cmd[i].files[j]->file) == 0 && cmd[i].files[j]->type != HEREDOC)
 			{
 				cmd[i].files[j]->expand_error = 1;
 			}
@@ -161,6 +181,7 @@ void ambigious (t_cmd *cmd, t_data *data)
 			{
 				cmd[i].files[j]->file = expanding_final(cmd[i].files[j]->file, data);
 			}
+			printf("expand_error: %d\n", cmd[i].files[j]->expand_error);
 			j++;
 		}
 		j = 0;
