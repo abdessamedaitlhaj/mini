@@ -6,7 +6,7 @@
 /*   By: aait-lha <aait-lha@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/22 19:09:09 by aait-lha          #+#    #+#             */
-/*   Updated: 2024/07/15 23:26:38 by aait-lha         ###   ########.fr       */
+/*   Updated: 2024/07/16 11:04:19 by aait-lha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 void	child_process(t_data *data, t_cmd *cmd)
 {
 	char	**args;
+
 
 	args = allocate_cmd_args(data, cmd);
 	if (!args)

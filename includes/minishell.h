@@ -6,7 +6,7 @@
 /*   By: aait-lha <aait-lha@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/15 18:13:05 by ael-hara          #+#    #+#             */
-/*   Updated: 2024/07/16 04:47:48 by aait-lha         ###   ########.fr       */
+/*   Updated: 2024/07/16 11:01:58 by aait-lha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@
 # include <unistd.h>
 # include <readline/readline.h>
 # include <readline/history.h>
+# include <sys/stat.h>
 
 typedef struct s_list
 {
@@ -219,5 +220,6 @@ void				perm_denied(char *cmd);
 void				cmd_not_found(char *cmd);
 void				get_status(int *status, t_data *data);
 void				sig_handler(int signo);
-
+int					is_dir(char *path);
+void				not_dir(t_data *data, char *cmd);
 #endif

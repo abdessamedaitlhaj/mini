@@ -6,7 +6,7 @@
 /*   By: aait-lha <aait-lha@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/08 17:48:09 by aait-lha          #+#    #+#             */
-/*   Updated: 2024/07/16 04:53:08 by aait-lha         ###   ########.fr       */
+/*   Updated: 2024/07/16 11:01:00 by aait-lha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,19 +93,11 @@ void	get_status(int *status, t_data *data)
 		printf("quit: %d\n", WTERMSIG(status));
 }
 
-int	is_directory(const char *path)
+int	is_dir(char *path)
 {
-	struct stat	statbuf;
+	struct stat	buf;
 
-	if (stat(path, &statbuf) != 0)
+	if (stat(path, &buf) != 0)
 		return (0);
-	return (S_ISDIR(statbuf.st_mode));
-}
-
-void	is_not_directory(t_parser *parse)
-{
-	ft_putstr_fd(parse->command->cmds[0], 2);
-	ft_putstr_fd(" : is a directory\n", 2);
-	g_global.exitcode = 126;
-	exit(126);
+	return (S_ISDIR(buf.st_mode));
 }
