@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing_line.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ael-hara <ael-hara@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aait-lha <aait-lha@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/15 18:37:48 by ael-hara          #+#    #+#             */
-/*   Updated: 2024/07/14 20:57:17 by ael-hara         ###   ########.fr       */
+/*   Updated: 2024/07/16 04:49:47 by aait-lha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -181,7 +181,7 @@ void ambigious (t_cmd *cmd, t_data *data)
 			{
 				cmd[i].files[j]->file = expanding_final(cmd[i].files[j]->file, data);
 			}
-			printf("expand_error: %d\n", cmd[i].files[j]->expand_error);
+			//printf("expand_error: %d\n", cmd[i].files[j]->expand_error);
 			j++;
 		}
 		j = 0;
@@ -203,36 +203,36 @@ void ambigious (t_cmd *cmd, t_data *data)
 	}
 }
 
-void print_cmd (t_cmd *cmd)
-{
-	int i = 0;
-	printf("cmd: %s\n", cmd->cmd);
-	printf("args: ");
-	while (i < cmd->args_number)
-	{
-		printf("%s ", cmd->args[i]);
-		i++;
-	}
-	printf("\n");
-	i = 0;
-	printf("files: ");
-	while (i < cmd->outfile + cmd->infile + cmd->heredoc + cmd->append)
-	{
-		if (cmd->files[i] != NULL) // Check if cmd->files[i] is not NULL
-		{
-			if (cmd->files[i]->type == OUTFILE)
-				printf("OUTFILE: %s    %d", cmd->files[i]->file, cmd->files[i]->expand_error);
-			else if (cmd->files[i]->type == APPEND)
-				printf("APPEND: %s     %d", cmd->files[i]->file, cmd->files[i]->expand_error);
-			else if (cmd->files[i]->type == HEREDOC)
-				printf("HEREDOC: %s    %d", cmd->files[i]->file, cmd->files[i]->expand_error);
-			else if (cmd->files[i]->type == INFILE)
-				printf("INFILE: %s     %d", cmd->files[i]->file, cmd->files[i]->expand_error);
-		}
-		i++;
-	}
-	printf("\n");
-}
+// void print_cmd (t_cmd *cmd)
+// {
+// 	int i = 0;
+// 	printf("cmd: %s\n", cmd->cmd);
+// 	printf("args: ");
+// 	while (i < cmd->args_number)
+// 	{
+// 		printf("%s ", cmd->args[i]);
+// 		i++;
+// 	}
+// 	printf("\n");
+// 	i = 0;
+// 	printf("files: ");
+// 	while (i < cmd->outfile + cmd->infile + cmd->heredoc + cmd->append)
+// 	{
+// 		if (cmd->files[i] != NULL) // Check if cmd->files[i] is not NULL
+// 		{
+// 			if (cmd->files[i]->type == OUTFILE)
+// 				printf("OUTFILE: %s    %d", cmd->files[i]->file, cmd->files[i]->expand_error);
+// 			else if (cmd->files[i]->type == APPEND)
+// 				printf("APPEND: %s     %d", cmd->files[i]->file, cmd->files[i]->expand_error);
+// 			else if (cmd->files[i]->type == HEREDOC)
+// 				printf("HEREDOC: %s    %d", cmd->files[i]->file, cmd->files[i]->expand_error);
+// 			else if (cmd->files[i]->type == INFILE)
+// 				printf("INFILE: %s     %d", cmd->files[i]->file, cmd->files[i]->expand_error);
+// 		}
+// 		i++;
+// 	}
+// 	printf("\n");
+// }
 
 void	initialize_cmd_and_set_flags(t_cmd *cmds,
 		t_indexes *indexes, char **split, t_data *data)

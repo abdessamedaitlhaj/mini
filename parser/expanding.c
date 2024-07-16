@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expanding.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ael-hara <ael-hara@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aait-lha <aait-lha@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/22 15:05:58 by ael-hara          #+#    #+#             */
-/*   Updated: 2024/07/15 06:51:41 by ael-hara         ###   ########.fr       */
+/*   Updated: 2024/07/16 04:49:06 by aait-lha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -209,7 +209,7 @@ char *expanding_outside(char *pipe, t_data *data)
 		if ((pipe[i] == '<' || pipe[i] =='>') && pipe[i + 1] &&( pipe[i + 1] == '<' || pipe[i + 1] == '>'))
 	{			
 	i = skip_redirection(pipe, i, 0);
-			printf("pipe[i]: %s\n", pipe + i);
+			//printf("pipe[i]: %s\n", pipe + i);
 	}		
 			else if (pipe[i] == '<'  || pipe[i] == '>')
 			{

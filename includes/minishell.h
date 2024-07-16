@@ -6,7 +6,7 @@
 /*   By: aait-lha <aait-lha@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/15 18:13:05 by ael-hara          #+#    #+#             */
-/*   Updated: 2024/07/15 23:29:05 by aait-lha         ###   ########.fr       */
+/*   Updated: 2024/07/16 04:47:48 by aait-lha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -217,7 +217,7 @@ int					ft_close_two(int fd1, int fd2);
 int					init_fds(t_data *data, t_cmd *cmd);
 void				perm_denied(char *cmd);
 void				cmd_not_found(char *cmd);
-void				get_status(int *status, t_data *data)
+void				get_status(int *status, t_data *data);
 void				sig_handler(int signo);
 
 #endif

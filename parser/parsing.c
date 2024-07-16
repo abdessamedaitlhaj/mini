@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ael-hara <ael-hara@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aait-lha <aait-lha@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/22 15:04:15 by ael-hara          #+#    #+#             */
-/*   Updated: 2024/07/15 06:51:02 by ael-hara         ###   ########.fr       */
+/*   Updated: 2024/07/16 04:48:12 by aait-lha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -174,13 +174,9 @@ void process_heredoc_line(char *line, int min, t_data *data)
 void herdoc_delimiters(char *line, int min, t_data *data)
 {
 	int	i;
-	int	j;
-	int	start;
 	int	delimiter_count;
 
 	i = 0;
-	j = 0;
-	start = 0;
 	delimiter_count = 0;
 	data->heredoc_error = 1;
 	while (i < min)
