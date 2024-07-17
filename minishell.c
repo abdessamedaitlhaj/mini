@@ -1,5 +1,31 @@
 #include "includes/minishell.h"
 
+int	execute_cmds(t_data *data)
+{
+	int	status;
+	int stdin_copy;
+	int stdout_copy;
+
+	stdin_copy = dup(0);
+	stdout_copy = dup(1);
+	if (stdin_copy == -1 || stdout_copy == -1)
+		return (error_two("dup"));
+	if (data->counter_command == 1)
+		execute_one_node(data);
+	else
+	{
+		execute_multiple_nodes(data);
+		while (waitpid(-1, &status, 0) > 0)
+			get_status(&status, data);
+	}
+	if (dup2(stdin_copy, STDIN_FILENO) == -1 || \
+		dup2(stdout_copy, STDOUT_FILENO) == -1)
+			return (error_two("dup2"));
+	close(stdin_copy);
+	close(stdout_copy);
+	return (0);
+}
+
 void	init_envs(char **envp, t_data *data)
 {
 	int		i;

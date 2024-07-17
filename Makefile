@@ -26,12 +26,14 @@ SRCS = 	minishell.c 					\
 		executor/env.c					\
 		executor/echo.c					\
 		executor/cd.c					\
-		executor/execute_cmds.c			\
+		executor/handle_cmds.c			\
+		executor/execute_cmd.c			\
 		executor/find_exec.c			\
 		executor/ft_split.c				\
 		executor/exit.c					\
-		executor/errors.c				\
-		executor/redirections.c			\
+		executor/errors_one.c			\
+		executor/errors_two.c			\
+		executor/inits.c				\
 		executor/check_builtins.c		\
 		executor/dup_fds.c				\
 		executor/sigs.c				

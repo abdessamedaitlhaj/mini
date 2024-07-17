@@ -6,7 +6,7 @@
 /*   By: aait-lha <aait-lha@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/15 18:13:05 by ael-hara          #+#    #+#             */
-/*   Updated: 2024/07/16 11:01:58 by aait-lha         ###   ########.fr       */
+/*   Updated: 2024/07/17 23:04:10 by aait-lha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -222,4 +222,16 @@ void				get_status(int *status, t_data *data);
 void				sig_handler(int signo);
 int					is_dir(char *path);
 void				not_dir(t_data *data, char *cmd);
+int					check_files(t_data *data, int i, int *fd, int prev_fd);
+void				dir_error(t_data *data, char *cmd);
+int					execute_one_node(t_data *data);
+void				save_last_pipe(t_data *data, int i, int *fd, int prev_fd);
+int					execute_multiple_nodes(t_data *data);
+int					create_process(t_data *data, t_cmd *cmd);
+void				child_process(t_data *data, t_cmd *cmd);
+int					fork_process(t_data *data, int i, int *fd, int prev_fd);
+int					ambigious_error(char *file);
+void				no_such_file(t_data *data, char *cmd);
+char				*check_access(t_data *data, char *path, char **paths, char *cmd);
+
 #endif
