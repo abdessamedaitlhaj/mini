@@ -6,7 +6,7 @@
 /*   By: aait-lha <aait-lha@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/15 16:55:14 by aait-lha          #+#    #+#             */
-/*   Updated: 2024/07/12 18:53:20 by aait-lha         ###   ########.fr       */
+/*   Updated: 2024/07/16 16:51:10 by aait-lha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,6 +72,7 @@ int	ft_export(char **args, t_data *data)
 	int		i;
 	char	*key;
 	char	*value;
+	char	*tmp;
 
 	if (!args[0])
 	{
@@ -83,7 +84,28 @@ int	ft_export(char **args, t_data *data)
 	{
 		if (ft_strchr(args[i], '='))
 		{
-			key = ft_substr(args[i], 0, ft_strchr(args[i], '=') - args[i], data); 
+			if (ft_strchr(args[i], '+'))
+			{
+				tmp = ft_strchr(args[i], '+');
+				if (tmp[1] == '=')
+				{
+					key = ft_substr(args[i], 0, ft_strchr(args[i], '+') - args[i], data);
+					if (is_key_valid(key) == 0)
+					{
+						value = ft_strchr(args[i], '+') + 2;
+						if (ft_get_key_index(key, data->env) != -1)
+						{
+							value = ft_strjoin(ft_getenv(key, data->env), value, data);
+							ft_unsetenv(key, data);
+							ft_setenv(key, value, data);
+						}
+						else
+							return (1);
+					}
+				}
+			}
+			else
+				key = ft_substr(args[i], 0, ft_strchr(args[i], '=') - args[i], data); 
 			if (is_key_valid(key) == 0)
 			{
 				value = ft_strchr(args[i], '=') + 1;

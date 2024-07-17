@@ -6,7 +6,7 @@
 /*   By: aait-lha <aait-lha@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/15 19:25:27 by aait-lha          #+#    #+#             */
-/*   Updated: 2024/07/12 20:01:17 by aait-lha         ###   ########.fr       */
+/*   Updated: 2024/07/16 11:39:50 by aait-lha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,8 @@ int	ft_unsetenv(char *key, t_data *data)
 	t_list	*tmp;
 	int		i;
 
+	if (ft_strcmp(key, "_") == 0)
+		return (0);
 	tmp = data->env;
 	i = 0;
 	while (tmp)

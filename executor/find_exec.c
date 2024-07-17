@@ -6,7 +6,7 @@
 /*   By: aait-lha <aait-lha@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/07 12:08:33 by aait-lha          #+#    #+#             */
-/*   Updated: 2024/07/16 11:05:28 by aait-lha         ###   ########.fr       */
+/*   Updated: 2024/07/16 12:10:39 by aait-lha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,7 +97,6 @@ void	exec_cmd(t_data *data, char *cmd, char **args)
 {
 	char	*path;
 
-	path = NULL;
 	if (ft_strchr(cmd, '/') && access(cmd, F_OK) == 0)
 	{
 		if (access(cmd, X_OK) != 0)
@@ -110,14 +109,6 @@ void	exec_cmd(t_data *data, char *cmd, char **args)
 		cmd_not_found(cmd);
 	else
 		path = find_cmd(data, cmd);
-	if (is_dir(path) == 1)
-	{
-		ft_putstr_fd("minishell: ", 2);
-		ft_putstr_fd(cmd, 2);
-		ft_putstr_fd(" : is a directory\n", 2);
-		data->exit_status = 126;
-		exit(126);
-	}
 	execve(path, args, data->envp);
 	printf("comd not found\n");
 }

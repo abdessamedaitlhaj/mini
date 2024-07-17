@@ -6,7 +6,7 @@
 /*   By: aait-lha <aait-lha@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/22 19:09:09 by aait-lha          #+#    #+#             */
-/*   Updated: 2024/07/16 11:04:19 by aait-lha         ###   ########.fr       */
+/*   Updated: 2024/07/16 22:11:31 by aait-lha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,14 @@ void	child_process(t_data *data, t_cmd *cmd)
 {
 	char	**args;
 
-
+	if (is_dir(cmd->cmd) == 1)
+	{
+		ft_putstr_fd("minishell: ", 2);
+		ft_putstr_fd(cmd->cmd, 2);
+		ft_putstr_fd(" : is a directory\n", 2);
+		data->exit_status = 126;
+		exit(126);
+	}
 	args = allocate_cmd_args(data, cmd);
 	if (!args)
 		return ;
@@ -43,17 +50,16 @@ int	create_process(t_data *data, t_cmd *cmd)
 		signal(SIGINT, sig_handler);
 		child_process(data, cmd);
 	}
-	else if (pid > 0)
-	{
-		if (waitpid(pid, &status, 0) == -1)
-			return (error_two("waitpid"));
-		get_status(&status, data);
-	}
+	if (waitpid(pid, &status, 0) == -1)
+		return (error_two("waitpid"));
+	get_status(&status, data);
 	return (0);
 }
 
 int	execute_one_node(t_data *data)
 {
+	char	*args[2];
+
 	if (data->cmds[0].files)
 	{
 		if (init_fds(data, &data->cmds[0]))
@@ -68,7 +74,12 @@ int	execute_one_node(t_data *data)
 		ft_close_two(data->fd_in, data->fd_out);
 	}
 	if (is_builtin(&data->cmds[0]))
+	{
+		args[0] = ft_strjoin("_=", data->cmds[0].cmd, data);
+		args[1] = NULL;
+		//ft_export(args, data);
 		data->exit_status = ft_exec_builtin(&data->cmds[0], data);
+	}
 	else
 		create_process(data, &data->cmds[0]);
 	return (0);

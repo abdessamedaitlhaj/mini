@@ -46,4 +46,5 @@ int main (int ac, char **av, char **envp)
 	}
 	free_allocated(&data.allocated);
 	free_env(&data.env);
+	return (data.exit_status);
 }
