@@ -6,10 +6,9 @@
 /*   By: ael-hara <ael-hara@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/08 00:37:39 by ael-hara          #+#    #+#             */
-/*   Updated: 2024/07/08 23:18:38 by ael-hara         ###   ########.fr       */
+/*   Updated: 2024/07/17 08:33:20 by ael-hara         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-
 
 #include "../includes/minishell.h"
 
@@ -53,7 +52,6 @@ void	push_line(int fd, char *limiter, t_data *data)
 		free(line);
 	}
 	write(fd, content, ft_strlen(content));
-
 }
 
 void	empty_line(char *limiter)
@@ -73,6 +71,8 @@ void	empty_line(char *limiter)
 		free(line);
 	}
 }
+
+
 
 void	push_line_expand(int fd, char *limiter, t_data *data)
 {
@@ -96,5 +96,4 @@ void	push_line_expand(int fd, char *limiter, t_data *data)
 	}
 	content = expanding_inside(content, data);
 	write(fd, content, ft_strlen(content));
-
 }

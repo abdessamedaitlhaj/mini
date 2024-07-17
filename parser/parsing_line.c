@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing_line.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aait-lha <aait-lha@student.1337.ma>        +#+  +:+       +#+        */
+/*   By: ael-hara <ael-hara@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/15 18:37:48 by ael-hara          #+#    #+#             */
-/*   Updated: 2024/07/16 04:49:47 by aait-lha         ###   ########.fr       */
+/*   Updated: 2024/07/16 10:48:44 by ael-hara         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -166,7 +166,7 @@ void ambigious (t_cmd *cmd, t_data *data)
 			// printf("%s\n",cmd[i].files[j]->file);
 			if (cmd[i].files[j]->type != HEREDOC)
 				cmd[i].files[j]->file = expanding_outside(cmd[i].files[j]->file, data);
-			printf("file: %s\n", cmd[i].files[j]->file);
+			// printf("file: %s\n", cmd[i].files[j]->file);
 			if (cmd[i].files[j] && check_null(cmd[i].files[j]->file) == 0 && cmd[i].files[j]->type != HEREDOC)
 			{
 				cmd[i].files[j]->expand_error = 1;
