@@ -6,7 +6,7 @@
 /*   By: aait-lha <aait-lha@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/17 22:16:07 by aait-lha          #+#    #+#             */
-/*   Updated: 2024/07/17 23:10:46 by aait-lha         ###   ########.fr       */
+/*   Updated: 2024/07/17 23:54:23 by aait-lha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,8 @@ int	create_process(t_data *data, t_cmd *cmd)
 	pid_t	pid;
 	int		status;
 
-	
+
+	status = 0;
 	pid = fork();
 	if (pid == -1)
 		return (error_two("fork"));
@@ -65,9 +66,8 @@ int	create_process(t_data *data, t_cmd *cmd)
 		signal(SIGINT, sig_handler);
 		child_process(data, cmd);
 	}
-	if (waitpid(pid, &status, 0) == -1)
-		return (error_two("waitpid"));
-	get_status(&status, data);
+	wait(&status);
+	get_status(data, &status);
 	return (0);
 }
 

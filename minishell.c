@@ -16,7 +16,7 @@ int	execute_cmds(t_data *data)
 	{
 		execute_multiple_nodes(data);
 		while (waitpid(-1, &status, 0) > 0)
-			get_status(&status, data);
+			get_status(data, &status);
 	}
 	if (dup2(stdin_copy, STDIN_FILENO) == -1 || \
 		dup2(stdout_copy, STDOUT_FILENO) == -1)

@@ -6,7 +6,7 @@
 /*   By: aait-lha <aait-lha@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/08 17:48:09 by aait-lha          #+#    #+#             */
-/*   Updated: 2024/07/16 11:01:00 by aait-lha         ###   ########.fr       */
+/*   Updated: 2024/07/17 23:53:37 by aait-lha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,14 +83,14 @@ void	ft_exit(char *number, char **args)
 	exit(status);
 }
 
-void	get_status(int *status, t_data *data)
+void	get_status(t_data *data, int *status)
 {
 	if (WIFEXITED(status))
 		data->exit_status = WEXITSTATUS(status);
 	else if (WIFSIGNALED(status))
 		data->exit_status = WTERMSIG(status) + 128;
 	if (WIFSIGNALED(status) && WTERMSIG(status) == SIGQUIT)
-		printf("quit: %d\n", WTERMSIG(status));
+		printf("Quit: %d\n", WTERMSIG(status));
 }
 
 int	is_dir(char *path)
