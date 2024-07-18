@@ -6,7 +6,7 @@
 /*   By: ael-hara <ael-hara@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/15 18:37:48 by ael-hara          #+#    #+#             */
-/*   Updated: 2024/07/16 10:48:44 by ael-hara         ###   ########.fr       */
+/*   Updated: 2024/07/18 11:20:46 by ael-hara         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -252,6 +252,20 @@ void	initialize_cmd_and_set_flags(t_cmd *cmds,
 		+ cmds[indexes->i].outfile + cmds[indexes->i].infile] = NULL;
 }
 
+void check_null_command(t_cmd *cmds , t_data *data)
+{
+	int i = 0;
+	while (i < data->counter_command)
+	{
+		if (cmds[i].cmd == NULL)
+		{
+			cmds[i].flag_command = 1;
+		}
+		i++;
+	}
+}
+
+
 void	fill_command(t_data *data)
 {
 	char		**split;
@@ -286,9 +300,16 @@ void	fill_command(t_data *data)
 		handle_cmd_args(&cmds[indexes.i], &indexes.j, &indexes.k, split);
 		indexes.i++;
 	}
-	//find why cmd[i]files[j] is NUll
-	
+	check_null_command(cmds, data);
 	ambigious(cmds, data);
 	remove_quotes(cmds, data);
 	data->cmds = cmds;
+	// print all the comds command and flag_command
+	// int i = 0;
+	// while (i < data->counter_command)
+	// {
+	// 	printf("cmd: --%s--\n", cmds[i].cmd);
+	// 	printf("flag_command: %d\n", cmds[i].flag_command);
+	// 	i++;
+	// }
 }

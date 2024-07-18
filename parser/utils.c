@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aait-lha <aait-lha@student.1337.ma>        +#+  +:+       +#+        */
+/*   By: ael-hara <ael-hara@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/18 17:50:45 by ael-hara          #+#    #+#             */
-/*   Updated: 2024/07/07 09:46:53 by aait-lha         ###   ########.fr       */
+/*   Updated: 2024/07/18 10:59:47 by ael-hara         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,4 +73,5 @@ void	initialize_cmd(t_cmd *cmd)
 	cmd->flag_infiles = 0;
 	cmd->flag_outfiles = 0;
 	cmd->args_number = 0;
+	cmd->flag_command = 0;
 }

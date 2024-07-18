@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aait-lha <aait-lha@student.1337.ma>        +#+  +:+       +#+        */
+/*   By: ael-hara <ael-hara@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/15 18:13:05 by ael-hara          #+#    #+#             */
-/*   Updated: 2024/07/17 23:25:12 by aait-lha         ###   ########.fr       */
+/*   Updated: 2024/07/18 10:57:16 by ael-hara         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,6 +64,7 @@ typedef struct s_cmd
 	int				args_number;
 	int				flag_infiles;
 	int				flag_outfiles;
+	int				flag_command;
 }	t_cmd;
 
 typedef struct s_data

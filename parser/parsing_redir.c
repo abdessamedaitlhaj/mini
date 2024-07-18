@@ -6,7 +6,7 @@
 /*   By: ael-hara <ael-hara@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/26 23:21:23 by ael-hara          #+#    #+#             */
-/*   Updated: 2024/07/16 10:47:59 by ael-hara         ###   ########.fr       */
+/*   Updated: 2024/07/18 11:25:55 by ael-hara         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,28 +63,28 @@ char	*add_space_redir(char *line, t_data *data)
 		if (line[i] == '>' || line[i] == '<')
 		{
 			temp = ft_strjoin(line_new, " ", data); // Add space before
-			free(line_new);
+			// free(line_new);
 			line_new = temp;
 
 			temp = ft_strjoin(line_new, ft_substr(line, i, 1, data), data);
-			free(line_new);
+			// free(line_new);
 			line_new = temp;
 			i++;
 			if (line[i] && line[i - 1] == line[i])
 			{
 				temp = ft_strjoin(line_new, ft_substr(line, i, 1, data), data);
-				free(line_new);
+				// free(line_new);
 				line_new = temp;
 				i++;
 			}
 			temp = ft_strjoin(line_new, " ", data); // Add space after
-			free(line_new);
+			// free(line_new);
 			line_new = temp;
 		}
 		else
 		{
 			temp = ft_strjoin(line_new, ft_substr(line, i, 1, data), data);
-			free(line_new);
+			// free(line_new);
 			line_new = temp;
 			i++;
 		}
