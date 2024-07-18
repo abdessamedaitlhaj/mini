@@ -6,7 +6,7 @@
 /*   By: aait-lha <aait-lha@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/08 17:48:09 by aait-lha          #+#    #+#             */
-/*   Updated: 2024/07/18 11:24:24 by aait-lha         ###   ########.fr       */
+/*   Updated: 2024/07/18 12:38:00 by aait-lha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,16 +53,16 @@ void	ft_exit(char *number, char **args)
 	int	len1;
 	int	len2;
 
+	if (!number[0])
+	{
+		ft_putendl_fd("exit", 1);
+		exit(0);
+	}
 	if (args[1])
 	{
 		ft_putendl_fd("exit", 2);
 		ft_putendl_fd("minishell: exit: too many arguments", 2);
 		exit(1);
-	}
-	if (!number[0])
-	{
-		ft_putendl_fd("exit", 1);
-		exit(0);
 	}
 	len1 = ft_strlen(number);
 	len2 = ft_strlen("9223372036854775807");

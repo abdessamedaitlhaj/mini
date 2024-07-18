@@ -6,7 +6,7 @@
 /*   By: aait-lha <aait-lha@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/22 19:09:09 by aait-lha          #+#    #+#             */
-/*   Updated: 2024/07/17 22:21:09 by aait-lha         ###   ########.fr       */
+/*   Updated: 2024/07/18 12:32:04 by aait-lha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,8 @@ int	execute_one_node(t_data *data)
 			dup_file(OUTFILE, data->fd_out);
 		ft_close_two(data->fd_in, data->fd_out);
 	}
+	if (data->cmds[0].flag_command)
+		return(ft_close_two(data->fd_in, data->fd_out));
 	if (is_builtin(&data->cmds[0]))
 		data->exit_status = ft_exec_builtin(&data->cmds[0], data);
 	else

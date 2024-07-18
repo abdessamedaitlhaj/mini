@@ -22,7 +22,10 @@ int	execute_cmds(t_data *data)
 			else if (WIFSIGNALED(status))
 				data->exit_status = WTERMSIG(status) + 128;
 			if (WIFSIGNALED(status) && WTERMSIG(status) == SIGQUIT)
-				printf("Quit: %d\n", WTERMSIG(status));
+			{
+				ft_putstr_fd("Quit: ", STDOUT_FILENO);
+				ft_putendl_fd(ft_itoa(WTERMSIG(status), data), STDOUT_FILENO);
+			}
 		}
 	}
 	if (dup2(stdin_copy, STDIN_FILENO) == -1 || \
@@ -96,12 +99,12 @@ int main (int ac, char **av, char **envp)
 		line = readline("minishell$ ");
 		if (!line)
 		{
-		rl_on_new_line();
-        rl_replace_line("", 0);
-        rl_redisplay();
-        ft_putendl_fd("exit", 1);
-        free_allocated(&data.allocated);
-        exit(0);
+			rl_on_new_line();
+			rl_replace_line("", 0);
+			rl_redisplay();
+			ft_putendl_fd("exit", 1);
+			free_allocated(&data.allocated);
+			exit(0);
 		}
 		if (!parsing(line, &data))
 			continue ;
