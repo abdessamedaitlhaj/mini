@@ -96,9 +96,12 @@ int main (int ac, char **av, char **envp)
 		line = readline("minishell$ ");
 		if (!line)
 		{
-			ft_putendl_fd("exit", 1);
-			free_allocated(&data.allocated);
-			exit(0);
+		rl_on_new_line();
+        rl_replace_line("", 0);
+        rl_redisplay();
+        ft_putendl_fd("exit", 1);
+        free_allocated(&data.allocated);
+        exit(0);
 		}
 		if (!parsing(line, &data))
 			continue ;

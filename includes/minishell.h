@@ -6,7 +6,7 @@
 /*   By: aait-lha <aait-lha@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/15 18:13:05 by ael-hara          #+#    #+#             */
-/*   Updated: 2024/07/18 11:39:15 by aait-lha         ###   ########.fr       */
+/*   Updated: 2024/07/18 12:18:13 by aait-lha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,6 +65,7 @@ typedef struct s_cmd
 	int				args_number;
 	int				flag_infiles;
 	int				flag_outfiles;
+	int				flag_command;
 }	t_cmd;
 
 typedef struct s_data

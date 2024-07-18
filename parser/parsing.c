@@ -6,7 +6,7 @@
 /*   By: ael-hara <ael-hara@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/22 15:04:15 by ael-hara          #+#    #+#             */
-/*   Updated: 2024/07/17 08:40:43 by ael-hara         ###   ########.fr       */
+/*   Updated: 2024/07/18 10:00:19 by ael-hara         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,6 +78,7 @@ void	handle_heredoc(t_indexes indexes, t_data *data)
 		close(indexes.l);
 		indexes.l = open(path, O_RDONLY);
 		data->cmds[indexes.i].files[indexes.j]->fd = indexes.l;
+      	data->cmds[indexes.i].files[indexes.j]->file = path;
 	}
 }
 
@@ -254,12 +255,24 @@ static int process_errors(char *line, t_data *data)
 	return (free(line), 0);
 }
 
+int empty_line_parse(char *line)
+{
+	int	i;
+
+	i = 0;
+	while (line[i] && (line[i] == ' ' || line[i] == '\t'))
+		i++;
+	if(!line[i])
+		return (1);
+	return (0);
+}
+
 int	parsing(char *line, t_data *data)
 {
 	char	**pipes;
 	int		i;
 
-	if (line[0] == '\0')
+	if (line[0] == '\0' || empty_line_parse(line))
 		return (free(line), 0);
 	process_line_history(line);
 	if (pair_quotes(line).error || parsing_pipe(line).error
