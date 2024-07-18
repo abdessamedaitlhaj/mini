@@ -6,7 +6,7 @@
 /*   By: ael-hara <ael-hara@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/22 15:04:15 by ael-hara          #+#    #+#             */
-/*   Updated: 2024/07/17 08:40:43 by ael-hara         ###   ########.fr       */
+/*   Updated: 2024/07/18 09:34:38 by ael-hara         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,6 +78,7 @@ void	handle_heredoc(t_indexes indexes, t_data *data)
 		close(indexes.l);
 		indexes.l = open(path, O_RDONLY);
 		data->cmds[indexes.i].files[indexes.j]->fd = indexes.l;
+      	data->cmds[indexes.i].files[indexes.j]->file = path;
 	}
 }
 
