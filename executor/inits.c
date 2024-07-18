@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   redirections.c                                     :+:      :+:    :+:   */
+/*   inits.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: aait-lha <aait-lha@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/11 23:29:45 by aait-lha          #+#    #+#             */
-/*   Updated: 2024/07/15 21:46:49 by aait-lha         ###   ########.fr       */
+/*   Updated: 2024/07/17 22:49:24 by aait-lha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,12 +20,7 @@ int	init_fds(t_data *data, t_cmd *cmd)
 	while (cmd->files[++i])
 	{
 		if (cmd->files[i]->expand_error)
-		{
-			ft_putstr_fd("minishell: ", 2);
-			ft_putstr_fd(cmd->files[i]->file, 2);
-			ft_putendl_fd(": ambiguous redirect", 2);
-			return (1);
-		}
+			return (ambigious_error(cmd->files[i]->file));
 		if (cmd->files[i]->type == INFILE || cmd->files[i]->type == HEREDOC)
 		{
 			if (data->fd_in > 2)
@@ -46,6 +41,30 @@ int	init_fds(t_data *data, t_cmd *cmd)
 		}
 		if (data->fd_in == -1 || data->fd_out == -1)
 			return (error_two(cmd->files[i]->file));
+	}
+	return (0);
+}
+
+int	check_files(t_data *data, int i, int *fd, int prev_fd)
+{
+	data->exit_status = 0;
+	data->fd_in = -2;
+	data->fd_out = -2;
+	if (data->cmds[i].files)
+	{
+		if (init_fds(data, &data->cmds[i]))
+		{
+			ft_close_two(data->fd_in, data->fd_out);
+			error_one(fd, NULL, prev_fd);
+			data->exit_status = 1;
+			return (1) ;
+		}
+	}
+	if (!data->cmds[i].cmd[0])
+	{
+		ft_close_two(data->fd_in, data->fd_out);
+		error_one(fd, NULL, prev_fd);
+		return (1) ;
 	}
 	return (0);
 }

@@ -6,7 +6,7 @@
 /*   By: aait-lha <aait-lha@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/07 12:08:33 by aait-lha          #+#    #+#             */
-/*   Updated: 2024/07/16 12:10:39 by aait-lha         ###   ########.fr       */
+/*   Updated: 2024/07/17 23:06:53 by aait-lha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,10 +54,16 @@ char	**get_paths(t_data *data)
 	return (paths);
 }
 
-char	*check_access(char *path, char **paths, char *cmd)
+char	*check_access(t_data *data, char *path, char **paths, char *cmd)
 {
+	(void)data;
 	if (access(path, F_OK) == 0)
 	{
+		if ((cmd[0] == '.' && !cmd[1]) || (cmd[0] == '.' && \
+			cmd[1] == '.' && !cmd[2]))
+			cmd_not_found(cmd);
+		if (is_dir(path) == 1)
+			dir_error(data, cmd);
 		if (access(path, X_OK) == 0)
 			return (free_arr(paths), path);
 		else
@@ -84,31 +90,10 @@ char	*find_cmd(t_data *data, char *cmd)
 		if (!path)
 			(free_arr(paths), perror("malloc error"), \
 				exit(1));
-		if (check_access(path, paths, cmd))
+		if (check_access(data, path, paths, cmd))
 			return (path);
 		free(path);
 	}
 	free_arr(paths);
-	cmd_not_found(cmd);
 	return (NULL);
-}
-
-void	exec_cmd(t_data *data, char *cmd, char **args)
-{
-	char	*path;
-
-	if (ft_strchr(cmd, '/') && access(cmd, F_OK) == 0)
-	{
-		if (access(cmd, X_OK) != 0)
-			perm_denied(cmd);
-		path = ft_strdup(cmd, &data->allocated);
-		if (!path)
-			(free(path), perror("malloc error"), exit(1));
-	}
-	else if (ft_strchr(cmd, '/') && access(cmd, F_OK) == -1)
-		cmd_not_found(cmd);
-	else
-		path = find_cmd(data, cmd);
-	execve(path, args, data->envp);
-	printf("comd not found\n");
 }
