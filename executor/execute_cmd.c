@@ -6,7 +6,7 @@
 /*   By: aait-lha <aait-lha@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/17 22:16:07 by aait-lha          #+#    #+#             */
-/*   Updated: 2024/07/17 23:54:23 by aait-lha         ###   ########.fr       */
+/*   Updated: 2024/07/18 11:56:27 by aait-lha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,6 @@ int	create_process(t_data *data, t_cmd *cmd)
 	pid_t	pid;
 	int		status;
 
-
 	status = 0;
 	pid = fork();
 	if (pid == -1)
@@ -66,8 +65,17 @@ int	create_process(t_data *data, t_cmd *cmd)
 		signal(SIGINT, sig_handler);
 		child_process(data, cmd);
 	}
-	wait(&status);
-	get_status(data, &status);
+	if (waitpid(pid, &status, 0) == -1)
+		return (error_two("waitpid"));
+	if (WIFEXITED(status))
+		data->exit_status = WEXITSTATUS(status);
+	else if (WIFSIGNALED(status))
+		data->exit_status = WTERMSIG(status) + 128;
+	if (WIFSIGNALED(status) && WTERMSIG(status) == SIGQUIT)
+	{
+		ft_putstr_fd("Quit: ", STDOUT_FILENO);
+		ft_putendl_fd(ft_itoa(WTERMSIG(status), data), STDOUT_FILENO);
+	}
 	return (0);
 }
 

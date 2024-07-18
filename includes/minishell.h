@@ -6,7 +6,7 @@
 /*   By: aait-lha <aait-lha@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/15 18:13:05 by ael-hara          #+#    #+#             */
-/*   Updated: 2024/07/17 23:25:12 by aait-lha         ###   ########.fr       */
+/*   Updated: 2024/07/18 11:39:15 by aait-lha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@
 # include <readline/readline.h>
 # include <readline/history.h>
 # include <sys/stat.h>
+# include <termios.h>
 
 typedef struct s_list
 {
@@ -71,7 +72,7 @@ typedef struct s_data
 	char	*line;
 	char	**pipes;
 	int		counter_command;
-	t_cmd	*cmds;
+	t_cmd	*cmds;                
 	t_list	*allocated;
 	char	**heredoc;
 	int		heredoc_error;
@@ -157,10 +158,6 @@ void				ft_lstadd_back(t_list **list, t_list *new);
 
 void				ft_lstadd_back(t_list **list, t_list *new);
 void				*ft_lstnew(void *content);
-char				*ft_pwd(t_data *data);
-int					ft_echo(char **args, int n);
-int					ft_env(t_list *env);
-int					ft_cd(char *path, t_data *data);
 
 int					envp_size(char **envp);
 void				init_envs(char **envp, t_data *data);
@@ -178,6 +175,7 @@ char				*ft_getenv(char *key, t_list *env);
 int					ft_get_key_index(char *key, t_list *env);
 int					ft_export(char **args, t_data *data);
 int					ft_setenv(char *key, char *value, t_data *data);
+int					ft_unset(char **args, t_data *data);
 int					ft_unsetenv(char *key, t_data *data);
 int					env_size(t_list *env);
 char				*ft_strchr(const char *s, int c);
@@ -218,7 +216,6 @@ int					ft_close_two(int fd1, int fd2);
 int					init_fds(t_data *data, t_cmd *cmd);
 void				perm_denied(char *cmd);
 void				cmd_not_found(char *cmd);
-void				get_status(t_data *data, int *status);
 void				sig_handler(int signo);
 int					is_dir(char *path);
 void				not_dir(t_data *data, char *cmd);
@@ -233,5 +230,17 @@ int					fork_process(t_data *data, int i, int *fd, int prev_fd);
 int					ambigious_error(char *file);
 void				no_such_file(t_data *data, char *cmd);
 char				*check_access(t_data *data, char *path, char **paths, char *cmd);
+void				print_env(t_list *env, t_data *data);
+int					is_key_valid(char *key);
+int					ft_setenv(char *key, char *value, t_data *data);
+int					append_value(t_data *data, char *str);
+int					overwrite_or_add(t_data *data, char *str);
+int					check_empty_args(t_data *data, char **args);
+int					ft_export(char **args, t_data *data);
+char				*ft_pwd(t_data *data);
+int					ft_env(t_list *envp);
+int					ft_cd(char *path, t_data *data);
+int					ft_echo(char **args, int n);
+
 
 #endif

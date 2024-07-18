@@ -6,7 +6,7 @@
 /*   By: aait-lha <aait-lha@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/11 23:29:45 by aait-lha          #+#    #+#             */
-/*   Updated: 2024/07/17 22:49:24 by aait-lha         ###   ########.fr       */
+/*   Updated: 2024/07/18 11:33:27 by aait-lha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,7 @@ int	init_fds(t_data *data, t_cmd *cmd)
 			if (data->fd_out > 2)
 				close(data->fd_out);
 			data->fd_out = open_files(cmd->files[i]->file, 0);
+			printf("adasds\n");
 		}
 		else if (cmd->files[i]->type == APPEND)
 		{

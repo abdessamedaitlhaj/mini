@@ -20,6 +20,7 @@ SRCS = 	minishell.c 					\
 		parser/heredoc.c				\
 		executor/utils_one.c			\
 		executor/export.c				\
+		executor/export_utils.c			\
 		executor/unsetenv.c				\
 		executor/utils_built.c			\
 		executor/pwd.c					\

@@ -16,7 +16,14 @@ int	execute_cmds(t_data *data)
 	{
 		execute_multiple_nodes(data);
 		while (waitpid(-1, &status, 0) > 0)
-			get_status(data, &status);
+		{
+			if (WIFEXITED(status))
+				data->exit_status = WEXITSTATUS(status);
+			else if (WIFSIGNALED(status))
+				data->exit_status = WTERMSIG(status) + 128;
+			if (WIFSIGNALED(status) && WTERMSIG(status) == SIGQUIT)
+				printf("Quit: %d\n", WTERMSIG(status));
+		}
 	}
 	if (dup2(stdin_copy, STDIN_FILENO) == -1 || \
 		dup2(stdout_copy, STDOUT_FILENO) == -1)
@@ -61,12 +68,12 @@ void	INT_HANDLER(int sig)
 {
 	if (sig == SIGINT)
 	{
-		if (waitpid(-1, NULL, WNOHANG) == -1) {
+		//if (waitpid(-1, NULL, WNOHANG) == -1) {
 			ft_putstr_fd("\n", 1);
 			rl_on_new_line();
 			rl_replace_line("", 0);
 			rl_redisplay();
-		}
+		//}
 	}
 }
 int main (int ac, char **av, char **envp)
@@ -74,6 +81,9 @@ int main (int ac, char **av, char **envp)
 	(void)ac;
 	(void)av;
 	char	*line;
+	struct termios	term;
+	
+
 	t_data	data;
 	data = (t_data){NULL, NULL, 0, NULL, NULL, NULL, 0, NULL, 0, -2, -2, envp, 0};
 	init_envs(envp, &data);
@@ -82,6 +92,7 @@ int main (int ac, char **av, char **envp)
 	rl_catch_signals = 0;
 	while (77)
 	{
+		tcgetattr(STDIN_FILENO, &term);
 		line = readline("minishell$ ");
 		if (!line)
 		{
@@ -93,6 +104,7 @@ int main (int ac, char **av, char **envp)
 			continue ;
 		execute_cmds(&data);
 		free (line);
+		tcsetattr(STDIN_FILENO, TCSANOW, &term);
 	}
 	free_allocated(&data.allocated);
 	free_env(&data.env);

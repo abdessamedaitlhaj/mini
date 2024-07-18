@@ -6,7 +6,7 @@
 /*   By: aait-lha <aait-lha@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/07 12:08:33 by aait-lha          #+#    #+#             */
-/*   Updated: 2024/07/17 23:06:53 by aait-lha         ###   ########.fr       */
+/*   Updated: 2024/07/18 10:29:16 by aait-lha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,14 +41,14 @@ char **allocate_cmd_args(t_data *data, t_cmd *cmd)
 char	**get_paths(t_data *data)
 {
 	char	**paths;
-	int i;
+	t_list	*tmp;
 
-	i = 0;
-	while (data->envp[i] && ft_strncmp(data->envp[i], "PATH=", 5) != 0)
-		i++;
-	if (!data->envp[i])
+	tmp = data->env;
+	while (tmp && ft_strncmp(tmp->content, "PATH=", 5) != 0)
+		tmp = tmp->next;
+	if (!tmp)
 		return (NULL);
-	paths = ft_split(data->envp[i] + 5, ':');
+	paths = ft_split(tmp->content + 5, ':');
 	if (!paths)
 		(perror("malloc error"), exit(1));
 	return (paths);
