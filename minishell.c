@@ -93,19 +93,12 @@ int main (int ac, char **av, char **envp)
 	signal(SIGINT, INT_HANDLER);
 	signal(SIGQUIT, SIG_IGN);
 	rl_catch_signals = 0;
+	tcgetattr(STDIN_FILENO, &term);
 	while (77)
 	{
-		tcgetattr(STDIN_FILENO, &term);
 		line = readline("minishell$ ");
 		if (!line)
-		{
-			rl_on_new_line();
-			rl_replace_line("", 0);
-			rl_redisplay();
-			ft_putendl_fd("exit", 1);
-			free_allocated(&data.allocated);
-			exit(0);
-		}
+			return (write(1, "exit\n", 5), 1);
 		if (!parsing(line, &data))
 			continue ;
 		execute_cmds(&data);

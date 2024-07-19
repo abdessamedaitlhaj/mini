@@ -6,7 +6,7 @@
 /*   By: ael-hara <ael-hara@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/22 15:04:15 by ael-hara          #+#    #+#             */
-/*   Updated: 2024/07/18 10:00:19 by ael-hara         ###   ########.fr       */
+/*   Updated: 2024/07/19 10:47:56 by ael-hara         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,27 +59,40 @@ void	handle_heredoc(t_indexes indexes, t_data *data)
 	char	*index_str;
 	char	*base_path;
 	char	*path;
+	// pid_t	pid;
 
-	if (indexes.k < data->cmds[indexes.i].heredoc)
-		empty_line(data->cmds[indexes.i].files[indexes.j]->file);
-	else
-	{
-		index_str = ft_itoa(indexes.index, data);
-		base_path = "/tmp/heredoc";
-		path = ft_strjoin(base_path, index_str, data);
-		indexes.index++;
-		indexes.l = open(path, O_CREAT | O_RDWR | O_TRUNC, 0644);
-		if (data->cmds[indexes.i].files[indexes.j]->expanding_heredoc == 0)
-			push_line_expand(indexes.l, data
-				->cmds[indexes.i].files[indexes.j]->file, data);
+	// static int i;
+	// printf("i = %d\n", i);
+	// i++;
+	// pid = fork();
+	// if (pid == -1)
+	// 	exit(1);
+	// if (pid == 0)
+	// {
+		// signal(SIGINT, SIG_IGN);
+		// signal(SIGQUIT, SIG_DFL);
+		if (indexes.k < data->cmds[indexes.i].heredoc)
+			empty_line(data->cmds[indexes.i].files[indexes.j]->file);
 		else
-			push_line(indexes.l, data
-				->cmds[indexes.i].files[indexes.j]->file, data);
-		close(indexes.l);
-		indexes.l = open(path, O_RDONLY);
-		data->cmds[indexes.i].files[indexes.j]->fd = indexes.l;
-      	data->cmds[indexes.i].files[indexes.j]->file = path;
-	}
+		{
+			index_str = ft_itoa(indexes.index, data);
+			base_path = "/tmp/heredoc";
+			path = ft_strjoin(base_path, index_str, data);
+			indexes.index++;
+			indexes.l = open(path, O_CREAT | O_RDWR | O_TRUNC, 0644);
+			if (data->cmds[indexes.i].files[indexes.j]->expanding_heredoc == 0)
+				push_line_expand(indexes.l, data
+					->cmds[indexes.i].files[indexes.j]->file, data);
+			else
+				push_line(indexes.l, data
+					->cmds[indexes.i].files[indexes.j]->file, data);
+			close(indexes.l);
+			indexes.l = open(path, O_RDONLY);
+			data->cmds[indexes.i].files[indexes.j]->fd = indexes.l;
+    	  	data->cmds[indexes.i].files[indexes.j]->file = path;
+		}
+	// 	waitpid(pid, &data->exit_status, 0);
+	// }
 }
 
 void	open_heredoc(t_data *data)
