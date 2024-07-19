@@ -89,6 +89,7 @@ int main (int ac, char **av, char **envp)
 
 	t_data	data;
 	data = (t_data){NULL, NULL, 0, NULL, NULL, NULL, 0, NULL, 0, -2, -2, envp, 0};
+	printf("PATH env variable : %s\n", getenv("PATH"));
 	init_envs(envp, &data);
 	signal(SIGINT, INT_HANDLER);
 	signal(SIGQUIT, SIG_IGN);
@@ -99,12 +100,7 @@ int main (int ac, char **av, char **envp)
 		line = readline("minishell$ ");
 		if (!line)
 		{
-			rl_on_new_line();
-			rl_replace_line("", 0);
-			rl_redisplay();
-			ft_putendl_fd("exit", 1);
-			free_allocated(&data.allocated);
-			exit(0);
+
 		}
 		if (!parsing(line, &data))
 			continue ;

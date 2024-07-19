@@ -6,7 +6,7 @@
 /*   By: aait-lha <aait-lha@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/11 23:31:20 by aait-lha          #+#    #+#             */
-/*   Updated: 2024/07/18 13:00:39 by aait-lha         ###   ########.fr       */
+/*   Updated: 2024/07/19 08:12:22 by aait-lha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,9 +28,9 @@ int	other_builtins(t_data *data, t_cmd *cmd)
 	if (ft_strcmp(cmd->cmd, "env") == 0)
 		return (ft_env(data->env));
 	else if (ft_strcmp(cmd->cmd, "export") == 0)
-		return (ft_export(cmd->args, data));
+		return (ft_export(cmd->args, data, cmd->cmd));
 	else if (ft_strcmp(cmd->cmd, "unset") == 0)
-		return (ft_unset(cmd->args, data));
+		return (ft_unset(cmd->args, data, cmd->cmd));
 	else if (ft_strcmp(cmd->cmd, "exit") == 0)
 	{
 		if (cmd->args_number)
@@ -55,7 +55,7 @@ int	ft_exec_builtin(t_cmd *cmd, t_data *data)
 		ft_putendl_fd(ft_pwd(data), 1);
 	}
 	else if (ft_strcmp(cmd->cmd, "echo") == 0)  
-		return (ft_echo(cmd->args, cmd->args_number));
+		return (ft_echo(data, cmd->args, cmd->args_number));
 	return (other_builtins(data, cmd));
 	return (0);
 }

@@ -6,13 +6,27 @@
 /*   By: aait-lha <aait-lha@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/15 16:20:01 by aait-lha          #+#    #+#             */
-/*   Updated: 2024/07/12 18:24:19 by aait-lha         ###   ########.fr       */
+/*   Updated: 2024/07/19 07:18:51 by aait-lha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-int	ft_echo(char **args, int n)
+void	print_args(t_data *data, int i, int n, char **args)
+{
+	while (i < n)
+	{
+		if (strcmp(args[i], "~") == 0)
+			ft_putstr_fd(ft_getenv("HOME", data->env), 1);
+		else
+			ft_putstr_fd(args[i], 1);
+		if (i + 1 < n)
+			ft_putstr_fd(" ", 1);
+		i++;
+	}
+}
+
+int	ft_echo(t_data *data, char **args, int n)
 {
 	int	i;
 	int	n_flag;
@@ -31,13 +45,7 @@ int	ft_echo(char **args, int n)
 			break ;
 		i++;
 	}
-	while (i < n)
-	{
-		ft_putstr_fd(args[i], 1);
-		if (i < n - 1)
-			ft_putstr_fd(" ", 1);
-		i++;
-	}
+	print_args(data, i, n, args);
 	if (!n_flag)
 		ft_putstr_fd("\n", 1);
 	return (0);

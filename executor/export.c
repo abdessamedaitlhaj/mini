@@ -6,7 +6,7 @@
 /*   By: aait-lha <aait-lha@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/15 16:55:14 by aait-lha          #+#    #+#             */
-/*   Updated: 2024/07/18 09:28:19 by aait-lha         ###   ########.fr       */
+/*   Updated: 2024/07/19 09:56:16 by aait-lha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,7 @@ int	ft_setenv(char *key, char *value, t_data *data)
 	return (0);
 }
 
-int	ft_export(char **args, t_data *data)
+int	ft_export(char **args, t_data *data, char *cmd)
 {
 	int		i;
 	char	*tmp;
@@ -65,6 +65,8 @@ int	ft_export(char **args, t_data *data)
 	i = -1;
 	while (args[++i])
 	{
+		if (is_valid(args[i], cmd))
+			continue ;
 		if (ft_strchr(args[i], '='))
 		{
 			if (ft_strchr(args[i], '+'))
@@ -72,12 +74,12 @@ int	ft_export(char **args, t_data *data)
 				tmp = ft_strchr(args[i], '+');
 				if (tmp[1] == '=')
 				{
-					if (append_value(data, args[i]))
+					if (append_value(data, args[i], cmd))
 						return (1);
 					return (0);
 				}
 			}
-			overwrite_or_add(data, args[i]);
+			overwrite_or_add(data, args[i], cmd);
 		}
 	}
 	return (0);
