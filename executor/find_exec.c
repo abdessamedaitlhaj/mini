@@ -6,7 +6,7 @@
 /*   By: aait-lha <aait-lha@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/07 12:08:33 by aait-lha          #+#    #+#             */
-/*   Updated: 2024/07/18 10:29:16 by aait-lha         ###   ########.fr       */
+/*   Updated: 2024/07/19 10:56:25 by aait-lha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,12 +38,14 @@ char **allocate_cmd_args(t_data *data, t_cmd *cmd)
 	return (args);
 }
 
-char	**get_paths(t_data *data)
+char	**get_paths(t_data *data, char *cmd)
 {
 	char	**paths;
 	t_list	*tmp;
 
 	tmp = data->env;
+	if (!tmp)
+		no_such_file(data, cmd);
 	while (tmp && ft_strncmp(tmp->content, "PATH=", 5) != 0)
 		tmp = tmp->next;
 	if (!tmp)
@@ -82,7 +84,7 @@ char	*find_cmd(t_data *data, char *cmd)
 	char	*path;
 	int		i;
 
-	paths = get_paths(data);
+	paths = get_paths(data, cmd);
 	i = -1;
 	while (paths[++i])
 	{

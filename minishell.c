@@ -100,7 +100,11 @@ int main (int ac, char **av, char **envp)
 		line = readline("minishell$ ");
 		if (!line)
 		{
-
+			rl_on_new_line();
+			printf("\033[0A");
+			rl_redisplay();
+			ft_putstr_fd("exit", 1);
+			break;
 		}
 		if (!parsing(line, &data))
 			continue ;
