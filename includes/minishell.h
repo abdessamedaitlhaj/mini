@@ -6,7 +6,7 @@
 /*   By: aait-lha <aait-lha@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/15 18:13:05 by ael-hara          #+#    #+#             */
-/*   Updated: 2024/07/19 08:52:46 by aait-lha         ###   ########.fr       */
+/*   Updated: 2024/07/20 17:00:04 by aait-lha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -186,10 +186,10 @@ void				ft_exit(char *number, char **args);
 void				exec_cmd(t_data *data, char *cmd, char **args);
 
 void				set_last_cmd(char *outfile, int *fd, int her);
-int					ft_close(int fd);
+void				ft_close(int *fd, t_data *data);
 void				set_first_cmd(char *infile, int *fd);
-int					dup_cmd_in(int *fd, int prev_fd);
-int					dup_cmd_out(int *fd);
+int					dup_cmd_in(int prev_fd, t_data *data);
+int					dup_cmd_out(int *fd, t_data *data);
 char				**allocate_cmd_args(t_data *data, t_cmd *cmd);
 void				ft_memset(void *b, int c, size_t len);
 int					execute_cmds(t_data *data);
@@ -197,36 +197,31 @@ void				free_allocated(t_list **garbage_collector);
 int					execute_one_node(t_data *data);
 int					ft_strcmp(const char *s1, const char *s2);
 
-int					error_one(int *fd, char *str, int prev_fd);
-int					error_two(char *str);
+int					common_error(char *str);
 int					init_fd_out(t_data *data, t_cmd *cmd);
 int					init_fd_in(t_data *data, t_cmd *cmd);
 int					is_builtin(t_cmd *cmd);
 int					other_builtins(t_data *data, t_cmd *cmd);
 int					ft_exec_builtin(t_cmd *cmd, t_data *data);
-int					dup_file(t_aa file, int fd);
-int					dup_cmd_in(int *fd, int prev_fd);
-int					dup_cmd_out(int *fd);
+int	dup_file(t_aa file, int fd, t_data *data);
 int					dup_redir(t_data *data, int i, int *fd, int prev_fd);
 int					open_files(char *file, int index);
 char				**allocate_cmd_args(t_data *data, t_cmd *cmd);
 void				free_arr(char **arr);
-int					error_three(char *str);
-int					ft_close_two(int fd1, int fd2);
 int					init_fds(t_data *data, t_cmd *cmd);
 void				perm_denied(char *cmd);
 void				cmd_not_found(char *cmd);
 void				sig_handler(int signo);
 int					is_dir(char *path);
 void				not_dir(t_data *data, char *cmd);
-int					check_files(t_data *data, int i, int *fd, int prev_fd);
+int					check_files(t_data *data, int i, int *fd, int *prev_fd);
 void				dir_error(t_data *data, char *cmd);
 int					execute_one_node(t_data *data);
 void				save_last_pipe(t_data *data, int i, int *fd, int *prev_fd);
 int					execute_multiple_nodes(t_data *data);
 int					create_process(t_data *data, t_cmd *cmd);
 void				child_process(t_data *data, t_cmd *cmd);
-int					fork_process(t_data *data, int i, int *fd, int prev_fd);
+int					fork_process(t_data *data, int i, int *fd, int *prev_fd);
 int					ambigious_error(char *file);
 void				no_such_file(t_data *data, char *cmd);
 char				*check_access(t_data *data, char *path, char **paths, char *cmd);
@@ -243,5 +238,8 @@ int					ft_echo(t_data *data, char **args, int n);
 int					is_valid(char *key, char *cmd);
 int					ft_isdigit(int c);
 int					not_valid_identifier(char *str, char *cmd);
+void	close_streams(int *fd1, int *fd2, t_data *data);
+void	close_pipe(int *fd, int *prev_fd, t_data *data);
+void	fail_error(char *str, t_data *data);
 
 #endif

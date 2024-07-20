@@ -3,10 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ael-hara <ael-hara@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aait-lha <aait-lha@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/22 15:04:15 by ael-hara          #+#    #+#             */
+<<<<<<< HEAD
 /*   Updated: 2024/07/20 17:17:07 by ael-hara         ###   ########.fr       */
+=======
+/*   Updated: 2024/07/20 15:57:11 by aait-lha         ###   ########.fr       */
+>>>>>>> 76ca150a0af3e4a09852fa59e0b92b4f0f183b05
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,6 +83,7 @@ void	handle_heredoc(t_indexes indexes, t_data *data)
 	char	*path;
 	// pid_t	pid;
 
+
 	// static int i;
 	// printf("i = %d\n", i);
 	// i++;
@@ -90,6 +95,7 @@ void	handle_heredoc(t_indexes indexes, t_data *data)
 		// signal(SIGINT, quit_heredoc);
 		if (indexes.k < data->cmds[indexes.i].heredoc)
 			empty_line(data->cmds[indexes.i].files[indexes.j]->file);
+
 		else
 		{
 			index_str = ft_itoa(indexes.index, data);

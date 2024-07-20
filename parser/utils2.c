@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils2.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ael-hara <ael-hara@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aait-lha <aait-lha@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/22 15:01:38 by ael-hara          #+#    #+#             */
-/*   Updated: 2024/07/07 11:05:02 by ael-hara         ###   ########.fr       */
+/*   Updated: 2024/07/20 14:28:54 by aait-lha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,8 +40,6 @@ char	*ft_strjoin(char *s1, char *s2, t_data *data)
 	j = 0;
 	str = ft_malloc(sizeof(char) * (ft_strlen(s1)
 				+ ft_strlen(s2) + 1), &data->allocated);
-	if (!str)
-		return (NULL);
 	while (s1[i])
 	{
 		str[i] = s1[i];

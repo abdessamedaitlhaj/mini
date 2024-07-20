@@ -6,7 +6,7 @@
 /*   By: aait-lha <aait-lha@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/22 19:09:09 by aait-lha          #+#    #+#             */
-/*   Updated: 2024/07/19 07:52:24 by aait-lha         ###   ########.fr       */
+/*   Updated: 2024/07/20 17:00:29 by aait-lha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,20 +17,26 @@ int	execute_one_node(t_data *data)
 	if (data->cmds[0].files)
 	{
 		if (init_fds(data, &data->cmds[0]))
-			return (ft_close_two(data->fd_in, data->fd_out));
+		{
+			close_streams(&data->fd_in, &data->fd_out, data);
+			return (1);
+		}
 	}
 	if (data->cmds[0].files)
 	{
 		if (data->cmds[0].infile || data->cmds[0].heredoc)
-			dup_file(INFILE, data->fd_in);
+			dup_file(INFILE, data->fd_in, data);
 		if (data->cmds[0].outfile || data->cmds[0].append)
-			dup_file(OUTFILE, data->fd_out);
-		ft_close_two(data->fd_in, data->fd_out);
+			dup_file(OUTFILE, data->fd_out, data);
+		close_streams(&data->fd_in, &data->fd_out, data);
 	}
 	if (data->cmds[0].flag_command)
-		return(ft_close_two(data->fd_in, data->fd_out));
+	{
+		close_streams(&data->fd_in, &data->fd_out, data);
+		return (1);
+	}
 	if (is_builtin(&data->cmds[0]))
-		data->exit_status = ft_exec_builtin(&data->cmds[0], data);
+		return (ft_exec_builtin(&data->cmds[0], data));
 	else
 		create_process(data, &data->cmds[0]);
 	return (0);
@@ -39,11 +45,11 @@ int	execute_one_node(t_data *data)
 void	save_last_pipe(t_data *data, int i, int *fd, int *prev_fd)
 {
 	if (i > 0)
-		close(*prev_fd);
+		ft_close(prev_fd, data);
 	if (i < data->counter_command - 1)
 	{
 		*prev_fd = fd[0];
-		close(fd[1]);
+		ft_close(&fd[1], data);
 	}
 }
 
@@ -59,16 +65,18 @@ int	execute_multiple_nodes(t_data *data)
 	fd[1] = -2;
 	while (++i < data->counter_command)
 	{
-		if (check_files(data, i, fd, prev_fd))
+		if (check_files(data, i, fd, &prev_fd))
 			continue ;
 		if (i < data->counter_command - 1)
 			if (pipe(fd) == -1)
 			{
-				ft_close_two(data->fd_in, data->fd_out);
-				error_one(fd, "pipe", prev_fd);
+				close_streams(&data->fd_in, &data->fd_out, data);
+				close_streams(&fd[0], &fd[1], data);
+				free_allocated(&data->allocated);
+				exit(1);
 			}
-		fork_process(data, i, fd, prev_fd);
-		ft_close_two(data->fd_in, data->fd_out);
+		fork_process(data, i, fd, &prev_fd);
+		close_streams(&data->fd_in, &data->fd_out, data);
 		save_last_pipe(data, i, fd, &prev_fd);
 	}
 	return (0);
