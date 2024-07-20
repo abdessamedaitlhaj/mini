@@ -6,7 +6,7 @@
 /*   By: aait-lha <aait-lha@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/11 23:29:45 by aait-lha          #+#    #+#             */
-/*   Updated: 2024/07/20 16:59:38 by aait-lha         ###   ########.fr       */
+/*   Updated: 2024/07/20 17:54:25 by aait-lha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,10 @@ int	init_fds(t_data *data, t_cmd *cmd)
 		if (cmd->files[i]->type == HEREDOC)
 			z++;
 		if (cmd->files[i]->expand_error)
-			return (ambigious_error(cmd->files[i]->file));
+		{
+			ft_putstr_fd("minishell: ambiguous redirect", 2);
+			return (1);
+		}
 		if (cmd->files[i]->type == OUTFILE)
 		{
 			ft_close(&data->fd_out, data);
@@ -34,10 +37,12 @@ int	init_fds(t_data *data, t_cmd *cmd)
 			ft_close(&data->fd_out, data);
 			data->fd_out = open_files(cmd->files[i]->file, 1);
 		}
-		else if (cmd->files[i]->type == INFILE || (cmd->files[i]->type == HEREDOC && z == cmd->heredoc))
+		else if (cmd->files[i]->type == INFILE || \
+			(cmd->files[i]->type == HEREDOC && z == cmd->heredoc))
 		{
 			ft_close(&data->fd_in, data);
 			data->fd_in = open_files(cmd->files[i]->file, 2);
+			printf("fd_in = %d\n", data->fd_in);
 		}
 		if (data->fd_in == -1 || data->fd_out == -1)
 		{

@@ -6,7 +6,7 @@
 /*   By: aait-lha <aait-lha@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/22 15:01:38 by ael-hara          #+#    #+#             */
-/*   Updated: 2024/07/20 14:28:54 by aait-lha         ###   ########.fr       */
+/*   Updated: 2024/07/20 18:04:53 by aait-lha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,7 +93,7 @@ int	ft_min(int a, int b, int c)
 	return (c);
 }
 
-char	*ft_strndup( char *s, size_t n)
+char	*ft_strndup( char *s, size_t n, t_data *data)
 {
 	size_t		i;
 	size_t		len;
@@ -103,7 +103,7 @@ char	*ft_strndup( char *s, size_t n)
 	len = ft_strlen(s);
 	if (n < len)
 		len = n;
-	dup = (char *)malloc(len + 1);
+	dup = ft_malloc(sizeof(char) * (len + 1), &data->allocated);
 	if (!dup)
 		return (NULL);
 	while (i < len)

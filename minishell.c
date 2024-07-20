@@ -87,6 +87,12 @@ void	INT_HANDLER(int sig)
 		//}
 	}
 }
+
+void f()
+{
+	system("leaks minishell");
+}
+
 int main (int ac, char **av, char **envp)
 {
 	(void)ac;
@@ -94,7 +100,7 @@ int main (int ac, char **av, char **envp)
 	char	*line;
 	struct termios	term;
 	
-
+	atexit(f);
 	t_data	data;
 	data = (t_data){NULL, NULL, 0, NULL, NULL, NULL, 0, NULL, 0, -2, -2, envp, 0};
 	init_envs(envp, &data);
@@ -113,15 +119,17 @@ int main (int ac, char **av, char **envp)
 			printf("\033[0A");
 			rl_redisplay();
 			ft_putstr_fd("exit", 1);
+			free_env(&data.env);
+			free_allocated(&data.allocated);
 			break;
 		}
 		if (!parsing(line, &data))
 			continue ;
 		execute_cmds(&data);
-		free (line);
+		free(line);
 		tcsetattr(STDIN_FILENO, TCSANOW, &term);
+		free_allocated(&data.allocated);
+		break;
 	}
-	free_allocated(&data.allocated);
 	free_env(&data.env);
-	
 }

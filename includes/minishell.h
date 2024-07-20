@@ -6,7 +6,7 @@
 /*   By: aait-lha <aait-lha@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/15 18:13:05 by ael-hara          #+#    #+#             */
-/*   Updated: 2024/07/20 17:00:04 by aait-lha         ###   ########.fr       */
+/*   Updated: 2024/07/20 18:05:38 by aait-lha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -142,7 +142,7 @@ void				handle_cmd_allocation(t_cmd *cmds, int *j,
 void				handle_cmd_args(t_cmd *cmds, int *j, int *k, char **split);
 void				count_cmd_args(int *j, int *k, char **split);
 int					ft_min(int a, int b, int c);
-char				*ft_strndup( char *s, size_t n);
+char				*ft_strndup( char *s, size_t n, t_data *data);
 char				*expanding_outside (char *pipe, t_data *data);
 void				ambigious (t_cmd *cmd, t_data *data);
 char				*expanding_inside (char *pipe, t_data *data);
@@ -222,7 +222,6 @@ int					execute_multiple_nodes(t_data *data);
 int					create_process(t_data *data, t_cmd *cmd);
 void				child_process(t_data *data, t_cmd *cmd);
 int					fork_process(t_data *data, int i, int *fd, int *prev_fd);
-int					ambigious_error(char *file);
 void				no_such_file(t_data *data, char *cmd);
 char				*check_access(t_data *data, char *path, char **paths, char *cmd);
 void				print_env(t_list *env, t_data *data);

@@ -6,7 +6,7 @@
 /*   By: aait-lha <aait-lha@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/22 15:04:15 by ael-hara          #+#    #+#             */
-/*   Updated: 2024/07/20 15:57:11 by aait-lha         ###   ########.fr       */
+/*   Updated: 2024/07/20 18:05:11 by aait-lha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -165,7 +165,7 @@ void process_heredoc_line(char *line, int min, t_data *data)
 			while (line[i] != ' ' && line[i] != '\t'
 				&& line[i] != '\n' && i < min)
 				i++;
-			data->heredoc[j] = ft_strndup(&line[start], i - start);
+			data->heredoc[j] = ft_strndup(&line[start], i - start, data);
 			process_heredoc_quotes(&data->heredoc[j], data);
 			j++;
 		}
