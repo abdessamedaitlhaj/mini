@@ -6,7 +6,7 @@
 /*   By: ael-hara <ael-hara@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/15 18:37:48 by ael-hara          #+#    #+#             */
-/*   Updated: 2024/07/18 11:20:46 by ael-hara         ###   ########.fr       */
+/*   Updated: 2024/07/20 14:42:54 by ael-hara         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -265,6 +265,48 @@ void check_null_command(t_cmd *cmds , t_data *data)
 	}
 }
 
+char *change_delimiter(char *str, t_data *data)
+{
+	int i = 0;
+	char hold;
+	while (str[i])
+	{
+		if (str[i] == '$' && str[i + 1] &&( str[i + 1] == '\''  || str[i + 1] == '"'))
+		{
+			hold = str[i + 1];
+			char *tmp = ft_substr(str, 0, i, data);
+			char *tmp2 = ft_substr(str, i + 1, ft_strlen(str) - i - 1, data);
+			str = ft_strjoin(tmp, tmp2, data);
+		}
+		if (str[i] && (str[i] == '"' || str[i] == '\''))
+		{
+			hold = str[i];
+			i++;
+			while (str[i] && str[i] != hold)
+				i++;
+		}
+		i++;
+	}
+	return (str);
+}
+
+void heredoc_loop(t_cmd *cmds, t_data *data)
+{
+	int i = 0;
+	while (i < data->counter_command)
+	{
+		int j = 0;
+		while (j < cmds[i].outfile + cmds[i].infile + cmds[i].heredoc + cmds[i].append)
+		{
+			if (cmds[i].files[j]->type == HEREDOC)
+			{
+				cmds[i].files[j]->file = change_delimiter(cmds[i].files[j]->file, data);
+			}
+			j++;
+		}
+		i++;
+	}
+}
 
 void	fill_command(t_data *data)
 {
@@ -302,6 +344,7 @@ void	fill_command(t_data *data)
 	}
 	check_null_command(cmds, data);
 	ambigious(cmds, data);
+	heredoc_loop(cmds, data);
 	remove_quotes(cmds, data);
 	data->cmds = cmds;
 	// print all the comds command and flag_command
