@@ -6,7 +6,7 @@
 /*   By: aait-lha <aait-lha@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/15 19:25:27 by aait-lha          #+#    #+#             */
-/*   Updated: 2024/07/18 11:10:22 by aait-lha         ###   ########.fr       */
+/*   Updated: 2024/07/19 10:06:19 by aait-lha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,26 +43,26 @@ int	ft_isalnm(int c)
 	return (0);
 }
 
-int	is_valid(char *key)
+int	is_valid(char *arg, char *cmd)
 {
 	int	i;
+	char *key;
 
 	i = 0;
+	key = ft_split(arg, '=')[0];
+	if (!key)
+		return (not_valid_identifier(arg, cmd));
 	while (key[i])
 	{
-		if (!ft_isalnm(key[i]) && key[i] != '_')
-		{
-			ft_putstr_fd("minishell: unsetenv: `", 2);
-			ft_putstr_fd(key, 2);
-			ft_putendl_fd("': not a valid identifier", 2);
-			return (1);
-		}
+		if (ft_isdigit(key[0]) || \
+			(!ft_isalnm(key[i]) && key[i] != '_'))
+			return (not_valid_identifier(arg, cmd));
 		i++;
 	}
 	return (0);
 }
 
-int	ft_unset(char **args, t_data *data)
+int	ft_unset(char **args, t_data *data, char *cmd)
 {
 	t_list	*tmp;
 	int		i;
@@ -71,10 +71,8 @@ int	ft_unset(char **args, t_data *data)
 	j = -1;
 	while (args[++j])
 	{
-		if (is_valid(args[j]))
+		if (is_valid(args[j], cmd))
 			continue ;
-		if (ft_strcmp(args[j], "_") == 0)
-			return (0);
 		tmp = data->env;
 		i = 0;
 		while (tmp)
@@ -89,18 +87,16 @@ int	ft_unset(char **args, t_data *data)
 	return (0);
 }
 
-int	ft_unsetenv(char *key, t_data *data)
+int	ft_unsetenv(char *key, t_data *data, char *cmd)
 {
 	t_list	*tmp;
 	int		i;
 
-	if (ft_strcmp(key, "_") == 0)
-		return (0);
 	tmp = data->env;
 	i = 0;
 	while (tmp)
 	{
-		if (is_valid(key))
+		if (is_valid(tmp->content, cmd))
 			return (1);
 		if (!ft_strncmp(key, (char *)tmp->content, ft_strlen(key)) && \
 		((char *)tmp->content)[ft_strlen(key)] == '=')

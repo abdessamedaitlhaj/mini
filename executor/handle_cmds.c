@@ -6,7 +6,7 @@
 /*   By: aait-lha <aait-lha@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/22 19:09:09 by aait-lha          #+#    #+#             */
-/*   Updated: 2024/07/18 12:32:04 by aait-lha         ###   ########.fr       */
+/*   Updated: 2024/07/19 07:52:24 by aait-lha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,13 +36,13 @@ int	execute_one_node(t_data *data)
 	return (0);
 }
 
-void	save_last_pipe(t_data *data, int i, int *fd, int prev_fd)
+void	save_last_pipe(t_data *data, int i, int *fd, int *prev_fd)
 {
 	if (i > 0)
-		close(prev_fd);
+		close(*prev_fd);
 	if (i < data->counter_command - 1)
 	{
-		prev_fd = fd[0];
+		*prev_fd = fd[0];
 		close(fd[1]);
 	}
 }
@@ -62,14 +62,14 @@ int	execute_multiple_nodes(t_data *data)
 		if (check_files(data, i, fd, prev_fd))
 			continue ;
 		if (i < data->counter_command - 1)
-		if (pipe(fd) == -1)
-		{
-			ft_close_two(data->fd_in, data->fd_out);
-			error_one(fd, "pipe", prev_fd);
-		}
+			if (pipe(fd) == -1)
+			{
+				ft_close_two(data->fd_in, data->fd_out);
+				error_one(fd, "pipe", prev_fd);
+			}
 		fork_process(data, i, fd, prev_fd);
 		ft_close_two(data->fd_in, data->fd_out);
-		save_last_pipe(data, i, fd, prev_fd);
+		save_last_pipe(data, i, fd, &prev_fd);
 	}
 	return (0);
 }

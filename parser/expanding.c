@@ -6,7 +6,7 @@
 /*   By: ael-hara <ael-hara@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/22 15:05:58 by ael-hara          #+#    #+#             */
-/*   Updated: 2024/07/16 10:40:25 by ael-hara         ###   ########.fr       */
+/*   Updated: 2024/07/20 13:01:21 by ael-hara         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -299,7 +299,9 @@ char *normal_expand(char *pipe, int i, t_data *data)
 		pipe = tmp;
 	}
 	else
+	{
 		normal_notfound(&pipe, i, j, data);
+	}
 	return (pipe);
 }
 
@@ -320,8 +322,12 @@ int inside_cases(char **pipe, int *i, t_data *data)
 		inside_quote_ex(pipe, *i, data);
 	else if ((*pipe)[*i + 1] && ft_isspace((*pipe)[*i + 1]))
 		(*i)++;
+
 	else
+	{
 		*pipe = normal_expand(*pipe, *i, data);
+		*i =  *i - 1;
+	}
 	return (0);
 }
 
@@ -335,7 +341,11 @@ char	*expanding_inside(char *pipe, t_data *data)
 		if (pipe[i] == '$')
 		{
 			if (inside_cases(&pipe, &i, data) == -1)
+			{
+				printf("continue: %s\n", pipe + i);
 				continue ;
+			}
+			printf("pipe: %s\n", pipe + i);
 		}
 	}
 	return (pipe);

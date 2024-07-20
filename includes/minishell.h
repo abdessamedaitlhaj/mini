@@ -6,7 +6,7 @@
 /*   By: aait-lha <aait-lha@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/15 18:13:05 by ael-hara          #+#    #+#             */
-/*   Updated: 2024/07/18 12:18:13 by aait-lha         ###   ########.fr       */
+/*   Updated: 2024/07/19 08:52:46 by aait-lha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -174,10 +174,9 @@ char				**ft_split(char const *s, char c);
 
 char				*ft_getenv(char *key, t_list *env);
 int					ft_get_key_index(char *key, t_list *env);
-int					ft_export(char **args, t_data *data);
 int					ft_setenv(char *key, char *value, t_data *data);
-int					ft_unset(char **args, t_data *data);
-int					ft_unsetenv(char *key, t_data *data);
+int					ft_unset(char **args, t_data *data, char *cmd);
+int					ft_unsetenv(char *key, t_data *data, char *cmd);
 int					env_size(t_list *env);
 char				*ft_strchr(const char *s, int c);
 
@@ -223,7 +222,7 @@ void				not_dir(t_data *data, char *cmd);
 int					check_files(t_data *data, int i, int *fd, int prev_fd);
 void				dir_error(t_data *data, char *cmd);
 int					execute_one_node(t_data *data);
-void				save_last_pipe(t_data *data, int i, int *fd, int prev_fd);
+void				save_last_pipe(t_data *data, int i, int *fd, int *prev_fd);
 int					execute_multiple_nodes(t_data *data);
 int					create_process(t_data *data, t_cmd *cmd);
 void				child_process(t_data *data, t_cmd *cmd);
@@ -232,16 +231,17 @@ int					ambigious_error(char *file);
 void				no_such_file(t_data *data, char *cmd);
 char				*check_access(t_data *data, char *path, char **paths, char *cmd);
 void				print_env(t_list *env, t_data *data);
-int					is_key_valid(char *key);
 int					ft_setenv(char *key, char *value, t_data *data);
-int					append_value(t_data *data, char *str);
-int					overwrite_or_add(t_data *data, char *str);
+int					append_value(t_data *data, char *str, char *cmd);
+int					overwrite_or_add(t_data *data, char *str, char *cmd);
 int					check_empty_args(t_data *data, char **args);
-int					ft_export(char **args, t_data *data);
+int					ft_export(char **args, t_data *data, char *cmd);
 char				*ft_pwd(t_data *data);
 int					ft_env(t_list *envp);
 int					ft_cd(char *path, t_data *data);
-int					ft_echo(char **args, int n);
-
+int					ft_echo(t_data *data, char **args, int n);
+int					is_valid(char *key, char *cmd);
+int					ft_isdigit(int c);
+int					not_valid_identifier(char *str, char *cmd);
 
 #endif

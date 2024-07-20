@@ -6,7 +6,7 @@
 /*   By: ael-hara <ael-hara@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/22 15:04:15 by ael-hara          #+#    #+#             */
-/*   Updated: 2024/07/19 10:47:56 by ael-hara         ###   ########.fr       */
+/*   Updated: 2024/07/20 17:17:07 by ael-hara         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,6 +54,24 @@ char	*ft_itoa(int n, t_data *data)
 	return (str);
 }
 
+void sig_heredoc(int signum)
+{
+	if (signum == SIGQUIT)
+	{
+		ft_putstr_fd("Quit: ", STDOUT_FILENO);
+		ft_putendl_fd("3", STDOUT_FILENO);
+	}
+}
+
+// void quit_heredoc(int signum)
+// {
+// 	if (signum == SIGINT)
+// 	{
+// 		ft_putstr_fd("\n", STDOUT_FILENO);
+// 		exit(130);
+// 	}
+// }
+
 void	handle_heredoc(t_indexes indexes, t_data *data)
 {
 	char	*index_str;
@@ -69,8 +87,7 @@ void	handle_heredoc(t_indexes indexes, t_data *data)
 	// 	exit(1);
 	// if (pid == 0)
 	// {
-		// signal(SIGINT, SIG_IGN);
-		// signal(SIGQUIT, SIG_DFL);
+		// signal(SIGINT, quit_heredoc);
 		if (indexes.k < data->cmds[indexes.i].heredoc)
 			empty_line(data->cmds[indexes.i].files[indexes.j]->file);
 		else
@@ -90,10 +107,15 @@ void	handle_heredoc(t_indexes indexes, t_data *data)
 			indexes.l = open(path, O_RDONLY);
 			data->cmds[indexes.i].files[indexes.j]->fd = indexes.l;
     	  	data->cmds[indexes.i].files[indexes.j]->file = path;
+			
 		}
 	// 	waitpid(pid, &data->exit_status, 0);
 	// }
 }
+
+// if there is $ adn double or single quotes eliminate the dollar and skip the quotes
+
+
 
 void	open_heredoc(t_data *data)
 {

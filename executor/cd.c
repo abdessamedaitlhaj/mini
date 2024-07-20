@@ -6,7 +6,7 @@
 /*   By: aait-lha <aait-lha@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/15 13:04:10 by aait-lha          #+#    #+#             */
-/*   Updated: 2024/07/12 18:49:21 by aait-lha         ###   ########.fr       */
+/*   Updated: 2024/07/19 06:59:19 by aait-lha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ int	set_home(char *home, char *pwd, t_data *data)
 	}
 	else
 	{
-		ft_putendl_fd("minishell: cd: HOME not set\n", 2);
+		ft_putendl_fd("minishell: cd: HOME not set", 2);
 		return (1);
 	}
 	return (0);
@@ -55,7 +55,7 @@ int	set_prev(char *oldpwd, char *pwd, t_data *data)
 	}
 	else
 	{
-		ft_putendl_fd("minishell: cd: OLDPWD not set\n", 2);
+		ft_putendl_fd("minishell: cd: OLDPWD not set", 2);
 		return (1);
 	}
 	return (0);

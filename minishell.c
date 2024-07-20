@@ -79,12 +79,16 @@ void	INT_HANDLER(int sig)
 		//}
 	}
 }
+
+
+
 int main (int ac, char **av, char **envp)
 {
 	(void)ac;
 	(void)av;
 	char	*line;
 	struct termios	term;
+
 	
 
 	t_data	data;
@@ -94,11 +98,21 @@ int main (int ac, char **av, char **envp)
 	signal(SIGQUIT, SIG_IGN);
 	rl_catch_signals = 0;
 	tcgetattr(STDIN_FILENO, &term);
+	//global varibale   for opened heredoxc files
 	while (77)
 	{
 		line = readline("minishell$ ");
-		if (!line)
-			return (write(1, "exit\n", 5), 1);
+		        if (!line)
+        {
+            rl_on_new_line();
+            printf("\033[0A");
+			// write(STDOUT_FILENO, "\033[0A", strlen("\033[0A"));
+			// write(STDOUT_FILENO, "\033[0A", ft_strlen("\033[0A"));
+            rl_redisplay();
+            ft_putstr_fd("exit\n", 1);
+			rl_clear_history();
+            break;
+        }
 		if (!parsing(line, &data))
 			continue ;
 		execute_cmds(&data);

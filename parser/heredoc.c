@@ -6,7 +6,7 @@
 /*   By: ael-hara <ael-hara@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/08 00:37:39 by ael-hara          #+#    #+#             */
-/*   Updated: 2024/07/17 08:33:20 by ael-hara         ###   ########.fr       */
+/*   Updated: 2024/07/20 16:38:49 by ael-hara         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,14 @@ void	push_line(int fd, char *limiter, t_data *data)
 	{
 		line = readline("> ");
 		if (!line)
+		{
+			rl_on_new_line();
+            printf("\033[0A");
+			// write(STDOUT_FILENO, "\033[0A", strlen("\033[0A"));
+			// write(STDOUT_FILENO, "\033[0A", ft_strlen("\033[0A"));
+            rl_redisplay();
 			break ;
+		}
 		if (ft_strcmp(line, limiter) == 0)
 		{
 			free(line);
@@ -62,7 +69,14 @@ void	empty_line(char *limiter)
 	{
 		line = readline("> ");
 		if (!line)
+		{
+			rl_on_new_line();
+            printf("\033[0A");
+			// write(STDOUT_FILENO, "\033[0A", strlen("\033[0A"));
+			// write(STDOUT_FILENO, "\033[0A", ft_strlen("\033[0A"));
+            rl_redisplay();
 			break ;
+		}
 		if (ft_strcmp(line, limiter) == 0)
 		{
 			free(line);
@@ -84,7 +98,14 @@ void	push_line_expand(int fd, char *limiter, t_data *data)
 	{
 		line = readline("> ");
 		if (!line)
+		{
+			rl_on_new_line();
+            printf("\033[0A");
+			// write(STDOUT_FILENO, "\033[0A", strlen("\033[0A"));
+			// write(STDOUT_FILENO, "\033[0A", ft_strlen("\033[0A"));
+            rl_redisplay();
 			break ;
+		}
 		if (ft_strcmp(line, limiter) == 0)
 		{
 			free(line);
