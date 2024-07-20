@@ -9,9 +9,13 @@ int	execute_cmds(t_data *data)
 	stdin_copy = dup(0);
 	stdout_copy = dup(1);
 	if (stdin_copy == -1 || stdout_copy == -1)
-		return (error_two("dup"));
+	{
+		ft_putstr_fd("minishell: ", STDERR_FILENO);
+		perror("dup");
+		return (1);
+	}
 	if (data->counter_command == 1)
-		execute_one_node(data);
+		data->exit_status = execute_one_node(data);
 	else
 	{
 		execute_multiple_nodes(data);
@@ -30,7 +34,11 @@ int	execute_cmds(t_data *data)
 	}
 	if (dup2(stdin_copy, STDIN_FILENO) == -1 || \
 		dup2(stdout_copy, STDOUT_FILENO) == -1)
-			return (error_two("dup2"));
+			{
+				ft_putstr_fd("minishell: ", STDERR_FILENO);
+				perror("dup2");
+				return (1);
+			}
 	close(stdin_copy);
 	close(stdout_copy);
 	return (0);
@@ -89,13 +97,14 @@ int main (int ac, char **av, char **envp)
 
 	t_data	data;
 	data = (t_data){NULL, NULL, 0, NULL, NULL, NULL, 0, NULL, 0, -2, -2, envp, 0};
-	printf("PATH env variable : %s\n", getenv("PATH"));
 	init_envs(envp, &data);
 	signal(SIGINT, INT_HANDLER);
 	signal(SIGQUIT, SIG_IGN);
 	rl_catch_signals = 0;
 	while (77)
 	{
+		data.fd_in = -2;
+		data.fd_out = -2;
 		tcgetattr(STDIN_FILENO, &term);
 		line = readline("minishell$ ");
 		if (!line)
@@ -114,4 +123,5 @@ int main (int ac, char **av, char **envp)
 	}
 	free_allocated(&data.allocated);
 	free_env(&data.env);
+	
 }

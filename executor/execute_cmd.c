@@ -6,29 +6,30 @@
 /*   By: aait-lha <aait-lha@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/17 22:16:07 by aait-lha          #+#    #+#             */
-/*   Updated: 2024/07/19 10:54:21 by aait-lha         ###   ########.fr       */
+/*   Updated: 2024/07/20 17:00:38 by aait-lha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 # include "../includes/minishell.h"
 
-int	fork_process(t_data *data, int i, int *fd, int prev_fd)
+int	fork_process(t_data *data, int i, int *fd, int *prev_fd)
 {
 	pid_t	pid;
 
 	pid = fork();
 	if (pid == -1)
-		error_one(fd, "fork", prev_fd);
+	{
+		close_streams(&data->fd_in, &data->fd_out, data);
+		close_pipe(fd, prev_fd, data);
+		fail_error("fork", data);
+	}
 	if (pid == 0)
 	{
 		signal(SIGQUIT, SIG_DFL);
 		signal(SIGINT, sig_handler);
-		dup_redir(data, i, fd, prev_fd);
+		dup_redir(data, i, fd, *prev_fd);
 		if (is_builtin(&data->cmds[i]))
-		{
-			data->exit_status = ft_exec_builtin(&data->cmds[i], data);
-			exit(data->exit_status);
-		}
+			exit(ft_exec_builtin(&data->cmds[i], data));
 		else
 			child_process(data, &data->cmds[i]);
 	}
@@ -45,11 +46,6 @@ void	child_process(t_data *data, t_cmd *cmd)
 	exec_cmd(data, cmd->cmd, args);
 }
 
-void sigquit_handler(int sig) {
-	(void)sig;
-    printf("Ignoring SIGQUIT\n");
-}
-
 int	create_process(t_data *data, t_cmd *cmd)
 {
 	pid_t	pid;
@@ -58,7 +54,11 @@ int	create_process(t_data *data, t_cmd *cmd)
 	status = 0;
 	pid = fork();
 	if (pid == -1)
-		return (error_two("fork"));
+	{
+		perror("fork");
+		close_streams(&data->fd_in, &data->fd_out, data);
+		return (1);
+	}
 	if (pid == 0)
 	{
 		signal(SIGQUIT, SIG_DFL);
@@ -66,7 +66,11 @@ int	create_process(t_data *data, t_cmd *cmd)
 		child_process(data, cmd);
 	}
 	if (waitpid(pid, &status, 0) == -1)
-		return (error_two("waitpid"));
+	{
+		close_streams(&data->fd_in, &data->fd_out, data);
+		fail_error("waitpid", data);
+		return (1);
+	}
 	if (WIFEXITED(status))
 		data->exit_status = WEXITSTATUS(status);
 	else if (WIFSIGNALED(status))

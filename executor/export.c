@@ -6,7 +6,7 @@
 /*   By: aait-lha <aait-lha@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/15 16:55:14 by aait-lha          #+#    #+#             */
-/*   Updated: 2024/07/19 09:56:16 by aait-lha         ###   ########.fr       */
+/*   Updated: 2024/07/20 14:29:33 by aait-lha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,21 +36,13 @@ int	ft_setenv(char *key, char *value, t_data *data)
 	t_list	*new;
 
 	tmp = ft_strjoin(key, "=", data);
-	if (!tmp)
-		error_three("malloc");
 	new_var = ft_strjoin(tmp, value, data);
 	if (!new_var)
-	{
 		free(tmp);
-		error_three("malloc");
-	}
 	free(tmp);
 	new = ft_lstnew(new_var);
 	if (!new)
-	{
 		free(new_var);
-		error_three("malloc");
-	}
 	ft_lstadd_back(&data->env, new);
 	return (0);
 }
