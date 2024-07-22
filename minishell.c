@@ -88,14 +88,10 @@ void	INT_HANDLER(int sig)
 	}
 }
 
-<<<<<<< HEAD
 void f()
 {
 	system("leaks minishell");
 }
-=======
-
->>>>>>> 7be3594eaa6338d4e20daaf0a8c6b5fde22a6da3
 
 int main (int ac, char **av, char **envp)
 {
@@ -116,42 +112,26 @@ int main (int ac, char **av, char **envp)
 	//global varibale   for opened heredoxc files
 	while (77)
 	{
-<<<<<<< HEAD
-		line = readline("minishell$ ");
-		        if (!line)
-        {
-            rl_on_new_line();
-            printf("\033[0A");
-			// write(STDOUT_FILENO, "\033[0A", strlen("\033[0A"));
-			// write(STDOUT_FILENO, "\033[0A", ft_strlen("\033[0A"));
-            rl_redisplay();
-            ft_putstr_fd("exit\n", 1);
-			rl_clear_history();
-            break;
-        }
-=======
 		data.fd_in = -2;
 		data.fd_out = -2;
 		tcgetattr(STDIN_FILENO, &term);
 		line = readline("minishell$ ");
 		if (!line)
 		{
-			rl_on_new_line();
-			printf("\033[0A");
-			rl_redisplay();
-			ft_putstr_fd("exit", 1);
+			// rl_on_new_line();
+			// printf("\033[0A");
+			// rl_redisplay();
+			ft_putstr_fd("exit\n", 1);
 			free_env(&data.env);
 			free_allocated(&data.allocated);
 			break;
 		}
->>>>>>> 76ca150a0af3e4a09852fa59e0b92b4f0f183b05
 		if (!parsing(line, &data))
 			continue ;
 		execute_cmds(&data);
 		free(line);
 		tcsetattr(STDIN_FILENO, TCSANOW, &term);
 		free_allocated(&data.allocated);
-		break;
 	}
 	free_env(&data.env);
 }
