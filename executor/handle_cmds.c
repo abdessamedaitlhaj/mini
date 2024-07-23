@@ -6,7 +6,7 @@
 /*   By: aait-lha <aait-lha@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/22 19:09:09 by aait-lha          #+#    #+#             */
-/*   Updated: 2024/07/20 17:00:29 by aait-lha         ###   ########.fr       */
+/*   Updated: 2024/07/23 16:40:48 by aait-lha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ int	execute_one_node(t_data *data)
 		return (ft_exec_builtin(&data->cmds[0], data));
 	else
 		create_process(data, &data->cmds[0]);
-	return (0);
+	return (data->exit_status);
 }
 
 void	save_last_pipe(t_data *data, int i, int *fd, int *prev_fd)

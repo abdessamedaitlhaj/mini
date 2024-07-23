@@ -6,7 +6,7 @@
 /*   By: aait-lha <aait-lha@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/15 18:13:05 by ael-hara          #+#    #+#             */
-/*   Updated: 2024/07/20 18:05:38 by aait-lha         ###   ########.fr       */
+/*   Updated: 2024/07/23 18:23:27 by aait-lha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,6 +85,7 @@ typedef struct s_data
 	int		exit_status;
 	
 }	t_data;
+
 typedef struct s_split_args {
     char const *s;
     char const *delimiters;
@@ -116,7 +117,6 @@ int					count_content_lst(t_list *lst, char *str);
 void				initialize_cmd(t_cmd *cmd);
 void				repalce_char_in_linked_list(t_list *lst,
 						char c, char new_c);
-void				free_array(char **array);
 void				allocate_memory_for_files(t_cmd *cmds, t_data *data,
 						char **split, int i);
 
@@ -169,8 +169,7 @@ int					ft_isalpha(char c);
 void				ft_putendl_fd(char *s, int fd);
 int					ft_strncmp(const char *s1, const char *s2, size_t n);
 int					ft_strcmp(const char *s1, const char *s2);
-char				*ft_strjoin2(char *s1, char *s2, char *s3);
-char				**ft_split(char const *s, char c);
+char				*ft_strjoin2(char *s1, char *s2, char *s3, t_data *data);
 
 char				*ft_getenv(char *key, t_list *env);
 int					ft_get_key_index(char *key, t_list *env);
@@ -183,7 +182,7 @@ char				*ft_strchr(const char *s, int c);
 char				*find_cmd(t_data *data, char *cmd);
 int					execute_cmds(t_data *data);
 void				ft_exit(char *number, char **args);
-void				exec_cmd(t_data *data, char *cmd, char **args);
+void				exec_cmd(t_data *data, t_cmd *cmd);
 
 void				set_last_cmd(char *outfile, int *fd, int her);
 void				ft_close(int *fd, t_data *data);
@@ -193,7 +192,6 @@ int					dup_cmd_out(int *fd, t_data *data);
 char				**allocate_cmd_args(t_data *data, t_cmd *cmd);
 void				ft_memset(void *b, int c, size_t len);
 int					execute_cmds(t_data *data);
-void				free_allocated(t_list **garbage_collector);
 int					execute_one_node(t_data *data);
 int					ft_strcmp(const char *s1, const char *s2);
 
@@ -203,11 +201,10 @@ int					init_fd_in(t_data *data, t_cmd *cmd);
 int					is_builtin(t_cmd *cmd);
 int					other_builtins(t_data *data, t_cmd *cmd);
 int					ft_exec_builtin(t_cmd *cmd, t_data *data);
-int	dup_file(t_aa file, int fd, t_data *data);
+int					dup_file(t_aa file, int fd, t_data *data);
 int					dup_redir(t_data *data, int i, int *fd, int prev_fd);
 int					open_files(char *file, int index);
 char				**allocate_cmd_args(t_data *data, t_cmd *cmd);
-void				free_arr(char **arr);
 int					init_fds(t_data *data, t_cmd *cmd);
 void				perm_denied(char *cmd);
 void				cmd_not_found(char *cmd);
@@ -220,10 +217,9 @@ int					execute_one_node(t_data *data);
 void				save_last_pipe(t_data *data, int i, int *fd, int *prev_fd);
 int					execute_multiple_nodes(t_data *data);
 int					create_process(t_data *data, t_cmd *cmd);
-void				child_process(t_data *data, t_cmd *cmd);
 int					fork_process(t_data *data, int i, int *fd, int *prev_fd);
 void				no_such_file(t_data *data, char *cmd);
-char				*check_access(t_data *data, char *path, char **paths, char *cmd);
+char				*check_access(t_data *data, char *path, char *cmd);
 void				print_env(t_list *env, t_data *data);
 int					ft_setenv(char *key, char *value, t_data *data);
 int					append_value(t_data *data, char *str, char *cmd);
@@ -234,11 +230,14 @@ char				*ft_pwd(t_data *data);
 int					ft_env(t_list *envp);
 int					ft_cd(char *path, t_data *data);
 int					ft_echo(t_data *data, char **args, int n);
-int					is_valid(char *key, char *cmd);
+int					is_valid(char *key, char *cmd, t_data *data);
 int					ft_isdigit(int c);
 int					not_valid_identifier(char *str, char *cmd);
-void	close_streams(int *fd1, int *fd2, t_data *data);
-void	close_pipe(int *fd, int *prev_fd, t_data *data);
-void	fail_error(char *str, t_data *data);
+void				close_streams(int *fd1, int *fd2, t_data *data);
+void				close_pipe(int *fd, int *prev_fd, t_data *data);
+void				fail_error(char *str, t_list **garbage_collector);
+void				free_env(t_list **env);
+void				get_status(t_data *data, int status);
+
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: aait-lha <aait-lha@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/18 08:45:10 by aait-lha          #+#    #+#             */
-/*   Updated: 2024/07/19 08:10:35 by aait-lha         ###   ########.fr       */
+/*   Updated: 2024/07/23 15:21:16 by aait-lha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ int	append_value(t_data *data, char *str, char *cmd)
 	char	*value;
 
 	key = ft_substr(str, 0, ft_strchr(str, '+') - str, data);
-	if (is_valid(key, cmd) == 0)
+	if (is_valid(key, cmd, data) == 0)
 	{
 		value = ft_strchr(str, '+') + 2;
 		if (ft_get_key_index(key, data->env) != -1)
@@ -39,7 +39,7 @@ int	overwrite_or_add(t_data *data, char *str, char *cmd)
 	char	*value;
 
 	key = ft_substr(str, 0, ft_strchr(str, '=') - str, data); 
-	if (is_valid(key, cmd) == 0)
+	if (is_valid(key, cmd, data) == 0)
 	{
 		value = ft_strchr(str, '=') + 1;
 	}

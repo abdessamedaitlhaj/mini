@@ -6,7 +6,7 @@
 /*   By: aait-lha <aait-lha@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/15 16:55:14 by aait-lha          #+#    #+#             */
-/*   Updated: 2024/07/20 14:29:33 by aait-lha         ###   ########.fr       */
+/*   Updated: 2024/07/23 15:20:58 by aait-lha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,7 @@ int	ft_export(char **args, t_data *data, char *cmd)
 	i = -1;
 	while (args[++i])
 	{
-		if (is_valid(args[i], cmd))
+		if (is_valid(args[i], cmd, data))
 			continue ;
 		if (ft_strchr(args[i], '='))
 		{

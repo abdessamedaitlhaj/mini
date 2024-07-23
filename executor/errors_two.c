@@ -6,7 +6,7 @@
 /*   By: aait-lha <aait-lha@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/17 21:55:20 by aait-lha          #+#    #+#             */
-/*   Updated: 2024/07/20 16:57:35 by aait-lha         ###   ########.fr       */
+/*   Updated: 2024/07/23 14:30:28 by aait-lha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,12 +55,4 @@ void	close_pipe(int *fd, int *prev_fd, t_data *data)
 	ft_close(prev_fd, data);
 	ft_close(&fd[0], data);
 	ft_close(&fd[1], data);	
-}
-
-void	fail_error(char *str, t_data *data)
-{
-	ft_putstr_fd("minishell: ", 2);
-	perror(str);
-	free_allocated(&data->allocated);
-	exit(1);
 }
