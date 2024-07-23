@@ -6,7 +6,7 @@
 /*   By: aait-lha <aait-lha@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/15 19:25:27 by aait-lha          #+#    #+#             */
-/*   Updated: 2024/07/19 10:06:19 by aait-lha         ###   ########.fr       */
+/*   Updated: 2024/07/23 13:44:37 by aait-lha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,10 +56,10 @@ int	is_valid(char *arg, char *cmd)
 	{
 		if (ft_isdigit(key[0]) || \
 			(!ft_isalnm(key[i]) && key[i] != '_'))
-			return (not_valid_identifier(arg, cmd));
+			return (free_array(key), not_valid_identifier(arg, cmd));
 		i++;
 	}
-	return (0);
+	return (free_array(key), 0);
 }
 
 int	ft_unset(char **args, t_data *data, char *cmd)
