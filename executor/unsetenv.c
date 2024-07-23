@@ -6,7 +6,7 @@
 /*   By: aait-lha <aait-lha@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/15 19:25:27 by aait-lha          #+#    #+#             */
-/*   Updated: 2024/07/23 13:44:37 by aait-lha         ###   ########.fr       */
+/*   Updated: 2024/07/23 13:46:28 by aait-lha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,16 +46,16 @@ int	ft_isalnm(int c)
 int	is_valid(char *arg, char *cmd)
 {
 	int	i;
-	char *key;
+	char **key;
 
 	i = 0;
-	key = ft_split(arg, '=')[0];
+	key = ft_split(arg, '=');
 	if (!key)
 		return (not_valid_identifier(arg, cmd));
-	while (key[i])
+	while (key[0][i])
 	{
-		if (ft_isdigit(key[0]) || \
-			(!ft_isalnm(key[i]) && key[i] != '_'))
+		if (ft_isdigit(key[0][0]) || \
+			(!ft_isalnm(key[0][i]) && key[0][i] != '_'))
 			return (free_array(key), not_valid_identifier(arg, cmd));
 		i++;
 	}
