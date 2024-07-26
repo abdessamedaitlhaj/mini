@@ -109,7 +109,7 @@ int main (int ac, char **av, char **envp)
 	//global varibale   for opened heredoxc files
 	while (77)
 	{
-<<<<<<< HEAD
+
 		line = readline("minishell$ ");
 		        if (!line)
         {
@@ -122,20 +122,8 @@ int main (int ac, char **av, char **envp)
 			rl_clear_history();
             break;
         }
-=======
-		data.fd_in = -2;
-		data.fd_out = -2;
-		tcgetattr(STDIN_FILENO, &term);
-		line = readline("minishell$ ");
-		if (!line)
-		{
-			rl_on_new_line();
-			printf("\033[0A");
-			rl_redisplay();
-			ft_putstr_fd("exit", 1);
-			break;
-		}
->>>>>>> 76ca150a0af3e4a09852fa59e0b92b4f0f183b05
+
+
 		if (!parsing(line, &data))
 			continue ;
 		execute_cmds(&data);
