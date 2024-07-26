@@ -6,7 +6,7 @@
 /*   By: aait-lha <aait-lha@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/22 15:01:38 by ael-hara          #+#    #+#             */
-/*   Updated: 2024/07/20 18:04:53 by aait-lha         ###   ########.fr       */
+/*   Updated: 2024/07/25 18:57:02 by aait-lha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,8 +38,9 @@ char	*ft_strjoin(char *s1, char *s2, t_data *data)
 
 	i = 0;
 	j = 0;
-	str = ft_malloc(sizeof(char) * (ft_strlen(s1)
-				+ ft_strlen(s2) + 1), &data->allocated);
+	str = malloc(sizeof(char) * (ft_strlen(s1) + ft_strlen(s2) + 1));
+	if (!str)
+		fail_error("malloc failed", &data->allocated);
 	while (s1[i])
 	{
 		str[i] = s1[i];

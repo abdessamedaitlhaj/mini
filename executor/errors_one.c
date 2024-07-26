@@ -6,11 +6,11 @@
 /*   By: aait-lha <aait-lha@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/11 23:28:08 by aait-lha          #+#    #+#             */
-/*   Updated: 2024/07/20 17:51:15 by aait-lha         ###   ########.fr       */
+/*   Updated: 2024/07/23 18:54:42 by aait-lha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-# include "../includes/minishell.h"
+#include "../includes/minishell.h"
 
 void	perm_denied(char *cmd)
 {

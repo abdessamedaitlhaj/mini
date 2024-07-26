@@ -6,11 +6,11 @@
 /*   By: aait-lha <aait-lha@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/17 21:55:20 by aait-lha          #+#    #+#             */
-/*   Updated: 2024/07/23 14:30:28 by aait-lha         ###   ########.fr       */
+/*   Updated: 2024/07/25 20:32:21 by aait-lha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-# include "../includes/minishell.h"
+#include "../includes/minishell.h"
 
 int	common_error(char *str)
 {
@@ -44,15 +44,16 @@ void	ft_close(int *fd, t_data *data)
 	}
 }
 
-void	close_streams(int *fd1, int *fd2, t_data *data)
+int	close_streams(int *fd1, int *fd2, t_data *data)
 {
 	ft_close(fd1, data);
 	ft_close(fd2, data);
+	return (1);
 }
 
 void	close_pipe(int *fd, int *prev_fd, t_data *data)
 {
 	ft_close(prev_fd, data);
 	ft_close(&fd[0], data);
-	ft_close(&fd[1], data);	
+	ft_close(&fd[1], data);
 }

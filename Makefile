@@ -1,6 +1,6 @@
 CC = cc
 S =  -fsanitize=address -ggdb3
-CFLAGS = -Wall -Wextra -Werror
+CFLAGS = -Wall -Wextra -Werror $(S)
 NAME = minishell
 RM = rm -f
 READLINEDIR    =    $(shell brew --prefix readline)
@@ -21,7 +21,7 @@ SRCS = 	minishell.c 					\
 		parser/heredoc.c				\
 		executor/utils_one.c			\
 		executor/export.c				\
-		executor/export_utils.c			\
+		executor/env_utils.c			\
 		executor/unsetenv.c				\
 		executor/utils_built.c			\
 		executor/pwd.c					\

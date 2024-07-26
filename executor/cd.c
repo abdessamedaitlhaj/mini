@@ -6,13 +6,13 @@
 /*   By: aait-lha <aait-lha@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/15 13:04:10 by aait-lha          #+#    #+#             */
-/*   Updated: 2024/07/19 06:59:19 by aait-lha         ###   ########.fr       */
+/*   Updated: 2024/07/23 19:00:44 by aait-lha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-int		ft_chdir(char *path)
+int	ft_chdir(char *path)
 {
 	if (chdir(path) == -1)
 	{
@@ -74,7 +74,7 @@ int	ft_cd(char *path, t_data *data)
 	home = ft_getenv("HOME", data->env);
 	if (!path || !path[0] || !ft_strcmp(path, "~") || \
 		!ft_strcmp(path, "--"))
-			return (set_home(home, pwd, data));
+		return (set_home(home, pwd, data));
 	else if (path[0] == '-' && !path[1])
 		return (set_prev(oldpwd, pwd, data));
 	else
@@ -84,5 +84,5 @@ int	ft_cd(char *path, t_data *data)
 		if (ft_chdir(path) == -1)
 			return (-1);
 	}
-	return (0);	
+	return (0);
 }

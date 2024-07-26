@@ -6,7 +6,7 @@
 /*   By: aait-lha <aait-lha@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/20 09:00:36 by aait-lha          #+#    #+#             */
-/*   Updated: 2024/07/07 13:45:43 by aait-lha         ###   ########.fr       */
+/*   Updated: 2024/07/25 20:23:46 by aait-lha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,21 +25,6 @@ char	*ft_getenv(char *key, t_list *env)
 		tmp = tmp->next;
 	}
 	return (NULL);
-}
-
-int	env_size(t_list *env)
-{
-	t_list	*tmp;
-	int		i;
-
-	tmp = env;
-	i = 0;
-	while (tmp)
-	{
-		tmp = tmp->next;
-		i++;
-	}
-	return (i);
 }
 
 int	ft_get_key_index(char *key, t_list *env)

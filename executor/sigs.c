@@ -6,11 +6,11 @@
 /*   By: aait-lha <aait-lha@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/15 23:13:15 by aait-lha          #+#    #+#             */
-/*   Updated: 2024/07/23 18:23:03 by aait-lha         ###   ########.fr       */
+/*   Updated: 2024/07/23 21:44:48 by aait-lha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-# include "../includes/minishell.h"
+#include "../includes/minishell.h"
 
 void	sig_handler(int signo)
 {

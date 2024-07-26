@@ -6,13 +6,13 @@
 /*   By: aait-lha <aait-lha@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/07 12:08:33 by aait-lha          #+#    #+#             */
-/*   Updated: 2024/07/23 17:22:52 by aait-lha         ###   ########.fr       */
+/*   Updated: 2024/07/23 18:52:56 by aait-lha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-char **allocate_cmd_args(t_data *data, t_cmd *cmd)
+char	**allocate_cmd_args(t_data *data, t_cmd *cmd)
 {
 	char	**args;
 	int		i;
@@ -38,7 +38,6 @@ char	**get_paths(t_data *data, char *cmd)
 {
 	char	**paths;
 	t_list	*tmp;
-
 
 	tmp = data->env;
 	while (tmp && ft_strncmp(tmp->content, "PATH=", 5) != 0)

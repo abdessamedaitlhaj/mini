@@ -67,7 +67,9 @@ int main (int ac, char **av, char **envp)
 		line = readline("minishell$ ");
 		if (!line)
 		{
-			ft_putstr_fd("exit\n", 1);
+			//ft_putstr_fd("\n", 1);
+			rl_replace_line("exit", -4);
+			//rl_redisplay();
 			free_env(&data.env);
 			free_allocated(&data.allocated);
 			exit(0);
@@ -76,8 +78,8 @@ int main (int ac, char **av, char **envp)
 			continue ;
 		execute_cmds(&data);
 		free(line);
-		tcsetattr(STDIN_FILENO, TCSANOW, &term);
 		free_allocated(&data.allocated);
+		tcsetattr(STDIN_FILENO, TCSANOW, &term);
 	}
 	free_env(&data.env);
 	return (data.exit_status);

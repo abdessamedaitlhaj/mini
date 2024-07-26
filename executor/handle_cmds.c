@@ -6,7 +6,7 @@
 /*   By: aait-lha <aait-lha@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/22 19:09:09 by aait-lha          #+#    #+#             */
-/*   Updated: 2024/07/23 16:40:48 by aait-lha         ###   ########.fr       */
+/*   Updated: 2024/07/26 01:10:12 by aait-lha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,10 +31,7 @@ int	execute_one_node(t_data *data)
 		close_streams(&data->fd_in, &data->fd_out, data);
 	}
 	if (data->cmds[0].flag_command)
-	{
-		close_streams(&data->fd_in, &data->fd_out, data);
-		return (1);
-	}
+		return (close_streams(&data->fd_in, &data->fd_out, data));
 	if (is_builtin(&data->cmds[0]))
 		return (ft_exec_builtin(&data->cmds[0], data));
 	else
@@ -60,21 +57,20 @@ int	execute_multiple_nodes(t_data *data)
 	int	prev_fd;
 
 	i = -1;
-	prev_fd = -2;
-	fd[0] = -2;
-	fd[1] = -2;
 	while (++i < data->counter_command)
 	{
 		if (check_files(data, i, fd, &prev_fd))
 			continue ;
 		if (i < data->counter_command - 1)
+		{
 			if (pipe(fd) == -1)
 			{
 				close_streams(&data->fd_in, &data->fd_out, data);
-				close_streams(&fd[0], &fd[1], data);
+				ft_close(&prev_fd, data);
 				free_allocated(&data->allocated);
 				exit(1);
 			}
+		}
 		fork_process(data, i, fd, &prev_fd);
 		close_streams(&data->fd_in, &data->fd_out, data);
 		save_last_pipe(data, i, fd, &prev_fd);

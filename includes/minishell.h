@@ -6,7 +6,7 @@
 /*   By: aait-lha <aait-lha@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/15 18:13:05 by ael-hara          #+#    #+#             */
-/*   Updated: 2024/07/23 18:23:27 by aait-lha         ###   ########.fr       */
+/*   Updated: 2024/07/25 20:32:32 by aait-lha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,6 +100,13 @@ typedef struct s_indexes
 	int index;
 }	t_indexes;
 
+typedef struct s_key_value {
+	char	*key;
+	char	*value;
+	int		err;
+	int		append;
+}	t_key_value;
+
 t_parsing_status	pair_quotes(char *line);
 t_parsing_status	parsing_pipe(char *str);
 t_parsing_status	parsing_redir(char *line);
@@ -175,8 +182,7 @@ char				*ft_getenv(char *key, t_list *env);
 int					ft_get_key_index(char *key, t_list *env);
 int					ft_setenv(char *key, char *value, t_data *data);
 int					ft_unset(char **args, t_data *data, char *cmd);
-int					ft_unsetenv(char *key, t_data *data, char *cmd);
-int					env_size(t_list *env);
+int					ft_unsetenv(char *key, t_data *data);
 char				*ft_strchr(const char *s, int c);
 
 char				*find_cmd(t_data *data, char *cmd);
@@ -222,22 +228,32 @@ void				no_such_file(t_data *data, char *cmd);
 char				*check_access(t_data *data, char *path, char *cmd);
 void				print_env(t_list *env, t_data *data);
 int					ft_setenv(char *key, char *value, t_data *data);
-int					append_value(t_data *data, char *str, char *cmd);
-int					overwrite_or_add(t_data *data, char *str, char *cmd);
 int					check_empty_args(t_data *data, char **args);
 int					ft_export(char **args, t_data *data, char *cmd);
 char				*ft_pwd(t_data *data);
 int					ft_env(t_list *envp);
 int					ft_cd(char *path, t_data *data);
 int					ft_echo(t_data *data, char **args, int n);
-int					is_valid(char *key, char *cmd, t_data *data);
+int					is_valid(t_key_value *k_v, char *key, t_data *data);
+int					is_key_valid(char *arg, char *cmd);
 int					ft_isdigit(int c);
 int					not_valid_identifier(char *str, char *cmd);
-void				close_streams(int *fd1, int *fd2, t_data *data);
+int					close_streams(int *fd1, int *fd2, t_data *data);
 void				close_pipe(int *fd, int *prev_fd, t_data *data);
 void				fail_error(char *str, t_list **garbage_collector);
 void				free_env(t_list **env);
 void				get_status(t_data *data, int status);
-
+char				*ft_strdup2(char *str, t_data *data);
+void				exit_error(char *number);
+int					ft_chdir(char *path);
+int					set_home(char *home, char *pwd, t_data *data);
+int					set_prev(char *oldpwd, char *pwd, t_data *data);
+void				print_args(t_data *data, int i, int n, char **args);
+int					ft_atoi(char const *str);
+int					is_num(char *str);
+char				**get_paths(t_data *data, char *cmd);
+void				ft_lstremove(t_list **env, int index);
+int					ft_isalnm(int c);
+char				*extract_key(t_key_value *k_v, char *arg, t_data *data);
 
 #endif

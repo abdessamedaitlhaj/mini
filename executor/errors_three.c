@@ -6,11 +6,11 @@
 /*   By: aait-lha <aait-lha@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/23 14:30:08 by aait-lha          #+#    #+#             */
-/*   Updated: 2024/07/23 15:19:47 by aait-lha         ###   ########.fr       */
+/*   Updated: 2024/07/25 20:26:27 by aait-lha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-# include "../includes/minishell.h"
+#include "../includes/minishell.h"
 
 void	fail_error(char *str, t_list **garbage_collector)
 {
@@ -18,4 +18,13 @@ void	fail_error(char *str, t_list **garbage_collector)
 	perror(str);
 	free_allocated(garbage_collector);
 	exit(1);
+}
+
+void	exit_error(char *number)
+{
+	ft_putendl_fd("exit", 2);
+	ft_putstr_fd("minishell: exit: ", 2);
+	ft_putstr_fd(number, 2);
+	ft_putendl_fd(": numeric argument required", 2);
+	exit(255);
 }
