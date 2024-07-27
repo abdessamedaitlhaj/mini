@@ -1,41 +1,44 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   env.c                                              :+:      :+:    :+:   */
+/*   utils_two.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: aait-lha <aait-lha@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/05/15 19:39:04 by aait-lha          #+#    #+#             */
-/*   Updated: 2024/07/26 19:43:19 by aait-lha         ###   ########.fr       */
+/*   Created: 2024/07/23 14:26:39 by aait-lha          #+#    #+#             */
+/*   Updated: 2024/07/26 18:58:20 by aait-lha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-void	init_envs(char **envp, t_data *data)
+void	free_env(t_list **env)
 {
-	int		i;
+	t_list	*tmp;
 
-	if (!*envp)
+	while (*env)
 	{
-		ft_setenv("PATH", "/usr/bin:/bin:/usr/sbin:/sbin", data);
-		ft_setenv("SHLVL", "1", data);
-		ft_setenv("_", "minishell", data);
-	}
-	else
-	{
-		i = -1;
-		while (envp[++i])
-			ft_lstadd_back(&data->env, ft_lstnew(envp[i]));
+		tmp = (*env)->next;
+		free(*env);
+		*env = tmp;
 	}
 }
 
-int	ft_env(t_list *envp)
+char	*ft_strdup2(char *str, t_data *data)
+
 {
-	while (envp)
+	char	*new_str;
+	int		i;
+
+	i = 0;
+	new_str = malloc(sizeof(char) * (ft_strlen(str) + 1));
+	if (!new_str)
+		fail_error("malloc failed", &data->allocated);
+	while (str[i])
 	{
-		ft_putendl_fd(envp->content, 1);
-		envp = envp->next;
+		new_str[i] = str[i];
+		i++;
 	}
-	return (0);
+	new_str[i] = '\0';
+	return (new_str);
 }

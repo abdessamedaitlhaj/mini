@@ -1,41 +1,30 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   env.c                                              :+:      :+:    :+:   */
+/*   errors_three.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: aait-lha <aait-lha@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/05/15 19:39:04 by aait-lha          #+#    #+#             */
-/*   Updated: 2024/07/26 19:43:19 by aait-lha         ###   ########.fr       */
+/*   Created: 2024/07/23 14:30:08 by aait-lha          #+#    #+#             */
+/*   Updated: 2024/07/27 10:07:45 by aait-lha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-void	init_envs(char **envp, t_data *data)
+void	fail_error(char *str, t_list **garbage_collector)
 {
-	int		i;
-
-	if (!*envp)
-	{
-		ft_setenv("PATH", "/usr/bin:/bin:/usr/sbin:/sbin", data);
-		ft_setenv("SHLVL", "1", data);
-		ft_setenv("_", "minishell", data);
-	}
-	else
-	{
-		i = -1;
-		while (envp[++i])
-			ft_lstadd_back(&data->env, ft_lstnew(envp[i]));
-	}
+	ft_putstr_fd("minishell: ", 2);
+	perror(str);
+	free_allocated(garbage_collector);
+	exit(1);
 }
 
-int	ft_env(t_list *envp)
+void	exit_error(char *number)
 {
-	while (envp)
-	{
-		ft_putendl_fd(envp->content, 1);
-		envp = envp->next;
-	}
-	return (0);
+	ft_putendl_fd("exit", 2);
+	ft_putstr_fd("minishell: exit: ", 2);
+	ft_putstr_fd(number, 2);
+	ft_putendl_fd(": numeric argument required", 2);
+	exit(255);
 }

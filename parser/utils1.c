@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils1.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ael-hara <ael-hara@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aait-lha <aait-lha@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/18 18:13:16 by ael-hara          #+#    #+#             */
-/*   Updated: 2024/07/07 11:35:35 by ael-hara         ###   ########.fr       */
+/*   Updated: 2024/07/23 15:15:59 by aait-lha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,19 +29,6 @@ void	repalce_char_in_linked_list(t_list *lst, char c, char new_c)
 		}
 		lst = lst->next;
 	}
-}
-
-void	free_array(char **array)
-{
-	int	i;
-
-	i = 0;
-	while (array[i])
-	{
-		free(array[i]);
-		i++;
-	}
-	free(array);
 }
 
 int	ft_strlen(char *str)
@@ -80,8 +67,6 @@ char	*ft_strdup(char *str, t_list **allocated)
 
 	i = 0;
 	new_str = ft_malloc(sizeof(char) * (ft_strlen(str) + 1), allocated);
-	if (!new_str)
-		return (NULL);
 	while (str[i])
 	{
 		new_str[i] = str[i];

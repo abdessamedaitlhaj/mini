@@ -21,7 +21,7 @@ SRCS = 	minishell.c 					\
 		parser/heredoc.c				\
 		executor/utils_one.c			\
 		executor/export.c				\
-		executor/export_utils.c			\
+		executor/env_utils.c			\
 		executor/unsetenv.c				\
 		executor/utils_built.c			\
 		executor/pwd.c					\
@@ -31,14 +31,15 @@ SRCS = 	minishell.c 					\
 		executor/handle_cmds.c			\
 		executor/execute_cmd.c			\
 		executor/find_exec.c			\
-		executor/ft_split.c				\
 		executor/exit.c					\
 		executor/errors_one.c			\
 		executor/errors_two.c			\
 		executor/inits.c				\
 		executor/check_builtins.c		\
 		executor/dup_fds.c				\
-		executor/sigs.c				
+		executor/sigs.c					\
+		executor/errors_three.c			\
+		executor/utils_two.c			
 
 OBJS = $(SRCS:.c=.o)
 
