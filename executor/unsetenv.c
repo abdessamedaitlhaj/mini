@@ -6,7 +6,7 @@
 /*   By: aait-lha <aait-lha@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/15 19:25:27 by aait-lha          #+#    #+#             */
-/*   Updated: 2024/07/26 01:14:11 by aait-lha         ###   ########.fr       */
+/*   Updated: 2024/07/26 14:58:25 by aait-lha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,8 +31,6 @@ void	ft_lstremove(t_list **env, int index)
 		prev->next = tmp->next;
 	else
 		*env = tmp->next;
-	free(tmp->content);
-	free(tmp);
 }
 
 int	is_valid(t_key_value *k_v, char *arg, t_data *data)

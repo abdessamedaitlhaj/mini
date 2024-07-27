@@ -6,7 +6,7 @@
 /*   By: aait-lha <aait-lha@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/11 23:29:45 by aait-lha          #+#    #+#             */
-/*   Updated: 2024/07/25 20:31:20 by aait-lha         ###   ########.fr       */
+/*   Updated: 2024/07/26 13:02:00 by aait-lha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,8 @@ int	init_fds(t_data *data, t_cmd *cmd)
 		{
 			ft_putstr_fd("minishell: ", 2);
 			ft_putstr_fd(cmd->files[i]->file, 2);
-			ft_putendl_fd(": No such file or directory", 2);
+			ft_putstr_fd(": ", 2);
+			perror("");
 			return (1);
 		}
 	}

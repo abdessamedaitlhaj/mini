@@ -6,7 +6,7 @@
 /*   By: aait-lha <aait-lha@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/23 14:26:39 by aait-lha          #+#    #+#             */
-/*   Updated: 2024/07/25 19:07:30 by aait-lha         ###   ########.fr       */
+/*   Updated: 2024/07/26 18:58:20 by aait-lha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,15 +22,6 @@ void	free_env(t_list **env)
 		free(*env);
 		*env = tmp;
 	}
-}
-
-void	init_envs(char **envp, t_data *data)
-{
-	int		i;
-
-	i = -1;
-	while (envp[++i])
-		ft_lstadd_back(&data->env, ft_lstnew(envp[i]));
 }
 
 char	*ft_strdup2(char *str, t_data *data)

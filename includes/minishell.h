@@ -6,7 +6,7 @@
 /*   By: aait-lha <aait-lha@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/15 18:13:05 by ael-hara          #+#    #+#             */
-/*   Updated: 2024/07/25 20:32:32 by aait-lha         ###   ########.fr       */
+/*   Updated: 2024/07/26 18:58:42 by aait-lha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -126,7 +126,6 @@ void				repalce_char_in_linked_list(t_list *lst,
 						char c, char new_c);
 void				allocate_memory_for_files(t_cmd *cmds, t_data *data,
 						char **split, int i);
-
 int					ft_strlen(char *str);
 char				*ft_strdup(char *str, t_list **allocated);
 int					count_str_in_2d_array(char *find, char **array);
@@ -166,10 +165,8 @@ void				ft_lstadd_back(t_list **list, t_list *new);
 
 void				ft_lstadd_back(t_list **list, t_list *new);
 void				*ft_lstnew(void *content);
-
 int					envp_size(char **envp);
 void				init_envs(char **envp, t_data *data);
-
 void				free_allocated(t_list **garbage_collector);
 void				ft_putstr_fd(char *s, int fd);
 int					ft_isalpha(char c);
@@ -177,19 +174,16 @@ void				ft_putendl_fd(char *s, int fd);
 int					ft_strncmp(const char *s1, const char *s2, size_t n);
 int					ft_strcmp(const char *s1, const char *s2);
 char				*ft_strjoin2(char *s1, char *s2, char *s3, t_data *data);
-
 char				*ft_getenv(char *key, t_list *env);
 int					ft_get_key_index(char *key, t_list *env);
 int					ft_setenv(char *key, char *value, t_data *data);
 int					ft_unset(char **args, t_data *data, char *cmd);
 int					ft_unsetenv(char *key, t_data *data);
 char				*ft_strchr(const char *s, int c);
-
 char				*find_cmd(t_data *data, char *cmd);
 int					execute_cmds(t_data *data);
 void				ft_exit(char *number, char **args);
 void				exec_cmd(t_data *data, t_cmd *cmd);
-
 void				set_last_cmd(char *outfile, int *fd, int her);
 void				ft_close(int *fd, t_data *data);
 void				set_first_cmd(char *infile, int *fd);
@@ -200,7 +194,6 @@ void				ft_memset(void *b, int c, size_t len);
 int					execute_cmds(t_data *data);
 int					execute_one_node(t_data *data);
 int					ft_strcmp(const char *s1, const char *s2);
-
 int					common_error(char *str);
 int					init_fd_out(t_data *data, t_cmd *cmd);
 int					init_fd_in(t_data *data, t_cmd *cmd);
@@ -255,5 +248,6 @@ char				**get_paths(t_data *data, char *cmd);
 void				ft_lstremove(t_list **env, int index);
 int					ft_isalnm(int c);
 char				*extract_key(t_key_value *k_v, char *arg, t_data *data);
+void				replace_env(t_key_value *k_v, t_data *data);
 
 #endif
