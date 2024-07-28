@@ -1,3 +1,4 @@
+
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
@@ -25,8 +26,7 @@ int	set_home(t_data *data)
 		ft_setenv("OLDPWD", ft_pwd(data), data);
 		if (chdir(home) == -1)
 			return (common_error("minishell: cd: ", home, ""));
-	}
-	else
+	}	else
 	{
 		ft_putendl_fd("minishell: cd: HOME not set", 2);
 		return (1);

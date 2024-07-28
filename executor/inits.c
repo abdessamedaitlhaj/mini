@@ -6,7 +6,7 @@
 /*   By: aait-lha <aait-lha@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/11 23:29:45 by aait-lha          #+#    #+#             */
-/*   Updated: 2024/07/27 11:42:35 by aait-lha         ###   ########.fr       */
+/*   Updated: 2024/07/28 21:35:24 by aait-lha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,32 +57,6 @@ int	init_fds(t_data *data, t_cmd *cmd)
 			perror("");
 			return (1);
 		}
-	}
-	return (0);
-}
-
-int	check_files(t_data *data, int i, int *fd, int *prev_fd)
-{
-	if (data->cmds[i].files)
-	{
-		if (init_fds(data, &data->cmds[i]))
-		{
-			close_streams(&data->fd_in, &data->fd_out, data);
-			ft_close(&fd[1], data);
-			if (i < data->counter_command - 1)
-				*prev_fd = fd[0];
-			return (1);
-		}
-	}
-	if (data->cmds[i].flag_command)
-	{
-		if (i < data->counter_command - 1)
-			*prev_fd = fd[0];
-		close_streams(&data->fd_in, &data->fd_out, data);
-		ft_close(&fd[1], data);
-		// if (i > 0 && i < data->counter_command - 1)
-		// 	ft_close(prev_fd, data);
-		return (1);
 	}
 	return (0);
 }

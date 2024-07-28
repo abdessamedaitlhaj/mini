@@ -18,8 +18,8 @@ int	execute_cmds(t_data *data)
 		while (waitpid(-1, &status, 0) > 0)
 			get_status(data, status);
 	}
-	if (dup2(stdin_copy, STDIN_FILENO) == -1 || \
-		dup2(stdout_copy, STDOUT_FILENO) == -1)
+	if (dup2(stdin_copy, 0) == -1 || \
+		dup2(stdout_copy, 1) == -1)
 		fail_error("dup2", &data->allocated);
 	close_streams(&stdin_copy, &stdout_copy, data);
 	return (0);
@@ -61,20 +61,18 @@ int main (int ac, char **av, char **envp)
 	signal(SIGINT, INT_HANDLER);
 	signal(SIGQUIT, SIG_IGN);
 	rl_catch_signals = 0;
-	tcgetattr(STDIN_FILENO, &term);
-	//global varibale   for opened heredoxc files
+	tcgetattr(0, &term);
 	while (77)
 	{
 		data.allocated = NULL;
 		data.fd_in = -2;
 		data.fd_out = -2;
-		tcgetattr(STDIN_FILENO, &term);
+		tcgetattr(0, &term);
 		line = readline("minishell$ ");
 		if (!line)
 		{
-			//ft_putstr_fd("\n", 1);
-			rl_replace_line("exit", -4);
-			//rl_redisplay();
+			rl_clear_history();
+			write (2, "exit\n", 5);
 			free_env(&data.env);
 			free_allocated(&data.allocated);
 			exit(0);
@@ -84,7 +82,7 @@ int main (int ac, char **av, char **envp)
 		execute_cmds(&data);
 		free(line);
 		free_allocated(&data.allocated);
-		tcsetattr(STDIN_FILENO, TCSANOW, &term);
+		tcsetattr(0, TCSANOW, &term);
 	}
 	free_env(&data.env);
 	return (data.exit_status);

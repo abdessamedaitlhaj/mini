@@ -6,7 +6,7 @@
 /*   By: aait-lha <aait-lha@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/22 19:09:09 by aait-lha          #+#    #+#             */
-/*   Updated: 2024/07/27 11:37:15 by aait-lha         ###   ########.fr       */
+/*   Updated: 2024/07/28 21:35:13 by aait-lha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,9 +80,9 @@ int	execute_multiple_nodes(t_data *data)
 				exit(1);
 			}
 		}
-		if (check_files(data, i, fd, &prev_fd))
-			continue ;
-		fork_process(data, i, fd, &prev_fd);
+		init_fds(data, &data->cmds[i]);
+		if (!data->cmds[i].flag_command)
+			fork_process(data, i, fd, &prev_fd);
 		close_streams(&data->fd_in, &data->fd_out, data);
 		save_last_pipe(data, i, fd, &prev_fd);
 	}

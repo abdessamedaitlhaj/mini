@@ -6,7 +6,7 @@
 /*   By: aait-lha <aait-lha@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/15 18:13:05 by ael-hara          #+#    #+#             */
-/*   Updated: 2024/07/27 11:34:24 by aait-lha         ###   ########.fr       */
+/*   Updated: 2024/07/28 21:35:36 by aait-lha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -211,7 +211,6 @@ void				cmd_not_found(char *cmd, t_data *data);
 void				sig_handler(int signo);
 int					is_dir(char *path);
 void				not_dir(t_data *data, char *cmd);
-int					check_files(t_data *data, int i, int *fd, int *prev_fd);
 void				dir_error(t_data *data, char *cmd);
 int					execute_one_node(t_data *data);
 void				save_last_pipe(t_data *data, int i, int *fd, int *prev_fd);
