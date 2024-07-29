@@ -6,40 +6,33 @@
 /*   By: aait-lha <aait-lha@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/20 09:00:36 by aait-lha          #+#    #+#             */
-/*   Updated: 2024/07/25 20:23:46 by aait-lha         ###   ########.fr       */
+/*   Updated: 2024/07/29 17:04:19 by aait-lha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-char	*ft_getenv(char *key, t_list *env)
+char	*ft_getenv(char *key, t_env *env)
 {
-	t_list	*tmp;
-
-	tmp = env;
-	while (tmp)
+	while (env)
 	{
-		if (!ft_strncmp(key, (char *)tmp->content, ft_strlen(key)) && \
-		((char *)tmp->content)[ft_strlen(key)] == '=')
-			return ((char *)tmp->content + ft_strlen(key) + 1);
-		tmp = tmp->next;
+		if (ft_strcmp(env->key, key) == 0)
+			return (env->value);
+		env = env->next;
 	}
 	return (NULL);
 }
 
-int	ft_get_key_index(char *key, t_list *env)
+int	ft_get_key_index(char *key, t_env *env)
 {
-	t_list	*tmp;
-	int		i;
+	int	i;
 
-	tmp = env;
 	i = 0;
-	while (tmp)
+	while (env)
 	{
-		if (!ft_strncmp(key, (char *)tmp->content, ft_strlen(key)) && \
-		((char *)tmp->content)[ft_strlen(key)] == '=')
+		if (ft_strcmp(env->key, key) == 0)
 			return (i);
-		tmp = tmp->next;
+		env = env->next;
 		i++;
 	}
 	return (-1);

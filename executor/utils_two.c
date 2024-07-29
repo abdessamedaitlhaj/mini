@@ -6,21 +6,23 @@
 /*   By: aait-lha <aait-lha@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/23 14:26:39 by aait-lha          #+#    #+#             */
-/*   Updated: 2024/07/26 18:58:20 by aait-lha         ###   ########.fr       */
+/*   Updated: 2024/07/29 21:52:28 by aait-lha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-void	free_env(t_list **env)
+void	free_env(t_env **env)
 {
-	t_list	*tmp;
+	t_env	*tmp;
 
 	while (*env)
 	{
-		tmp = (*env)->next;
-		free(*env);
-		*env = tmp;
+		tmp = *env;
+		*env = (*env)->next;
+		free(tmp->key);
+		free(tmp->value);
+		free(tmp);
 	}
 }
 

@@ -13,45 +13,57 @@
 
 #include "../includes/minishell.h"
 
-int	set_home(t_data *data)
+char	*home_set(t_data *data)
 {
 	char	*home;
 
 	home = ft_getenv("HOME", data->env);
 	if (home)
-	{
-		if (!home[0])
-			return (1);
-		ft_setenv("PWD", home, data);
-		ft_setenv("OLDPWD", ft_pwd(data), data);
-		if (chdir(home) == -1)
-			return (common_error("minishell: cd: ", home, ""));
-	}	else
-	{
-		ft_putendl_fd("minishell: cd: HOME not set", 2);
-		return (1);
-	}
-	return (0);
+		return (home);
+	ft_putendl_fd("minishell: cd: HOME not set", 2);
+	return (NULL);
 }
 
-int	set_prev(t_data *data)
+char	*oldpwd_set(t_data *data)
 {
 	char	*oldpwd;
 
 	oldpwd = ft_getenv("OLDPWD", data->env);
 	if (oldpwd)
+		return (oldpwd);
+	ft_putendl_fd("minishell: cd: OLDPWD not set", 2);
+	return (NULL);
+}
+
+int	special_path(char *path, t_data *data)
+{
+	char	*home;
+	char	*oldpwd;
+
+	if (ft_strcmp(path, "~") == 0 || ft_strcmp(path, "~/") == 0 \
+		|| ft_strcmp(path, "--") == 0 || !path)
 	{
-		if (!oldpwd[0])
+		home = home_set(data);
+		if (home && home[0])
+		{
+			if (chdir(home) == -1)
+				return (common_error("minishell: cd: ", home, ""));
+			ft_setenv("OLDPWD", data->pwd, data);
+			ft_setenv("PWD", ft_getcwd(), data);
 			return (1);
-		ft_setenv("PWD", oldpwd, data);
-		ft_setenv("OLDPWD", ft_pwd(data), data);
-		if (chdir(oldpwd) == -1)
-			return (common_error("minishell: cd: ", oldpwd, ""));
+		}
 	}
-	else
+	else if (ft_strcmp(path, "-") == 0)
 	{
-		ft_putendl_fd("minishell: cd: OLDPWD not set", 2);
-		return (1);
+		oldpwd = oldpwd_set(data);
+		if (oldpwd && oldpwd[0])
+		{
+			if (chdir(oldpwd) == -1)
+				return (common_error("minishell: cd: ", oldpwd, ""));
+			ft_setenv("OLDPWD", data->pwd, data);
+			ft_setenv("PWD", ft_getcwd(), data);
+			return (1);
+		}
 	}
 	return (0);
 }
@@ -59,25 +71,36 @@ int	set_prev(t_data *data)
 int	ft_cd(char *path, t_data *data)
 {
 	DIR		*dir;
+	char	*d;
 
-	if (!path || !path[0] || !ft_strcmp(path, "~") || \
-		!ft_strcmp(path, "--"))
-		return (set_home(data));
-	else if (path[0] == '-' && !path[1])
-		return (set_prev(data));
+
+	if (special_path(path, data))
+		return (0);
+	dir = opendir(path);
+	if (!dir)
+		return (common_error("minishell: cd: ", path, ""));
 	else
+		closedir(dir);
+	if (chdir(path) == -1)
+		return (common_error("minishell: cd: ", path, ""));
+	printf("adasd\n");
+	d = ft_getcwd();
+	if (!d)
 	{
-		dir = opendir(path);
-		if (!dir)
-			return (common_error("minishell: cd: ", path, ""));
-		else
-		{
-			closedir(dir);
-			ft_setenv("PWD", path, data);
-			ft_setenv("OLDPWD", ft_pwd(data), data);
-			if (chdir(path) == -1)
-				return (common_error("minishell: cd: ", path, ""));
-		}
+		d = ft_strjoin(data->pwd, "/", data);
+		d = ft_strjoin(d, path, data);
+		ft_setenv("OLDPWD", data->pwd, data);
+		ft_setenv("PWD", d, data);
+		data->pwd = d;
+		return (0);
 	}
+	else if (ft_strcmp(path, data->pwd) == 0)
+	{
+		ft_setenv("OLDPWD", data->pwd, data);
+		return (0);
+	}
+	ft_setenv("OLDPWD", data->pwd, data);
+	data->pwd = d;
+	ft_setenv("PWD", d, data);
 	return (0);
 }

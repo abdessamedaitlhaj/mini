@@ -6,7 +6,7 @@
 /*   By: aait-lha <aait-lha@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/15 18:13:05 by ael-hara          #+#    #+#             */
-/*   Updated: 2024/07/28 21:35:36 by aait-lha         ###   ########.fr       */
+/*   Updated: 2024/07/30 00:43:24 by aait-lha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,6 +69,13 @@ typedef struct s_cmd
 	int				flag_command;
 }	t_cmd;
 
+typedef struct s_env
+{
+	char			*key;
+	char			*value;
+	struct s_env	*next;
+}	t_env;
+
 typedef struct s_data
 {
 	char	*line;
@@ -78,13 +85,14 @@ typedef struct s_data
 	t_list	*allocated;
 	char	**heredoc;
 	int		heredoc_error;
-	t_list	*env;
+	t_env	*env;
+	char	*pwd;
+	int		empty_env;
 	int		delimiter_count;
 	int		fd_in;
 	int		fd_out;
 	char	**envp;
 	int		exit_status;
-	
 }	t_data;
 
 typedef struct s_split_args {
@@ -164,9 +172,7 @@ void				ft_lstadd_back(t_list **list, t_list *new);
 
 //=============================================================================ME==================================================================================================
 
-void				ft_lstadd_back(t_list **list, t_list *new);
 void				*ft_lstnew(void *content);
-int					envp_size(char **envp);
 void				init_envs(char **envp, t_data *data);
 void				free_allocated(t_list **garbage_collector);
 void				ft_putstr_fd(char *s, int fd);
@@ -174,16 +180,15 @@ int					ft_isalpha(char c);
 void				ft_putendl_fd(char *s, int fd);
 int					ft_strncmp(const char *s1, const char *s2, size_t n);
 int					ft_strcmp(const char *s1, const char *s2);
-char				*ft_strjoin2(char *s1, char *s2, char *s3, t_data *data);
-char				*ft_getenv(char *key, t_list *env);
-int					ft_get_key_index(char *key, t_list *env);
-int					ft_setenv(char *key, char *value, t_data *data);
+char				*ft_strjoin2(char *s1, char *s2, t_data *data);
+char				*ft_getenv(char *key, t_env *env);
+int					ft_get_key_index(char *key, t_env *env);
 int					ft_unset(char **args, t_data *data, char *cmd);
 int					ft_unsetenv(char *key, t_data *data);
 char				*ft_strchr(const char *s, int c);
 char				*find_cmd(t_data *data, char *cmd);
 int					execute_cmds(t_data *data);
-void				ft_exit(char *number, char **args);
+void				ft_exit(char **args, int arg_number);
 void				exec_cmd(t_data *data, t_cmd *cmd);
 void				set_last_cmd(char *outfile, int *fd, int her);
 void				ft_close(int *fd, t_data *data);
@@ -219,12 +224,11 @@ int					create_process(t_data *data, t_cmd *cmd);
 int					fork_process(t_data *data, int i, int *fd, int *prev_fd);
 void				no_such_file(t_data *data, char *cmd);
 char				*check_access(t_data *data, char *path, char *cmd);
-void				print_env(t_list *env, t_data *data);
-int					ft_setenv(char *key, char *value, t_data *data);
+void				print_env(t_env *env);
 int					check_empty_args(t_data *data, char **args);
 int					ft_export(char **args, t_data *data, char *cmd);
 char				*ft_pwd(t_data *data);
-int					ft_env(t_list *envp);
+int					ft_env(t_env *env, int args_number);
 int					ft_cd(char *path, t_data *data);
 int					ft_echo(t_data *data, char **args, int n);
 int					is_valid(t_key_value *k_v, char *key, t_data *data);
@@ -234,7 +238,7 @@ int					not_valid_identifier(char *str, char *cmd);
 int					close_streams(int *fd1, int *fd2, t_data *data);
 void				close_pipe(int *fd, t_data *data);
 void				fail_error(char *str, t_list **garbage_collector);
-void				free_env(t_list **env);
+void				free_env(t_env **env);
 void				get_status(t_data *data, int status);
 char				*ft_strdup2(char *str, t_data *data);
 void				exit_error(char *number);
@@ -242,13 +246,21 @@ int					ft_chdir(char *path);
 int					set_home(t_data *data);
 int					set_prev(t_data *data);
 void				print_args(t_data *data, int i, int n, char **args);
-int					ft_atoi(char const *str);
+int					ft_atoi(char const *str, int *f);
 int					is_num(char *str);
 char				**get_paths(t_data *data, char *cmd);
-void				ft_lstremove(t_list **env, int index);
+void				ft_remove_env(t_env **env, char	*key);
 int					ft_isalnm(int c);
 char				*extract_key(t_key_value *k_v, char *arg, t_data *data);
 void				replace_env(t_key_value *k_v, t_data *data);
 void				init(int *fd, t_data *data);
+char				*ft_getcwd();
+char				*home_set(t_data *data);
+char				*oldpwd_set(t_data *data);
+int					special_path(char *path, t_data *data);
+char				*ft_itoa2(int n, t_data *data);
+void				*ft_new_env(char	*key, char	*value, t_data *data);
+void				ft_add_env(t_env **env, t_env *new);
+void				ft_setenv(char *key, char *value, t_data *data);
 
 #endif

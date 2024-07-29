@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expanding.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ael-hara <ael-hara@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aait-lha <aait-lha@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/22 15:05:58 by ael-hara          #+#    #+#             */
-/*   Updated: 2024/07/20 13:01:21 by ael-hara         ###   ########.fr       */
+/*   Updated: 2024/07/29 16:55:56 by aait-lha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,26 +27,26 @@ int	ft_strncmp(char const *s1, char const *s2, size_t n)
 	return (((unsigned char)(*s1) - (unsigned char)(*s2)));
 }
 
-char	*get_env_value(char *key, t_list *env)
-{
-	char	*env_str;
-	int		i;
+// char	*get_env_value(char *key, t_env *env)
+// {
+	// char	*env_str;
+	// int		i;
 
-	while (env != NULL)
-	{
-		env_str = (char *)env->content;
-		i = 0;
-		while (env_str[i] != '\0' && env_str[i] != '=')
-			i++;
-		if (env_str[i] == '=' && ft_strncmp(env_str, key, i) == 0
-			&& key[i] == '\0')
-		{
-			return (env_str + i + 1);
-		}
-		env = env->next;
-	}
-	return (NULL);
-}
+	// while (env != NULL)
+	// {
+	// 	env_str = (char *)env->content;
+	// 	i = 0;
+	// 	while (env_str[i] != '\0' && env_str[i] != '=')
+	// 		i++;
+	// 	if (env_str[i] == '=' && ft_strncmp(env_str, key, i) == 0
+	// 		&& key[i] == '\0')
+	// 	{
+	// 		return (env_str + i + 1);
+	// 	}
+	// 	env = env->next;
+	// }
+	// return (NULL);
+//}
 
 int	ft_isnum(char c)
 {
@@ -151,7 +151,7 @@ void expand_var(char **pipe, int *i, t_data *data)
 	j = *i + 1;
 	while ((*pipe)[j] && (ft_isalnum((*pipe)[j]) || (*pipe)[j] == '_'))
 		j++;
-	var_value = get_env_value(ft_substr(*pipe, *i + 1, j - *i - 1, data),
+	var_value = ft_getenv(ft_substr(*pipe, *i + 1, j - *i - 1, data),
 			data->env);
 	if (var_value)
 		expand_exist(pipe, i, j, var_value, data);
@@ -288,7 +288,7 @@ char *normal_expand(char *pipe, int i, t_data *data)
 	j = i + 1;
 	while (pipe[j] && (ft_isalnum(pipe[j]) || pipe[j] == '_'))
 		j++;
-	var_value = get_env_value(ft_substr(pipe, i + 1, j - i - 1, data),
+	var_value = ft_getenv(ft_substr(pipe, i + 1, j - i - 1, data),
 			data->env);
 	if (var_value)
 	{

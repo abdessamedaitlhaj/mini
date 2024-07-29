@@ -56,7 +56,8 @@ int main (int ac, char **av, char **envp)
 	struct termios	term;
 	t_data	data;
 
-	data = (t_data){NULL, NULL, 0, NULL, NULL, NULL, 0, NULL, 0, -2, -2, envp, 0};
+	data = (t_data){NULL, NULL, 0, NULL, NULL, \
+		NULL, 0, NULL, NULL, 1, 0, -2, -2, envp, 0};
 	init_envs(envp, &data);
 	signal(SIGINT, INT_HANDLER);
 	signal(SIGQUIT, SIG_IGN);

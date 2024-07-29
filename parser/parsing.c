@@ -6,7 +6,7 @@
 /*   By: aait-lha <aait-lha@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/27 07:25:48 by aait-lha          #+#    #+#             */
-/*   Updated: 2024/07/27 07:25:50 by aait-lha         ###   ########.fr       */
+/*   Updated: 2024/07/29 15:00:25 by aait-lha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,33 @@ char	*ft_itoa(int n, t_data *data)
 	str = ft_malloc(len + 1, &data->allocated);
 	if (!str)
 		return (NULL);
+	str[len] = '\0';
+	if (nbr < 0)
+	{
+		str[0] = '-';
+		nbr = -nbr;
+	}
+	if (nbr == 0)
+		str[0] = '0';
+	while (nbr > 0)
+	{
+		str[--len] = (nbr % 10) + '0';
+		nbr /= 10;
+	}
+	return (str);
+}
+
+char	*ft_itoa2(int n, t_data *data)
+{
+	char	*str;
+	long	nbr;
+	int		len;
+
+	nbr = n;
+	len = ft_numlen(nbr);
+	str = malloc(len + 1);
+	if (!str)
+		fail_error("malloc", &data->allocated);
 	str[len] = '\0';
 	if (nbr < 0)
 	{

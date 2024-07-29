@@ -6,59 +6,69 @@
 /*   By: aait-lha <aait-lha@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/15 16:55:14 by aait-lha          #+#    #+#             */
-/*   Updated: 2024/07/27 08:15:07 by aait-lha         ###   ########.fr       */
+/*   Updated: 2024/07/30 00:17:33 by aait-lha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-void	print_env(t_list *env, t_data *data)
+void	print_env(t_env *env)
 {
-	t_list	*tmp;
-	char	*key;
-	char	*value;
-
-	tmp = env;
-	while (tmp)
+	while (env)
 	{
-		key = ft_substr((char *)tmp->content, 0, \
-		ft_strchr((char *)tmp->content, '=') - (char *)tmp->content, data);
-		value = ft_strchr((char *)tmp->content, '=') + 1;
-		printf("declare -x %s=\"%s\"\n", key, value);
-		tmp = tmp->next;
+		if (ft_strcmp(env->key, "_") == 0)
+		{
+			env = env->next;
+			continue ;
+		}
+		ft_putstr_fd("declare -x ", 1);
+		ft_putstr_fd(env->key, 1);
+		ft_putstr_fd("=\"", 1);
+		ft_putstr_fd(env->value, 1);
+		ft_putendl_fd("\"", 1);
+		env = env->next;
 	}
 }
 
-int	ft_setenv(char *key, char *value, t_data *data)
+void	ft_setenv(char *key, char *value, t_data *data)
 {
-	char	*new_var;
-	char	*tmp;
-	t_list	*new;
+	t_env	*tmp;
 
-	tmp = ft_strjoin(key, "=", data);
-	new_var = ft_strjoin(tmp, value, data);
-	free(tmp);
-	new = ft_lstnew(new_var);
-	if (!new)
+	tmp = data->env;
+	while (tmp)
 	{
-		free(new_var);
-		free(tmp);
-		fail_error("malloc", &data->allocated);
+		if (ft_strcmp(tmp->key, key) == 0)
+		{
+			free(tmp->value);
+			tmp->value = value;
+			break ;
+		}
+		tmp = tmp->next;
 	}
-	if (ft_get_key_index(key, data->env) != -1)
-		ft_unsetenv(key, data);
-	ft_lstadd_back(&data->env, new);
-	return (0);
+	if (!tmp)
+		ft_add_env(&data->env, ft_new_env(key, value, data));
 }
 
 void	replace_env(t_key_value *k_v, t_data *data)
 {
-	if (k_v->append)
-		k_v->value = ft_strjoin(ft_getenv(k_v->key, data->env), \
-			k_v->value, data);
-	ft_unsetenv(k_v->key, data);
-	if (k_v->value)
-		ft_setenv(k_v->key, k_v->value, data);
+	t_env	*tmp;
+
+	tmp = data->env;
+	while (tmp)
+	{
+		if (ft_strcmp(tmp->key, k_v->key) == 0)
+		{
+			if (k_v->append)
+				tmp->value = ft_strjoin(tmp->value, k_v->value, data);
+			else
+			{
+				free(tmp->value);
+				tmp->value = k_v->value;
+			}
+			break ;
+		}
+		tmp = tmp->next;
+	}
 }
 
 int	ft_export(char **args, t_data *data, char *cmd)
@@ -76,13 +86,16 @@ int	ft_export(char **args, t_data *data, char *cmd)
 		{
 			if (k_v.err)
 				not_valid_identifier(k_v.key, cmd);
+			free(k_v.key);
 			continue ;
 		}
 		if (ft_get_key_index(k_v.key, data->env) != -1)
 			replace_env(&k_v, data);
 		else
+		{
 			if (k_v.value)
-				ft_setenv(k_v.key, k_v.value, data);
+				ft_add_env(&data->env, ft_new_env(k_v.key, k_v.value, data));
+		}
 	}
 	return (0);
 }

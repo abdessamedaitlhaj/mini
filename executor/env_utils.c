@@ -6,7 +6,7 @@
 /*   By: aait-lha <aait-lha@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/18 08:45:10 by aait-lha          #+#    #+#             */
-/*   Updated: 2024/07/25 20:35:13 by aait-lha         ###   ########.fr       */
+/*   Updated: 2024/07/29 21:26:28 by aait-lha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ int	check_empty_args(t_data *data, char **args)
 {
 	if (!args[0])
 	{
-		print_env(data->env, data);
+		print_env(data->env);
 		return (1);
 	}
 	return (0);
@@ -38,7 +38,9 @@ char	*extract_key(t_key_value *k_v, char *arg, t_data *data)
 	i = 0;
 	while (arg[i] && arg[i] != '=')
 		i++;
-	key = ft_malloc(sizeof(char) * (i + 1), &data->allocated);
+	key = malloc(sizeof(char) * (i + 1));
+	if (!key)
+		fail_error("malloc", &data->allocated);
 	i = 0;
 	while (arg[i] && arg[i] != '=')
 	{
@@ -52,4 +54,32 @@ char	*extract_key(t_key_value *k_v, char *arg, t_data *data)
 	}
 	key[i] = '\0';
 	return (key);
+}
+
+void	*ft_new_env(char *key, char	*value, t_data *data)
+{
+	t_env	*node;
+
+	node = malloc(sizeof(t_env));
+	if (!node)
+		fail_error("malloc", &data->allocated);
+	node->key = key;
+	node->value = value;
+	node->next = NULL;
+	return (node);
+}
+
+void	ft_add_env(t_env **env, t_env *new)
+{
+	t_env	*last;
+
+	if (!*env)
+	{
+		*env = new;
+		return ;
+	}
+	last = *env;
+	while (last->next)
+		last = last->next;
+	last->next = new;
 }
