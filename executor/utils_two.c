@@ -6,7 +6,7 @@
 /*   By: aait-lha <aait-lha@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/23 14:26:39 by aait-lha          #+#    #+#             */
-/*   Updated: 2024/07/30 11:00:03 by aait-lha         ###   ########.fr       */
+/*   Updated: 2024/07/30 12:34:33 by aait-lha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,15 +15,18 @@
 void	free_env(t_env **env)
 {
 	t_env	*tmp;
+	t_env	*next;
 
-	while (*env)
+	tmp = *env;
+	while (tmp)
 	{
-		tmp = *env;
-		*env = (*env)->next;
+		next = tmp->next;
 		free(tmp->key);
 		free(tmp->value);
 		free(tmp);
+		tmp = next;
 	}
+	*env = NULL;
 }
 
 char	*ft_strdup2(char *str, t_data *data)
