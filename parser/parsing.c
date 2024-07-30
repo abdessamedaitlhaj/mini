@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ael-hara <ael-hara@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aait-lha <aait-lha@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/26 20:34:56 by ael-hara          #+#    #+#             */
-/*   Updated: 2024/07/30 04:36:25 by ael-hara         ###   ########.fr       */
+/*   Updated: 2024/07/30 14:09:56 by aait-lha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,8 +35,10 @@ void	handle_heredoc(t_indexes indexes, t_data *data)
 		else
 			push_line(indexes.l, data
 				->cmds[indexes.i].files[indexes.j]->file, data);
-		close(indexes.l);
+		ft_close(&indexes.l, data);
 		indexes.l = open(path, O_RDONLY);
+		if (indexes.l == -1)
+			fail_error("open failed", &data->allocated);
 		data->cmds[indexes.i].files[indexes.j]->fd = indexes.l;
 		data->cmds[indexes.i].files[indexes.j]->file = path;
 	}

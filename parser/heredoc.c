@@ -6,7 +6,7 @@
 /*   By: aait-lha <aait-lha@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/08 00:37:39 by ael-hara          #+#    #+#             */
-/*   Updated: 2024/07/30 13:23:41 by aait-lha         ###   ########.fr       */
+/*   Updated: 2024/07/30 14:11:44 by aait-lha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,8 @@ void	push_line(int fd, char *limiter, t_data *data)
 		exit(0);
 	}
 	int child_exit_status;
-	waitpid(pid, &child_exit_status, 0);
+	if (waitpid(pid, &child_exit_status, 0) > 0)
+		fail_error("waitpid failed", &data->allocated);
 	if (WIFEXITED(child_exit_status) && WEXITSTATUS(child_exit_status) == 4)
 	{
 		data->exit_status = 1;
@@ -96,7 +97,8 @@ void	empty_line(char *limiter, t_data *data)
 		exit(0);
 	}
 	int child_exit_status;
-	waitpid(pid, &child_exit_status, 0);
+	if (waitpid(pid, &child_exit_status, 0) > 0)
+		fail_error("waitpid failed", &data->allocated);
 	if (WIFEXITED(child_exit_status) && WEXITSTATUS(child_exit_status) == 4)
 	{
 		data->exit_status = 1;
@@ -136,7 +138,8 @@ void	push_line_expand(int fd, char *limiter, t_data *data)
 		exit(0);
 	}
 	 int child_exit_status;
-	waitpid(pid, &child_exit_status, 0);
+	if (waitpid(pid, &child_exit_status, 0) > 0)
+		fail_error("waitpid failed", &data->allocated);
 	if (WIFEXITED(child_exit_status) && WEXITSTATUS(child_exit_status) == 4)
 	{
 		data->exit_status = 1;
