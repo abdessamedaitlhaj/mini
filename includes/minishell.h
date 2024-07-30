@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aait-lha <aait-lha@student.1337.ma>        +#+  +:+       +#+        */
+/*   By: ael-hara <ael-hara@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/15 18:13:05 by ael-hara          #+#    #+#             */
-/*   Updated: 2024/07/20 17:00:04 by aait-lha         ###   ########.fr       */
+/*   Updated: 2024/07/30 02:52:46 by ael-hara         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,7 +73,7 @@ typedef struct s_data
 	char	*line;
 	char	**pipes;
 	int		counter_command;
-	t_cmd	*cmds;                
+	t_cmd	*cmds;
 	t_list	*allocated;
 	char	**heredoc;
 	int		heredoc_error;
@@ -83,12 +83,14 @@ typedef struct s_data
 	int		fd_out;
 	char	**envp;
 	int		exit_status;
-	
+	char	*help;
 }	t_data;
-typedef struct s_split_args {
-    char const *s;
-    char const *delimiters;
-} t_split_args;
+
+typedef struct s_split_args
+{
+	char const	*s;
+	char const	*delimiters;
+}		t_split_args;
 
 typedef struct s_indexes
 {
@@ -96,8 +98,16 @@ typedef struct s_indexes
 	int	j;
 	int	k;
 	int	l;
-	int index;
+	int	index;
 }	t_indexes;
+
+typedef struct s_key_value
+{
+	char	*key;
+	char	*value;
+	int		err;
+	int		append;
+}	t_key_value;
 
 t_parsing_status	pair_quotes(char *line);
 t_parsing_status	parsing_pipe(char *str);
@@ -116,7 +126,6 @@ int					count_content_lst(t_list *lst, char *str);
 void				initialize_cmd(t_cmd *cmd);
 void				repalce_char_in_linked_list(t_list *lst,
 						char c, char new_c);
-void				free_array(char **array);
 void				allocate_memory_for_files(t_cmd *cmds, t_data *data,
 						char **split, int i);
 
@@ -142,18 +151,55 @@ void				handle_cmd_allocation(t_cmd *cmds, int *j,
 void				handle_cmd_args(t_cmd *cmds, int *j, int *k, char **split);
 void				count_cmd_args(int *j, int *k, char **split);
 int					ft_min(int a, int b, int c);
-char				*ft_strndup( char *s, size_t n);
-char				*expanding_outside (char *pipe, t_data *data);
-void				ambigious (t_cmd *cmd, t_data *data);
-char				*expanding_inside (char *pipe, t_data *data);
-char				*remove_q(char* str, t_data *data);
-void				empty_line(char *limiter);
+char				*ft_strndup( char *s, size_t n, t_data *data);
+char				*expanding_outside(char *pipe, t_data *data);
+void				ambigious(t_cmd *cmd, t_data *data);
+char				*expanding_inside(char *pipe, t_data *data);
+char				*remove_q(char *str, t_data *data);
+void				empty_line(char *limiter, t_data *data);
 void				push_line_expand(int fd, char *limiter, t_data *data);
 void				push_line(int fd, char *limiter, t_data *data);
 char				*expanding_final(char *pipe, t_data *data);
 char				*ft_itoa(int n, t_data *data);
 void				*ft_lstnew(void *content);
 void				ft_lstadd_back(t_list **list, t_list *new);
+void				sig_her_child(int sig);
+char				*get_env_value(char *key, t_list *env);
+int					ft_isalnum(char c);
+int					ft_isnum(char c);
+int					skip_redirection(char *pipe, int i, int flag);
+char				*expand_exit(char *pipe, int *i, t_data *data);
+void				expand_num(char **pipe, int i, t_data *data);
+void				expand_case(char **pipe, int *i, t_data *data);
+void				expand_exist(char **pipe, int *i, int j, t_data *data);
+void				expand_flag(char **pipe, int *i, int j, t_data *data);
+void				expand_var(char **pipe, int *i, t_data *data);
+int					expand_help(char **pipe, int *i, t_data *data);
+char				*expanding_outside(char *pipe, t_data *data);
+void				inside_exit(char **pipe, int *i, t_data *data);
+void				inside_number(char **pipe, int *i, t_data *data);
+void				expand_var(char **pipe, int *i, t_data *data);
+int					expand_help(char **pipe, int *i, t_data *data);
+char				*expanding_outside(char *pipe, t_data *data);
+void				inside_exit(char **pipe, int *i, t_data *data);
+void				inside_number(char **pipe, int *i, t_data *data);
+int					ft_numlen(int n);
+int					empty_line_parse(char *line);
+void				process_pipes(char **pipes, t_data *data);
+void				process_line(char **line, t_data *data);
+void				process_line_history(char *line);
+int					process_errors(char *line, t_data *data);
+void				herdoc_delimiters(char *line, int min, t_data *data);
+void				process_heredoc_quotes(char **heredoc, t_data *data);
+void				process_heredoc_line(char *line, int min, t_data *data);
+void				process_heredoc_line(char *line, int min, t_data *data);
+void				herdoc_delimiters(char *line, int min, t_data *data);
+char	*ft_strdup_quotes(char *s1, t_data *data);
+char	*remove_q(char* str, t_data *data);
+void remove_quotes(t_cmd *cmd, t_data *data);
+int check_null(char *str);
+void ambigious (t_cmd *cmd, t_data *data);
+
 
 //=============================================================================ME==================================================================================================
 
@@ -169,21 +215,19 @@ int					ft_isalpha(char c);
 void				ft_putendl_fd(char *s, int fd);
 int					ft_strncmp(const char *s1, const char *s2, size_t n);
 int					ft_strcmp(const char *s1, const char *s2);
-char				*ft_strjoin2(char *s1, char *s2, char *s3);
-char				**ft_split(char const *s, char c);
+char				*ft_strjoin2(char *s1, char *s2, char *s3, t_data *data);
 
 char				*ft_getenv(char *key, t_list *env);
 int					ft_get_key_index(char *key, t_list *env);
 int					ft_setenv(char *key, char *value, t_data *data);
 int					ft_unset(char **args, t_data *data, char *cmd);
-int					ft_unsetenv(char *key, t_data *data, char *cmd);
-int					env_size(t_list *env);
+int					ft_unsetenv(char *key, t_data *data);
 char				*ft_strchr(const char *s, int c);
 
 char				*find_cmd(t_data *data, char *cmd);
 int					execute_cmds(t_data *data);
 void				ft_exit(char *number, char **args);
-void				exec_cmd(t_data *data, char *cmd, char **args);
+void				exec_cmd(t_data *data, t_cmd *cmd);
 
 void				set_last_cmd(char *outfile, int *fd, int her);
 void				ft_close(int *fd, t_data *data);
@@ -193,7 +237,6 @@ int					dup_cmd_out(int *fd, t_data *data);
 char				**allocate_cmd_args(t_data *data, t_cmd *cmd);
 void				ft_memset(void *b, int c, size_t len);
 int					execute_cmds(t_data *data);
-void				free_allocated(t_list **garbage_collector);
 int					execute_one_node(t_data *data);
 int					ft_strcmp(const char *s1, const char *s2);
 
@@ -203,11 +246,10 @@ int					init_fd_in(t_data *data, t_cmd *cmd);
 int					is_builtin(t_cmd *cmd);
 int					other_builtins(t_data *data, t_cmd *cmd);
 int					ft_exec_builtin(t_cmd *cmd, t_data *data);
-int	dup_file(t_aa file, int fd, t_data *data);
+int					dup_file(t_aa file, int fd, t_data *data);
 int					dup_redir(t_data *data, int i, int *fd, int prev_fd);
 int					open_files(char *file, int index);
 char				**allocate_cmd_args(t_data *data, t_cmd *cmd);
-void				free_arr(char **arr);
 int					init_fds(t_data *data, t_cmd *cmd);
 void				perm_denied(char *cmd);
 void				cmd_not_found(char *cmd);
@@ -220,26 +262,37 @@ int					execute_one_node(t_data *data);
 void				save_last_pipe(t_data *data, int i, int *fd, int *prev_fd);
 int					execute_multiple_nodes(t_data *data);
 int					create_process(t_data *data, t_cmd *cmd);
-void				child_process(t_data *data, t_cmd *cmd);
 int					fork_process(t_data *data, int i, int *fd, int *prev_fd);
-int					ambigious_error(char *file);
 void				no_such_file(t_data *data, char *cmd);
-char				*check_access(t_data *data, char *path, char **paths, char *cmd);
+char				*check_access(t_data *data, char *path, char *cmd);
 void				print_env(t_list *env, t_data *data);
 int					ft_setenv(char *key, char *value, t_data *data);
-int					append_value(t_data *data, char *str, char *cmd);
-int					overwrite_or_add(t_data *data, char *str, char *cmd);
 int					check_empty_args(t_data *data, char **args);
 int					ft_export(char **args, t_data *data, char *cmd);
 char				*ft_pwd(t_data *data);
 int					ft_env(t_list *envp);
 int					ft_cd(char *path, t_data *data);
 int					ft_echo(t_data *data, char **args, int n);
-int					is_valid(char *key, char *cmd);
+int					is_valid(t_key_value *k_v, char *key, t_data *data);
+int					is_key_valid(char *arg, char *cmd);
 int					ft_isdigit(int c);
 int					not_valid_identifier(char *str, char *cmd);
-void	close_streams(int *fd1, int *fd2, t_data *data);
-void	close_pipe(int *fd, int *prev_fd, t_data *data);
-void	fail_error(char *str, t_data *data);
+int					close_streams(int *fd1, int *fd2, t_data *data);
+void				close_pipe(int *fd, int *prev_fd, t_data *data);
+void				fail_error(char *str, t_list **garbage_collector);
+void				free_env(t_list **env);
+void				get_status(t_data *data, int status);
+char				*ft_strdup2(char *str, t_data *data);
+void				exit_error(char *number);
+int					ft_chdir(char *path);
+int					set_home(char *home, char *pwd, t_data *data);
+int					set_prev(char *oldpwd, char *pwd, t_data *data);
+void				print_args(t_data *data, int i, int n, char **args);
+int					ft_atoi(char const *str);
+int					is_num(char *str);
+char				**get_paths(t_data *data, char *cmd);
+void				ft_lstremove(t_list **env, int index);
+int					ft_isalnm(int c);
+char				*extract_key(t_key_value *k_v, char *arg, t_data *data);
 
 #endif

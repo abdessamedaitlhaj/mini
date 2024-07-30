@@ -6,7 +6,7 @@
 /*   By: aait-lha <aait-lha@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/15 16:55:14 by aait-lha          #+#    #+#             */
-/*   Updated: 2024/07/20 14:29:33 by aait-lha         ###   ########.fr       */
+/*   Updated: 2024/07/26 01:12:23 by aait-lha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,42 +37,47 @@ int	ft_setenv(char *key, char *value, t_data *data)
 
 	tmp = ft_strjoin(key, "=", data);
 	new_var = ft_strjoin(tmp, value, data);
-	if (!new_var)
-		free(tmp);
 	free(tmp);
 	new = ft_lstnew(new_var);
 	if (!new)
+	{
 		free(new_var);
+		free(tmp);
+		fail_error("malloc", &data->allocated);
+	}
 	ft_lstadd_back(&data->env, new);
 	return (0);
 }
 
 int	ft_export(char **args, t_data *data, char *cmd)
 {
-	int		i;
-	char	*tmp;
+	int			i;
+	t_key_value	k_v;
 
 	if (check_empty_args(data, args))
 		return (1);
 	i = -1;
 	while (args[++i])
 	{
-		if (is_valid(args[i], cmd))
-			continue ;
-		if (ft_strchr(args[i], '='))
+		k_v = (t_key_value){NULL, NULL, 0, 0};
+		if (is_valid(&k_v, args[i], data))
 		{
-			if (ft_strchr(args[i], '+'))
-			{
-				tmp = ft_strchr(args[i], '+');
-				if (tmp[1] == '=')
-				{
-					if (append_value(data, args[i], cmd))
-						return (1);
-					return (0);
-				}
-			}
-			overwrite_or_add(data, args[i], cmd);
+			if (k_v.err)
+				not_valid_identifier(k_v.key, cmd);
+			continue ;
 		}
+		if (ft_get_key_index(k_v.key, data->env) != -1)
+		{
+			if (k_v.append)
+				k_v.value = ft_strjoin(ft_getenv(k_v.key, data->env), \
+					k_v.value, data);
+			ft_unsetenv(k_v.key, data);
+			if (k_v.value)
+				ft_setenv(k_v.key, k_v.value, data);
+		}
+		else
+			if (k_v.value)
+				ft_setenv(k_v.key, k_v.value, data);
 	}
 	return (0);
 }

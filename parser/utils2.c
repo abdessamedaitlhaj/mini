@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils2.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aait-lha <aait-lha@student.1337.ma>        +#+  +:+       +#+        */
+/*   By: ael-hara <ael-hara@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/22 15:01:38 by ael-hara          #+#    #+#             */
-/*   Updated: 2024/07/20 14:28:54 by aait-lha         ###   ########.fr       */
+/*   Updated: 2024/07/30 03:02:43 by ael-hara         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,8 +38,10 @@ char	*ft_strjoin(char *s1, char *s2, t_data *data)
 
 	i = 0;
 	j = 0;
-	str = ft_malloc(sizeof(char) * (ft_strlen(s1)
-				+ ft_strlen(s2) + 1), &data->allocated);
+	str = ft_malloc(sizeof(char) * (ft_strlen(s1) + ft_strlen(s2) + 1),
+			&data->allocated);
+	if (!str)
+		fail_error("malloc failed", &data->allocated);
 	while (s1[i])
 	{
 		str[i] = s1[i];
@@ -93,7 +95,7 @@ int	ft_min(int a, int b, int c)
 	return (c);
 }
 
-char	*ft_strndup( char *s, size_t n)
+char	*ft_strndup( char *s, size_t n, t_data *data)
 {
 	size_t		i;
 	size_t		len;
@@ -103,7 +105,7 @@ char	*ft_strndup( char *s, size_t n)
 	len = ft_strlen(s);
 	if (n < len)
 		len = n;
-	dup = (char *)malloc(len + 1);
+	dup = ft_malloc(sizeof(char) * (len + 1), &data->allocated);
 	if (!dup)
 		return (NULL);
 	while (i < len)

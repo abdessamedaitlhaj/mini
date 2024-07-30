@@ -6,7 +6,7 @@
 /*   By: ael-hara <ael-hara@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/22 15:15:14 by ael-hara          #+#    #+#             */
-/*   Updated: 2024/07/18 11:09:21 by ael-hara         ###   ########.fr       */
+/*   Updated: 2024/07/30 02:34:53 by ael-hara         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,31 +98,6 @@ void	handle_cmd_allocation(t_cmd *cmds, int *j, char **split, t_data *data)
 			cmds->cmd = split[*j];
 			(*j)++;
 			break ;
-		}
-		(*j)++;
-	}
-}
-
-void	handle_cmd_args(t_cmd *cmds, int *j, int *k, char **split)
-{
-	while (split[*j])
-	{
-		if (ft_strcmp(split[*j], "|") != 0)
-		{
-			cmds->args[*k] = split[*j];
-			(*k)++;
-		}
-		(*j)++;
-	}
-}
-
-void	count_cmd_args(int *j, int *k, char **split)
-{
-	while (split[*j])
-	{
-		if (ft_strcmp(split[*j], "|") != 0)
-		{
-			(*k)++;
 		}
 		(*j)++;
 	}

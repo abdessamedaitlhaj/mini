@@ -6,7 +6,7 @@
 /*   By: aait-lha <aait-lha@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/11 23:31:20 by aait-lha          #+#    #+#             */
-/*   Updated: 2024/07/19 08:12:22 by aait-lha         ###   ########.fr       */
+/*   Updated: 2024/07/23 18:57:30 by aait-lha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 int	is_builtin(t_cmd *cmd)
 {
-	if (ft_strcmp(cmd->cmd, "cd") == 0 ||ft_strcmp(cmd->cmd, "pwd") == 0 \
+	if (ft_strcmp(cmd->cmd, "cd") == 0 || ft_strcmp(cmd->cmd, "pwd") == 0 \
 	|| ft_strcmp(cmd->cmd, "echo") == 0 || ft_strcmp(cmd->cmd, "env") == 0 \
 	|| ft_strcmp(cmd->cmd, "export") == 0 || \
 	ft_strcmp(cmd->cmd, "unset") == 0 \
@@ -54,7 +54,7 @@ int	ft_exec_builtin(t_cmd *cmd, t_data *data)
 			return (1);
 		ft_putendl_fd(ft_pwd(data), 1);
 	}
-	else if (ft_strcmp(cmd->cmd, "echo") == 0)  
+	else if (ft_strcmp(cmd->cmd, "echo") == 0)
 		return (ft_echo(data, cmd->args, cmd->args_number));
 	return (other_builtins(data, cmd));
 	return (0);
