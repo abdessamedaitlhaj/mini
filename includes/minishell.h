@@ -6,7 +6,7 @@
 /*   By: aait-lha <aait-lha@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/30 04:30:21 by ael-hara          #+#    #+#             */
-/*   Updated: 2024/07/30 12:45:33 by aait-lha         ###   ########.fr       */
+/*   Updated: 2024/07/30 12:50:21 by aait-lha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,9 @@
 # include <sys/stat.h>
 # include <termios.h>
 # include <dirent.h>
+# include <signal.h>
+# include <dirent.h>
+# include <sys/wait.h>
 
 typedef struct s_list
 {
