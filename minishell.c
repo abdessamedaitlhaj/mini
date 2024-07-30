@@ -53,7 +53,7 @@ int main (int ac, char **av, char **envp)
 	struct termios	term;
 	t_data	data;
 
-	atexit(ll);
+	//atexit(ll);
 	if (ac != 1)
 	{
 		ft_putstr_fd("minishell: no arguments needed!\n", 2);
@@ -83,11 +83,11 @@ int main (int ac, char **av, char **envp)
 			free_allocated(&data.allocated);
             break;
 		}
-		// if (g_signal_flag == 1 && data.exit_status != 1)
-		// {
-		// 	data.exit_status = 1;
-		// 	g_signal_flag = 0;
-		// }
+		if (g_signal_flag == 1 && data.exit_status != 1)
+		{
+			data.exit_status = 1;
+			g_signal_flag = 0;
+		}
 		if (!parsing(line, &data))
 			continue ;
 		if (g_signal_flag == 1)
@@ -99,7 +99,6 @@ int main (int ac, char **av, char **envp)
 		free(line);
 		free_allocated(&data.allocated);
 		tcsetattr(0, TCSANOW, &term);
-		break ;
 	}
 	free_env(&data.env);
 	return (data.exit_status);

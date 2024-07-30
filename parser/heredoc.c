@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   heredoc.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ael-hara <ael-hara@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aait-lha <aait-lha@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/08 00:37:39 by ael-hara          #+#    #+#             */
-/*   Updated: 2024/07/30 02:33:39 by ael-hara         ###   ########.fr       */
+/*   Updated: 2024/07/30 13:23:41 by aait-lha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ void	push_line(int fd, char *limiter, t_data *data)
 	content = ft_strdup("", &data->allocated);
 	int pid = fork();
 	if (pid == -1)
-		exit(1);
+		fail_error("fork failed", &data->allocated);
 	if (pid == 0)
 	{
 		signal(SIGINT, sig_her_child);
@@ -73,7 +73,7 @@ void	empty_line(char *limiter, t_data *data)
 
 	pid = fork();
 	if (pid == -1)
-		exit(1);
+		fail_error("fork failed", &data->allocated);
 	if (pid == 0)
 	{
 		signal(SIGINT, sig_her_child);
@@ -112,7 +112,7 @@ void	push_line_expand(int fd, char *limiter, t_data *data)
 	content = ft_strdup("", &data->allocated);
 	int pid = fork();
 	if (pid == -1)
-		exit(1);
+		fail_error("fork failed", &data->allocated);
 	if (pid == 0)
 	{
 		signal(SIGINT, sig_her_child);
