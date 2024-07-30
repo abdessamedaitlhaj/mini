@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expanding_utils3.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ael-hara <ael-hara@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aait-lha <aait-lha@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/30 02:25:30 by ael-hara          #+#    #+#             */
-/*   Updated: 2024/07/30 02:58:20 by ael-hara         ###   ########.fr       */
+/*   Updated: 2024/07/30 07:50:02 by aait-lha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ char	*normal_expand(char *pipe, int i, t_data *data)
 	j = i + 1;
 	while (pipe[j] && (ft_isalnum(pipe[j]) || pipe[j] == '_'))
 		j++;
-	var_value = get_env_value(ft_substr(pipe, i + 1, j - i - 1, data),
+	var_value = ft_getenv(ft_substr(pipe, i + 1, j - i - 1, data),
 			data->env);
 	if (var_value)
 	{

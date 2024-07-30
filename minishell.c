@@ -45,20 +45,30 @@ void ll()
 {
 	system("leaks minishell");
 }
+
 int main (int ac, char **av, char **envp)
 {
-	(void)ac;
 	(void)av;
 	char	*line;
 	struct termios	term;
 	t_data	data;
 
+	atexit(ll);
+	if (ac != 1)
+	{
+		ft_putstr_fd("minishell: no arguments needed!\n", 2);
+		exit(1);
+	}
+	if (!isatty(0))
+	{
+		ft_putstr_fd("minishell: is not a tty!\n", 2);
+		exit(1);
+	}
 	data = (t_data){NULL, NULL, 0, NULL, NULL, \
-		NULL, 0, NULL, NULL, 1, 0, -2, -2, envp, 0, NULL};
+		NULL, 0, NULL, 0, 0, -2, -2, envp, 0, NULL};
 	init_envs(envp, &data);
 	signal(SIGINT, INT_HANDLER);
 	signal(SIGQUIT, SIG_IGN);
-	tcgetattr(0, &term);
 	while (77)
 	{
 		data.allocated = NULL;
@@ -66,21 +76,18 @@ int main (int ac, char **av, char **envp)
 		data.fd_out = -2;
 		tcgetattr(0, &term);
 		line = readline("minishell$ ");
-		if (g_signal_flag == 1 && data.exit_status != 1)
-		{
-			data.exit_status = 1;
-			g_signal_flag = 0;
-		}
 		if (!line)
 		{
-			rl_on_new_line();
-            printf("\033[0A");
-            rl_redisplay();
             ft_putstr_fd("exit\n", 1);
-			rl_clear_history();
+			free(line);
 			free_allocated(&data.allocated);
             break;
 		}
+		// if (g_signal_flag == 1 && data.exit_status != 1)
+		// {
+		// 	data.exit_status = 1;
+		// 	g_signal_flag = 0;
+		// }
 		if (!parsing(line, &data))
 			continue ;
 		if (g_signal_flag == 1)
@@ -92,6 +99,7 @@ int main (int ac, char **av, char **envp)
 		free(line);
 		free_allocated(&data.allocated);
 		tcsetattr(0, TCSANOW, &term);
+		break ;
 	}
 	free_env(&data.env);
 	return (data.exit_status);

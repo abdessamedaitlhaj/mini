@@ -6,7 +6,7 @@
 /*   By: aait-lha <aait-lha@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/11 23:31:20 by aait-lha          #+#    #+#             */
-/*   Updated: 2024/07/30 00:35:26 by aait-lha         ###   ########.fr       */
+/*   Updated: 2024/07/30 11:13:05 by aait-lha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,9 +41,8 @@ int	ft_exec_builtin(t_cmd *cmd, t_data *data)
 		return (ft_cd(cmd->args[0], data));
 	else if (ft_strcmp(cmd->cmd, "pwd") == 0)
 	{
-		if (!ft_pwd(data))
-			return (1);
-		ft_putendl_fd(ft_pwd(data), 1);
+		ft_putendl_fd(ft_getenv("PWD", data->env), 1);
+		return (0);
 	}
 	else if (ft_strcmp(cmd->cmd, "echo") == 0)
 		return (ft_echo(data, cmd->args, cmd->args_number));

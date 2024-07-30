@@ -1,4 +1,3 @@
-
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
@@ -7,7 +6,7 @@
 /*   By: aait-lha <aait-lha@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/15 13:04:10 by aait-lha          #+#    #+#             */
-/*   Updated: 2024/07/27 11:10:41 by aait-lha         ###   ########.fr       */
+/*   Updated: 2024/07/30 11:41:16 by aait-lha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,8 +47,9 @@ int	special_path(char *path, t_data *data)
 		{
 			if (chdir(home) == -1)
 				return (common_error("minishell: cd: ", home, ""));
-			ft_setenv("OLDPWD", data->pwd, data);
-			ft_setenv("PWD", ft_getcwd(), data);
+			ft_setenv(ft_strdup2("OLDPWD", data), ft_getenv("PWD", data->env), data);
+			ft_setenv(ft_strdup2("PWD", data), \
+			ft_strdup2(copy_cwd(getcwd(NULL, 0), data), data), data);
 			return (1);
 		}
 	}
@@ -60,8 +60,8 @@ int	special_path(char *path, t_data *data)
 		{
 			if (chdir(oldpwd) == -1)
 				return (common_error("minishell: cd: ", oldpwd, ""));
-			ft_setenv("OLDPWD", data->pwd, data);
-			ft_setenv("PWD", ft_getcwd(), data);
+			ft_setenv(ft_strdup2("OLDPWD", data), ft_getenv("PWD", data->env), data);
+			ft_setenv(ft_strdup2("PWD", data), copy_cwd(getcwd(NULL, 0), data), data);
 			return (1);
 		}
 	}
@@ -70,37 +70,35 @@ int	special_path(char *path, t_data *data)
 
 int	ft_cd(char *path, t_data *data)
 {
-	DIR		*dir;
+	//DIR		*dir;
 	char	*d;
+	//char	*tmp;
 
-
-	if (special_path(path, data))
-		return (0);
-	dir = opendir(path);
-	if (!dir)
-		return (common_error("minishell: cd: ", path, ""));
-	else
-		closedir(dir);
+	// if (special_path(path, data))
+	// 	return (0);
+	// dir = opendir(path);
+	// if (!dir)
+	// 	return (common_error("minishell: cd: ", path, ""));
+	// else
+	// 	closedir(dir);
 	if (chdir(path) == -1)
 		return (common_error("minishell: cd: ", path, ""));
-	printf("adasd\n");
-	d = ft_getcwd();
-	if (!d)
-	{
-		d = ft_strjoin(data->pwd, "/", data);
-		d = ft_strjoin(d, path, data);
-		ft_setenv("OLDPWD", data->pwd, data);
-		ft_setenv("PWD", d, data);
-		data->pwd = d;
-		return (0);
-	}
-	else if (ft_strcmp(path, data->pwd) == 0)
-	{
-		ft_setenv("OLDPWD", data->pwd, data);
-		return (0);
-	}
-	ft_setenv("OLDPWD", data->pwd, data);
-	data->pwd = d;
-	ft_setenv("PWD", d, data);
+	d = copy_cwd(getcwd(NULL, 0), data);
+	// if (!d)
+	// {
+	// 	tmp = ft_strjoin(ft_getenv("PWD", data->env), "/", data);
+	// 	d = ft_strjoin(tmp, path, data);
+	// 	free(tmp);
+	// 	ft_setenv(ft_strdup2("OLDPWD", data), ft_getenv("PWD", data->env), data);
+	// 	ft_setenv(ft_strdup2("PWD", data), d, data);
+	// 	return (0);
+	// }
+	// else if (ft_strcmp(path, ft_getenv("PWD", data->env)) == 0)
+	// {
+	// 	ft_setenv(ft_strdup2("OLDPWD", data), ft_getenv("PWD", data->env), data);
+	// 	return (0);
+	// }
+	ft_setenv(ft_strdup2("OLDPWD", data), ft_strdup2(ft_getenv("PWD", data->env), data), data);
+	ft_setenv(ft_strdup2("PWD", data), d, data);
 	return (0);
 }

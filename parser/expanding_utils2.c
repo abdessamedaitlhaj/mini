@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expanding_utils2.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ael-hara <ael-hara@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aait-lha <aait-lha@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/30 02:16:42 by ael-hara          #+#    #+#             */
-/*   Updated: 2024/07/30 02:32:06 by ael-hara         ###   ########.fr       */
+/*   Updated: 2024/07/30 07:49:09 by aait-lha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ void expand_var(char **pipe, int *i, t_data *data)
 	j = *i + 1;
 	while ((*pipe)[j] && (ft_isalnum((*pipe)[j]) || (*pipe)[j] == '_'))
 		j++;
-	var_value = get_env_value(ft_substr(*pipe, *i + 1, j - *i - 1, data),
+	var_value = ft_getenv(ft_substr(*pipe, *i + 1, j - *i - 1, data),
 			data->env);
 	data->help = var_value;
 	if (var_value)

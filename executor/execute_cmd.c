@@ -6,7 +6,7 @@
 /*   By: aait-lha <aait-lha@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/17 22:16:07 by aait-lha          #+#    #+#             */
-/*   Updated: 2024/07/27 11:33:11 by aait-lha         ###   ########.fr       */
+/*   Updated: 2024/07/30 09:42:47 by aait-lha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,7 @@ int	create_process(t_data *data, t_cmd *cmd)
 	int		status;
 
 	status = 0;
+	data->envp = get_env_array(data->env, data);
 	pid = fork();
 	if (pid == -1)
 	{

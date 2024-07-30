@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ael-hara <ael-hara@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aait-lha <aait-lha@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/30 04:30:21 by ael-hara          #+#    #+#             */
-/*   Updated: 2024/07/30 04:30:27 by ael-hara         ###   ########.fr       */
+/*   Updated: 2024/07/30 12:19:00 by aait-lha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,7 +86,6 @@ typedef struct s_data
 	char	**heredoc;
 	int		heredoc_error;
 	t_env	*env;
-	char	*pwd;
 	int		empty_env;
 	int		delimiter_count;
 	int		fd_in;
@@ -173,7 +172,6 @@ char				*ft_itoa(int n, t_data *data);
 void				*ft_lstnew(void *content);
 void				ft_lstadd_back(t_list **list, t_list *new);
 void				sig_her_child(int sig);
-char				*get_env_value(char *key, t_list *env);
 int					ft_isalnum(char c);
 int					ft_isnum(char c);
 int					skip_redirection(char *pipe, int i, int flag);
@@ -203,12 +201,11 @@ void				process_heredoc_quotes(char **heredoc, t_data *data);
 void				process_heredoc_line(char *line, int min, t_data *data);
 void				process_heredoc_line(char *line, int min, t_data *data);
 void				herdoc_delimiters(char *line, int min, t_data *data);
-char	*ft_strdup_quotes(char *s1, t_data *data);
-char	*remove_q(char* str, t_data *data);
-void remove_quotes(t_cmd *cmd, t_data *data);
-int check_null(char *str);
-void ambigious (t_cmd *cmd, t_data *data);
-
+char				*ft_strdup_quotes(char *s1, t_data *data);
+char				*remove_q(char* str, t_data *data);
+void				remove_quotes(t_cmd *cmd, t_data *data);
+int					check_null(char *str);
+void				ambigious (t_cmd *cmd, t_data *data);
 
 //=============================================================================ME==================================================================================================
 
@@ -267,7 +264,6 @@ char				*check_access(t_data *data, char *path, char *cmd);
 void				print_env(t_env *env);
 int					check_empty_args(t_data *data, char **args);
 int					ft_export(char **args, t_data *data, char *cmd);
-char				*ft_pwd(t_data *data);
 int					ft_env(t_env *env, int args_number);
 int					ft_cd(char *path, t_data *data);
 int					ft_echo(t_data *data, char **args, int n);
@@ -294,7 +290,6 @@ int					ft_isalnm(int c);
 char				*extract_key(t_key_value *k_v, char *arg, t_data *data);
 void				replace_env(t_key_value *k_v, t_data *data);
 void				init(int *fd, t_data *data);
-char				*ft_getcwd();
 char				*home_set(t_data *data);
 char				*oldpwd_set(t_data *data);
 int					special_path(char *path, t_data *data);
@@ -302,5 +297,7 @@ char				*ft_itoa2(int n, t_data *data);
 void				*ft_new_env(char	*key, char	*value, t_data *data);
 void				ft_add_env(t_env **env, t_env *new);
 void				ft_setenv(char *key, char *value, t_data *data);
+char				**get_env_array(t_env *env, t_data *data);
+char				*copy_cwd(char *cwd, t_data *data);
 
 #endif

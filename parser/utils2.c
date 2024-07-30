@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils2.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ael-hara <ael-hara@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aait-lha <aait-lha@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/22 15:01:38 by ael-hara          #+#    #+#             */
-/*   Updated: 2024/07/30 03:02:43 by ael-hara         ###   ########.fr       */
+/*   Updated: 2024/07/30 12:21:56 by aait-lha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,8 +19,6 @@ char	*ft_substr(char *s, unsigned int start, size_t len, t_data *data)
 
 	i = 0;
 	str = ft_malloc(sizeof(char) * (len + 1), &data->allocated);
-	if (!str)
-		return (NULL);
 	while (i < len && s[start + i])
 	{
 		str[i] = s[start + i];
@@ -38,8 +36,7 @@ char	*ft_strjoin(char *s1, char *s2, t_data *data)
 
 	i = 0;
 	j = 0;
-	str = ft_malloc(sizeof(char) * (ft_strlen(s1) + ft_strlen(s2) + 1),
-			&data->allocated);
+	str = malloc(sizeof(char) * (ft_strlen(s1) + ft_strlen(s2) + 1));
 	if (!str)
 		fail_error("malloc failed", &data->allocated);
 	while (s1[i])
