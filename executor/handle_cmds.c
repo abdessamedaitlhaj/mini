@@ -6,7 +6,7 @@
 /*   By: aait-lha <aait-lha@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/22 19:09:09 by aait-lha          #+#    #+#             */
-/*   Updated: 2024/07/26 01:10:12 by aait-lha         ###   ########.fr       */
+/*   Updated: 2024/07/29 16:56:52 by aait-lha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,6 +50,15 @@ void	save_last_pipe(t_data *data, int i, int *fd, int *prev_fd)
 	}
 }
 
+void	init(int *fd, t_data *data)
+{
+	fd[0] = -2;
+	fd[1] = -2;
+	data->fd_in = -2;
+	data->fd_out = -2;
+	data->exit_status = 0;
+}
+
 int	execute_multiple_nodes(t_data *data)
 {
 	int	i;
@@ -57,10 +66,10 @@ int	execute_multiple_nodes(t_data *data)
 	int	prev_fd;
 
 	i = -1;
+	prev_fd = -2;
 	while (++i < data->counter_command)
 	{
-		if (check_files(data, i, fd, &prev_fd))
-			continue ;
+		init(fd, data);
 		if (i < data->counter_command - 1)
 		{
 			if (pipe(fd) == -1)
@@ -71,7 +80,9 @@ int	execute_multiple_nodes(t_data *data)
 				exit(1);
 			}
 		}
-		fork_process(data, i, fd, &prev_fd);
+		init_fds(data, &data->cmds[i]);
+		if (!data->cmds[i].flag_command)
+			fork_process(data, i, fd, &prev_fd);
 		close_streams(&data->fd_in, &data->fd_out, data);
 		save_last_pipe(data, i, fd, &prev_fd);
 	}

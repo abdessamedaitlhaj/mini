@@ -6,7 +6,7 @@
 /*   By: aait-lha <aait-lha@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/08 17:48:09 by aait-lha          #+#    #+#             */
-/*   Updated: 2024/07/25 20:14:52 by aait-lha         ###   ########.fr       */
+/*   Updated: 2024/07/30 00:48:11 by aait-lha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ int	ft_isdigit(int c)
 	return (0);
 }
 
-int	ft_atoi(char const *str)
+int	ft_atoi(char const *str, int *f)
 {
 	int				sign;
 	long long int	c;
@@ -29,20 +29,22 @@ int	ft_atoi(char const *str)
 	sign = 1;
 	while (*str && ft_isspace(*str))
 		str++;
-	if (*str == '+' || *str == '-')
+	if (*str == '-' || *str == '+')
 	{
 		if (*str == '-')
-			sign *= -1;
+			sign = -1;
 		str++;
 	}
 	while (*str && ft_isdigit(*str))
 	{
 		c = sum;
 		sum = sum * 10 + sign * (*str - 48);
-		if (sum > c && sign < 0)
-			return (0);
-		if (sum < c && sign > 0)
+		if ((sum > c && sign < 0) || (sum < c && sign > 0))
+		{
+			if (f)
+				*f = 1;
 			return (-1);
+		}
 		str++;
 	}
 	return (sum);
@@ -53,7 +55,7 @@ int	is_num(char *str)
 	int	i;
 
 	i = 0;
-	if (str[i] == '+' || str[i] == '-')
+	if (str[i] == '-' || str[i] == '+')
 		i++;
 	while (str[i])
 	{
@@ -64,26 +66,30 @@ int	is_num(char *str)
 	return (1);
 }
 
-void	ft_exit(char *number, char **args)
+void	ft_exit(char **args, int arg_number)
 {
-	int	len1;
-	int	len2;
+	int	e;
+	int	f;
 
+	f = 0;
+	if (!arg_number)
+	{
+		ft_putendl_fd("exit", 1);
+		exit(0);
+	}
 	if (!is_num(args[0]))
+		exit_error(args[0]);
+	e = ft_atoi(args[0], &f);
+	if (f == 1)
 		exit_error(args[0]);
 	if (args[1])
 	{
-		ft_putendl_fd("exit", 2);
-		ft_putendl_fd("minishell: exit: too many arguments", 2);
+		ft_putendl_fd("exit", 1);
+		ft_putendl_fd("minishell: exit: too many arguments", 1);
 		exit(1);
 	}
-	len1 = ft_strlen(number);
-	len2 = ft_strlen("9223372036854775807");
-	if (len1 > len2 || (len1 == len2 && \
-	ft_strncmp(number, "9223372036854775807", len1) > 0))
-		exit_error(number);
 	ft_putendl_fd("exit", 1);
-	exit(ft_atoi(number) % 256);
+	exit(e % 256);
 }
 
 int	is_dir(char *path)

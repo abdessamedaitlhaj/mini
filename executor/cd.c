@@ -1,3 +1,4 @@
+
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
@@ -6,83 +7,100 @@
 /*   By: aait-lha <aait-lha@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/15 13:04:10 by aait-lha          #+#    #+#             */
-/*   Updated: 2024/07/23 19:00:44 by aait-lha         ###   ########.fr       */
+/*   Updated: 2024/07/27 11:10:41 by aait-lha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-int	ft_chdir(char *path)
+char	*home_set(t_data *data)
 {
-	if (chdir(path) == -1)
-	{
-		ft_putstr_fd("minishell: cd: ", 2);
-		ft_putstr_fd(path, 2);
-		ft_putstr_fd(": ", 2);
-		perror("");
-		return (1);
-	}
-	return (0);
-}
+	char	*home;
 
-int	set_home(char *home, char *pwd, t_data *data)
-{
+	home = ft_getenv("HOME", data->env);
 	if (home)
-	{
-		if (!home[0])
-			return (1);
-		ft_setenv("PWD", home, data);
-		ft_setenv("OLDPWD", pwd, data);
-		if (ft_chdir(home) == -1)
-			return (1);
-	}
-	else
-	{
-		ft_putendl_fd("minishell: cd: HOME not set", 2);
-		return (1);
-	}
-	return (0);
+		return (home);
+	ft_putendl_fd("minishell: cd: HOME not set", 2);
+	return (NULL);
 }
 
-int	set_prev(char *oldpwd, char *pwd, t_data *data)
+char	*oldpwd_set(t_data *data)
 {
+	char	*oldpwd;
+
+	oldpwd = ft_getenv("OLDPWD", data->env);
 	if (oldpwd)
+		return (oldpwd);
+	ft_putendl_fd("minishell: cd: OLDPWD not set", 2);
+	return (NULL);
+}
+
+int	special_path(char *path, t_data *data)
+{
+	char	*home;
+	char	*oldpwd;
+
+	if (ft_strcmp(path, "~") == 0 || ft_strcmp(path, "~/") == 0 \
+		|| ft_strcmp(path, "--") == 0 || !path)
 	{
-		ft_setenv("PWD", oldpwd, data);
-		ft_setenv("OLDPWD", pwd, data);
-		if (ft_chdir(oldpwd) == -1)
+		home = home_set(data);
+		if (home && home[0])
+		{
+			if (chdir(home) == -1)
+				return (common_error("minishell: cd: ", home, ""));
+			ft_setenv("OLDPWD", data->pwd, data);
+			ft_setenv("PWD", ft_getcwd(), data);
 			return (1);
+		}
 	}
-	else
+	else if (ft_strcmp(path, "-") == 0)
 	{
-		ft_putendl_fd("minishell: cd: OLDPWD not set", 2);
-		return (1);
+		oldpwd = oldpwd_set(data);
+		if (oldpwd && oldpwd[0])
+		{
+			if (chdir(oldpwd) == -1)
+				return (common_error("minishell: cd: ", oldpwd, ""));
+			ft_setenv("OLDPWD", data->pwd, data);
+			ft_setenv("PWD", ft_getcwd(), data);
+			return (1);
+		}
 	}
 	return (0);
 }
 
 int	ft_cd(char *path, t_data *data)
 {
-	char	*pwd;
-	char	*oldpwd;
-	char	*home;
+	DIR		*dir;
+	char	*d;
 
-	pwd = ft_pwd(data);
-	if (!pwd)
-		return (1);
-	oldpwd = ft_getenv("OLDPWD", data->env);
-	home = ft_getenv("HOME", data->env);
-	if (!path || !path[0] || !ft_strcmp(path, "~") || \
-		!ft_strcmp(path, "--"))
-		return (set_home(home, pwd, data));
-	else if (path[0] == '-' && !path[1])
-		return (set_prev(oldpwd, pwd, data));
+
+	if (special_path(path, data))
+		return (0);
+	dir = opendir(path);
+	if (!dir)
+		return (common_error("minishell: cd: ", path, ""));
 	else
+		closedir(dir);
+	if (chdir(path) == -1)
+		return (common_error("minishell: cd: ", path, ""));
+	printf("adasd\n");
+	d = ft_getcwd();
+	if (!d)
 	{
-		ft_setenv("PWD", path, data);
-		ft_setenv("OLDPWD", pwd, data);
-		if (ft_chdir(path) == -1)
-			return (-1);
+		d = ft_strjoin(data->pwd, "/", data);
+		d = ft_strjoin(d, path, data);
+		ft_setenv("OLDPWD", data->pwd, data);
+		ft_setenv("PWD", d, data);
+		data->pwd = d;
+		return (0);
 	}
+	else if (ft_strcmp(path, data->pwd) == 0)
+	{
+		ft_setenv("OLDPWD", data->pwd, data);
+		return (0);
+	}
+	ft_setenv("OLDPWD", data->pwd, data);
+	data->pwd = d;
+	ft_setenv("PWD", d, data);
 	return (0);
 }

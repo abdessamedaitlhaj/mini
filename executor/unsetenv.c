@@ -6,33 +6,35 @@
 /*   By: aait-lha <aait-lha@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/15 19:25:27 by aait-lha          #+#    #+#             */
-/*   Updated: 2024/07/26 01:14:11 by aait-lha         ###   ########.fr       */
+/*   Updated: 2024/07/29 21:32:57 by aait-lha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-void	ft_lstremove(t_list **env, int index)
+void	ft_remove_env(t_env **env, char	*key)
 {
-	t_list	*tmp;
-	t_list	*prev;
-	int		i;
+	t_env	*tmp;
+	t_env	*prev;
 
-	i = 0;
 	tmp = *env;
 	prev = NULL;
-	while (tmp && i < index)
+	while (tmp)
 	{
+		if (ft_strcmp(tmp->key, key) == 0)
+		{
+			if (prev)
+				prev->next = tmp->next;
+			else
+				*env = tmp->next;
+			free(tmp->key);
+			free(tmp->value);
+			free(tmp);
+			break ;
+		}
 		prev = tmp;
 		tmp = tmp->next;
-		i++;
 	}
-	if (prev)
-		prev->next = tmp->next;
-	else
-		*env = tmp->next;
-	free(tmp->content);
-	free(tmp);
 }
 
 int	is_valid(t_key_value *k_v, char *arg, t_data *data)
@@ -46,7 +48,6 @@ int	is_valid(t_key_value *k_v, char *arg, t_data *data)
 		if (ft_isdigit(k_v->key[0]) || \
 			(!ft_isalnm(k_v->key[i]) && k_v->key[i] != '_'))
 		{
-			free(k_v->key);
 			k_v->err = 1;
 			return (1);
 		}
@@ -72,26 +73,23 @@ int	is_key_valid(char *arg, char *cmd)
 
 int	ft_unset(char **args, t_data *data, char *cmd)
 {
-	t_list	*tmp;
+	t_env	*tmp;
 	int		i;
-	int		j;
 
-	j = -1;
-	while (args[++j])
+	i = -1;
+	while (args[++i])
 	{
-		if (is_key_valid(args[j], cmd))
+		if (is_key_valid(args[i], cmd))
 			continue ;
 		tmp = data->env;
-		i = 0;
 		while (tmp)
 		{
-			if (!ft_strncmp(args[j], (char *)tmp->content, ft_strlen(args[j])))
+			if (ft_strcmp(args[i], tmp->key) == 0 && ft_strcmp(args[i], "_"))
 			{
-				ft_lstremove(&data->env, i);
+				ft_remove_env(&data->env, args[i]);
 				break ;
 			}
 			tmp = tmp->next;
-			i++;
 		}
 	}
 	return (0);
@@ -99,20 +97,17 @@ int	ft_unset(char **args, t_data *data, char *cmd)
 
 int	ft_unsetenv(char *key, t_data *data)
 {
-	t_list	*tmp;
-	int		i;
+	t_env	*tmp;
 
 	tmp = data->env;
-	i = 0;
 	while (tmp)
 	{
-		if (!ft_strncmp(key, (char *)tmp->content, ft_strlen(key)))
+		if (ft_strcmp(key, tmp->key) == 0)
 		{
-			ft_lstremove(&data->env, i);
-			return (0);
+			ft_remove_env(&data->env, key);
+			break ;
 		}
 		tmp = tmp->next;
-		i++;
 	}
 	return (0);
 }

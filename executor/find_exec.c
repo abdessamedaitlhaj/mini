@@ -6,7 +6,7 @@
 /*   By: aait-lha <aait-lha@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/07 12:08:33 by aait-lha          #+#    #+#             */
-/*   Updated: 2024/07/23 18:52:56 by aait-lha         ###   ########.fr       */
+/*   Updated: 2024/07/29 21:55:32 by aait-lha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,14 +37,14 @@ char	**allocate_cmd_args(t_data *data, t_cmd *cmd)
 char	**get_paths(t_data *data, char *cmd)
 {
 	char	**paths;
-	t_list	*tmp;
+	t_env	*tmp;
 
 	tmp = data->env;
-	while (tmp && ft_strncmp(tmp->content, "PATH=", 5) != 0)
+	while (tmp && ft_strcmp(tmp->key, "PATH") != 0)
 		tmp = tmp->next;
 	if (!tmp)
 		no_such_file(data, cmd);
-	paths = ft_split_str(tmp->content + 5, ":", data);
+	paths = ft_split_str(tmp->value, ":", data);
 	return (paths);
 }
 
@@ -55,7 +55,7 @@ char	*check_access(t_data *data, char *path, char *cmd)
 	{
 		if ((cmd[0] == '.' && !cmd[1]) || (cmd[0] == '.' && \
 			cmd[1] == '.' && !cmd[2]))
-			cmd_not_found(cmd);
+			cmd_not_found(cmd, data);
 		if (is_dir(path) == 1)
 			dir_error(data, cmd);
 		if (access(path, X_OK) == 0)
@@ -70,13 +70,16 @@ char	*find_cmd(t_data *data, char *cmd)
 {
 	char	**paths;
 	char	*path;
+	char	*tmp;
 	int		i;
 
 	paths = get_paths(data, cmd);
 	i = -1;
 	while (paths && paths[++i])
 	{
-		path = ft_strjoin2(paths[i], "/", cmd, data);
+		tmp = ft_strjoin2(paths[i], "/", data);
+		path = ft_strjoin2(tmp, cmd, data);
+		free(tmp);
 		if (check_access(data, path, cmd))
 			return (path);
 	}

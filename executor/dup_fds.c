@@ -6,7 +6,7 @@
 /*   By: aait-lha <aait-lha@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/11 23:33:03 by aait-lha          #+#    #+#             */
-/*   Updated: 2024/07/23 19:01:56 by aait-lha         ###   ########.fr       */
+/*   Updated: 2024/07/28 22:09:20 by aait-lha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ int	dup_file(t_aa file, int fd, t_data *data)
 	{
 		if (fd > 2)
 		{
-			if (dup2(fd, STDOUT_FILENO) == -1)
+			if (dup2(fd, 1) == -1)
 				fail_error("dup2", &data->allocated);
 		}
 	}
@@ -40,7 +40,7 @@ int	dup_file(t_aa file, int fd, t_data *data)
 	{
 		if (fd > 2)
 		{
-			if (dup2(fd, STDIN_FILENO) == -1)
+			if (dup2(fd, 0) == -1)
 				fail_error("dup2", &data->allocated);
 		}
 	}
@@ -51,7 +51,7 @@ int	dup_cmd_in(int prev_fd, t_data *data)
 {
 	if (prev_fd > 2)
 	{
-		if (dup2(prev_fd, STDIN_FILENO) == -1)
+		if (dup2(prev_fd, 0) == -1)
 			fail_error("dup2", &data->allocated);
 	}
 	ft_close(&prev_fd, data);

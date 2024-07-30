@@ -6,7 +6,7 @@
 /*   By: aait-lha <aait-lha@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/11 23:29:45 by aait-lha          #+#    #+#             */
-/*   Updated: 2024/07/25 20:31:20 by aait-lha         ###   ########.fr       */
+/*   Updated: 2024/07/28 21:35:24 by aait-lha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,38 +53,10 @@ int	init_fds(t_data *data, t_cmd *cmd)
 		{
 			ft_putstr_fd("minishell: ", 2);
 			ft_putstr_fd(cmd->files[i]->file, 2);
-			ft_putendl_fd(": No such file or directory", 2);
+			ft_putstr_fd(": ", 2);
+			perror("");
 			return (1);
 		}
-	}
-	return (0);
-}
-
-int	check_files(t_data *data, int i, int *fd, int *prev_fd)
-{
-	data->exit_status = 0;
-	data->fd_in = -2;
-	data->fd_out = -2;
-	if (data->cmds[i].files)
-	{
-		if (init_fds(data, &data->cmds[i]))
-		{
-			close_streams(&data->fd_in, &data->fd_out, data);
-			close_streams(&data->fd_in, &data->fd_out, data);
-			if (i > 0)
-				ft_close(prev_fd, data);
-			*prev_fd = -2;
-			return (1);
-		}
-	}
-	if (data->cmds[i].flag_command)
-	{
-		close_streams(&data->fd_in, &data->fd_out, data);
-		close_pipe(fd, prev_fd, data);
-		if (i > 0)
-			ft_close(prev_fd, data);
-		*prev_fd = -2;
-		return (1);
 	}
 	return (0);
 }

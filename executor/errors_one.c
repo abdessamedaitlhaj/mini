@@ -6,7 +6,7 @@
 /*   By: aait-lha <aait-lha@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/11 23:28:08 by aait-lha          #+#    #+#             */
-/*   Updated: 2024/07/23 18:54:42 by aait-lha         ###   ########.fr       */
+/*   Updated: 2024/07/27 07:48:01 by aait-lha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,11 +20,13 @@ void	perm_denied(char *cmd)
 	exit(126);
 }
 
-void	cmd_not_found(char *cmd)
+void	cmd_not_found(char *cmd, t_data *data)
 {
 	ft_putstr_fd("minishell: ", 2);
 	ft_putstr_fd(cmd, 2);
 	ft_putendl_fd(": command not found", 2);
+	//free_allocated(&data->allocated);
+	data->exit_status = 127;
 	exit(127);
 }
 

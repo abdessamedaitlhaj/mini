@@ -20,8 +20,8 @@ int	execute_cmds(t_data *data)
 		while (waitpid(-1, &status, 0) > 0)
 			get_status(data, status);
 	}
-	if (dup2(stdin_copy, STDIN_FILENO) == -1 || \
-		dup2(stdout_copy, STDOUT_FILENO) == -1)
+	if (dup2(stdin_copy, 0) == -1 || \
+		dup2(stdout_copy, 1) == -1)
 		fail_error("dup2", &data->allocated);
 	close_streams(&stdin_copy, &stdout_copy, data);
 	return (0);
@@ -52,19 +52,19 @@ int main (int ac, char **av, char **envp)
 	char	*line;
 	struct termios	term;
 	t_data	data;
-	
-	// atexit(ll);
-	data = (t_data){NULL, NULL, 0, NULL, NULL, NULL, 0, NULL, 0, -2, -2, envp, 0, NULL};
+
+	data = (t_data){NULL, NULL, 0, NULL, NULL, \
+		NULL, 0, NULL, NULL, 1, 0, -2, -2, envp, 0, NULL};
 	init_envs(envp, &data);
 	signal(SIGINT, INT_HANDLER);
 	signal(SIGQUIT, SIG_IGN);
-	tcgetattr(STDIN_FILENO, &term);
+	tcgetattr(0, &term);
 	while (77)
 	{
 		data.allocated = NULL;
 		data.fd_in = -2;
 		data.fd_out = -2;
-		tcgetattr(STDIN_FILENO, &term);
+		tcgetattr(0, &term);
 		line = readline("minishell$ ");
 		if (g_signal_flag == 1 && data.exit_status != 1)
 		{
@@ -91,7 +91,7 @@ int main (int ac, char **av, char **envp)
 		execute_cmds(&data);
 		free(line);
 		free_allocated(&data.allocated);
-		tcsetattr(STDIN_FILENO, TCSANOW, &term);
+		tcsetattr(0, TCSANOW, &term);
 	}
 	free_env(&data.env);
 	return (data.exit_status);
