@@ -6,12 +6,11 @@
 /*   By: ael-hara <ael-hara@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/15 18:37:48 by ael-hara          #+#    #+#             */
-/*   Updated: 2024/07/30 02:51:38 by ael-hara         ###   ########.fr       */
+/*   Updated: 2024/07/30 23:08:15 by ael-hara         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
-
 
 void	initialize_cmd_and_set_flags(t_cmd *cmds,
 		t_indexes *indexes, char **split, t_data *data)
@@ -31,9 +30,11 @@ void	initialize_cmd_and_set_flags(t_cmd *cmds,
 		+ cmds[indexes->i].outfile + cmds[indexes->i].infile] = NULL;
 }
 
-void check_null_command(t_cmd *cmds , t_data *data)
+void	check_null_command(t_cmd *cmds, t_data *data)
 {
-	int i = 0;
+	int	i;
+
+	i = 0;
 	while (i < data->counter_command)
 	{
 		if (cmds[i].cmd == NULL)
@@ -44,18 +45,21 @@ void check_null_command(t_cmd *cmds , t_data *data)
 	}
 }
 
-char *change_delimiter(char *str, t_data *data)
+char	*change_delimiter(char *str, t_data *data)
 {
-	int i = 0;
-	char hold;
+	int		i;
+	char	hold;
+	char	*tmp2;
+
+	i = 0;
 	while (str[i])
 	{
-		if (str[i] == '$' && str[i + 1] &&( str[i + 1] == '\''  || str[i + 1] == '"'))
+		if (str[i] == '$' && str[i + 1]
+			&& (str[i + 1] == '\'' || str[i + 1] == '"'))
 		{
 			hold = str[i + 1];
-			char *tmp = ft_substr(str, 0, i, data);
-			char *tmp2 = ft_substr(str, i + 1, ft_strlen(str) - i - 1, data);
-			str = ft_strjoin(tmp, tmp2, data);
+			tmp2 = ft_substr(str, i + 1, ft_strlen(str) - i - 1, data);
+			str = ft_strjoin(ft_substr(str, 0, i, data), tmp2, data);
 		}
 		if (str[i] && (str[i] == '"' || str[i] == '\''))
 		{
@@ -69,17 +73,22 @@ char *change_delimiter(char *str, t_data *data)
 	return (str);
 }
 
-void heredoc_loop(t_cmd *cmds, t_data *data)
+void	heredoc_loop(t_cmd *cmds, t_data *data)
 {
-	int i = 0;
+	int	i;
+	int	j;
+
+	i = 0;
 	while (i < data->counter_command)
 	{
-		int j = 0;
-		while (j < cmds[i].outfile + cmds[i].infile + cmds[i].heredoc + cmds[i].append)
+		j = 0;
+		while (j < cmds[i].outfile + cmds[i].infile + cmds[i].heredoc
+			+ cmds[i].append)
 		{
 			if (cmds[i].files[j]->type == HEREDOC)
 			{
-				cmds[i].files[j]->file = change_delimiter(cmds[i].files[j]->file, data);
+				cmds[i].files[j]->file
+					= change_delimiter(cmds[i].files[j]->file, data);
 			}
 			j++;
 		}
@@ -91,15 +100,14 @@ void	fill_command(t_data *data)
 {
 	char		**split;
 	t_indexes	indexes;
-	t_cmd* cmds = ft_malloc(sizeof(t_cmd) * data->counter_command, &data->allocated);
-	indexes = (t_indexes){0, 0, 0, 0,0};
+	t_cmd		*cmds;
+
+	indexes = (t_indexes){0, 0, 0, 0, 0};
+	cmds = ft_malloc(sizeof(t_cmd) * data->counter_command, &data->allocated);
 	while (indexes.i < data->counter_command)
 	{
-		indexes.j = 0;
-		indexes.l = 0;
-		indexes.k = 0;
 		split = ft_split_str(data->pipes[indexes.i], " \t", data);
-		initialize_cmd_and_set_flags(cmds, &indexes, split, data);
+		init_fill_command(cmds, &indexes, split, data);
 		while (split[indexes.j])
 		{
 			quote_replace(split[indexes.j], -6, ' ');
@@ -107,23 +115,12 @@ void	fill_command(t_data *data)
 			handle_redirections(cmds, &indexes, split, data);
 			indexes.j++;
 		}
-		indexes.j = 0;
-		handle_cmd_allocation(&cmds[indexes.i], &indexes.j, split, data);
-		indexes.l = indexes.j;
-		indexes.k = 0;
-		count_cmd_args(&indexes.j, &indexes.k, split);
-		cmds[indexes.i].args
-			= ft_malloc((sizeof(char *) * (indexes.k +1)), &data->allocated);
-		cmds[indexes.i].args[indexes.k] = NULL;
+		fill_command_index(cmds, &indexes, split, data);
 		cmds[indexes.i].args_number = indexes.k;
 		indexes.k = 0;
 		indexes.j = indexes.l;
 		handle_cmd_args(&cmds[indexes.i], &indexes.j, &indexes.k, split);
 		indexes.i++;
 	}
-	check_null_command(cmds, data);
-	ambigious(cmds, data);
-	heredoc_loop(cmds, data);
-	remove_quotes(cmds, data);
-	data->cmds = cmds;
+	fill_command_help(cmds, data);
 }

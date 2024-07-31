@@ -53,7 +53,7 @@ int main (int ac, char **av, char **envp)
 	struct termios	term;
 	t_data	data;
 
-	//atexit(ll);
+	// atexit(ll);
 	if (ac != 1)
 	{
 		ft_putstr_fd("minishell: no arguments needed!\n", 2);

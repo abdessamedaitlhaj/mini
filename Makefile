@@ -8,6 +8,8 @@ SRCS = 	minishell.c 					\
 		parser/parsing_line.c 			\
 		parser/parsing_line_utils.c		\
 		parser/parsing_line_utils2.c	\
+		parser/parsing_line_utils3.c	\
+		parser/parsing_line_utils4.c	\
 		parser/pipe.c 					\
 		parser/quotes.c					\
 		parser/split.c 					\
@@ -26,6 +28,7 @@ SRCS = 	minishell.c 					\
 		parser/expanding_utils3.c		\
 		parser/parsing_redir.c			\
 		parser/heredoc.c				\
+		parser/heredoc_utils.c			\
 		executor/utils_one.c			\
 		executor/export.c				\
 		executor/env_utils.c			\
