@@ -58,7 +58,7 @@ void	process_heredoc_line(char *line, int min, t_data *data)
 	int	start;
 
 	j = 0;
-	data->heredoc = malloc((data->delimiter_count + 1) * sizeof(char *));
+	data->heredoc = ft_malloc((data->delimiter_count + 1) * sizeof(char *), &data->allocated);
 	data->heredoc[data->delimiter_count] = NULL;
 	i = 0;
 	while (i < min)
