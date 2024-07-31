@@ -6,7 +6,7 @@
 /*   By: aait-lha <aait-lha@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/22 15:01:38 by ael-hara          #+#    #+#             */
-/*   Updated: 2024/07/30 12:21:56 by aait-lha         ###   ########.fr       */
+/*   Updated: 2024/07/31 08:48:19 by aait-lha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,24 @@ char	*ft_substr(char *s, unsigned int start, size_t len, t_data *data)
 
 	i = 0;
 	str = ft_malloc(sizeof(char) * (len + 1), &data->allocated);
+	while (i < len && s[start + i])
+	{
+		str[i] = s[start + i];
+		i++;
+	}
+	str[i] = '\0';
+	return (str);
+}
+
+char	*ft_substr2(char *s, unsigned int start, size_t len, t_data *data)
+{
+	char	*str;
+	size_t	i;
+
+	i = 0;
+	str = malloc(sizeof(char) * (len + 1), &data->allocated);
+	if (!str)
+		fail_error("malloc failed", &data->allocated);
 	while (i < len && s[start + i])
 	{
 		str[i] = s[start + i];
