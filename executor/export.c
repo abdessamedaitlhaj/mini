@@ -6,7 +6,7 @@
 /*   By: aait-lha <aait-lha@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/15 16:55:14 by aait-lha          #+#    #+#             */
-/*   Updated: 2024/07/30 00:17:33 by aait-lha         ###   ########.fr       */
+/*   Updated: 2024/07/31 09:38:30 by aait-lha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,8 @@ void	ft_setenv(char *key, char *value, t_data *data)
 		if (ft_strcmp(tmp->key, key) == 0)
 		{
 			free(tmp->value);
-			tmp->value = value;
+			free(tmp->key);
+			ft_add_env(&data->env, ft_new_env(key, value, data));
 			break ;
 		}
 		tmp = tmp->next;
