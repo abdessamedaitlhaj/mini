@@ -6,7 +6,7 @@
 /*   By: aait-lha <aait-lha@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/26 20:34:56 by ael-hara          #+#    #+#             */
-/*   Updated: 2024/07/31 08:25:31 by aait-lha         ###   ########.fr       */
+/*   Updated: 2024/07/31 10:20:12 by aait-lha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,10 +36,10 @@ void	handle_heredoc(t_indexes indexes, t_data *data)
 			push_line(indexes.l, data
 				->cmds[indexes.i].files[indexes.j]->file, data);
 		ft_close(&indexes.l, data);
-		indexes.l = open(path, O_RDONLY);
-		if (indexes.l == -1)
-			fail_error("open failed", &data->allocated);
-		data->cmds[indexes.i].files[indexes.j]->fd = indexes.l;
+		// indexes.l = open(path, O_RDONLY);
+		// if (indexes.l == -1)
+		// 	fail_error("open failed", &data->allocated);
+		// data->cmds[indexes.i].files[indexes.j]->fd = indexes.l;
 		data->cmds[indexes.i].files[indexes.j]->file = path;
 	}
 }
