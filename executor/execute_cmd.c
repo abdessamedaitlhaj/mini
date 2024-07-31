@@ -6,7 +6,7 @@
 /*   By: aait-lha <aait-lha@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/17 22:16:07 by aait-lha          #+#    #+#             */
-/*   Updated: 2024/07/30 09:42:47 by aait-lha         ###   ########.fr       */
+/*   Updated: 2024/07/31 07:52:02 by aait-lha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,6 @@ int	create_process(t_data *data, t_cmd *cmd)
 	int		status;
 
 	status = 0;
-	data->envp = get_env_array(data->env, data);
 	pid = fork();
 	if (pid == -1)
 	{
@@ -58,11 +57,7 @@ int	create_process(t_data *data, t_cmd *cmd)
 		signal(SIGINT, sig_handler);
 		exec_cmd(data, cmd);
 	}
-	if (waitpid(pid, &status, 0) == -1)
-	{
-		close_streams(&data->fd_in, &data->fd_out, data);
-		fail_error("waitpid", &data->allocated);
-	}
+	waitpid(pid, &status, 0);
 	get_status(data, status);
 	return (data->exit_status);
 }

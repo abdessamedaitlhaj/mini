@@ -6,7 +6,7 @@
 /*   By: aait-lha <aait-lha@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/30 04:30:21 by ael-hara          #+#    #+#             */
-/*   Updated: 2024/07/30 14:08:57 by aait-lha         ###   ########.fr       */
+/*   Updated: 2024/07/31 07:53:24 by aait-lha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -296,11 +296,9 @@ void				init(int *fd, t_data *data);
 char				*home_set(t_data *data);
 char				*oldpwd_set(t_data *data);
 int					special_path(char *path, t_data *data);
-char				*ft_itoa2(int n, t_data *data);
 void				*ft_new_env(char	*key, char	*value, t_data *data);
 void				ft_add_env(t_env **env, t_env *new);
 void				ft_setenv(char *key, char *value, t_data *data);
-char				**get_env_array(t_env *env, t_data *data);
 char				*copy_cwd(char *cwd, t_data *data);
 
 #endif
