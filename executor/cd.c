@@ -47,9 +47,8 @@ int	special_path(char *path, t_data *data)
 		{
 			if (chdir(home) == -1)
 				return (common_error("minishell: cd: ", home, ""));
-			ft_setenv("OLDPWD", ft_getenv("PWD", data->env), data);
-			ft_setenv("PWD", copy_cwd(getcwd(NULL, 0), data), data);
-			printf("adas\n");
+			ft_setenv(ft_strdup2("OLDPWD", data), ft_strdup2(ft_getenv("PWD", data->env), data), data);
+			ft_setenv(ft_strdup2("PWD", data), copy_cwd(getcwd(NULL, 0), data), data);
 			return (1);
 		}
 	}
@@ -60,8 +59,8 @@ int	special_path(char *path, t_data *data)
 		{
 			if (chdir(oldpwd) == -1)
 				return (common_error("minishell: cd: ", oldpwd, ""));
-			ft_setenv("OLDPWD", ft_getenv("PWD", data->env), data);
-			ft_setenv("PWD", copy_cwd(getcwd(NULL, 0), data), data);
+			ft_setenv(ft_strdup2("OLDPWD", data), ft_strdup2(ft_getenv("PWD", data->env), data), data);
+			ft_setenv(ft_strdup2("PWD", data), copy_cwd(getcwd(NULL, 0), data), data);
 			return (1);
 		}
 	}
@@ -89,16 +88,16 @@ int	ft_cd(char *path, t_data *data)
 		tmp = ft_strjoin(ft_getenv("PWD", data->env), "/", data);
 		d = ft_strjoin(tmp, path, data);
 		free(tmp);
-		ft_setenv("OLDPWD", ft_getenv("PWD", data->env), data);
-		ft_setenv("PWD", d, data);
+		ft_setenv(ft_strdup2("OLDPWD", data), ft_strdup2(ft_getenv("PWD", data->env), data), data);
+		ft_setenv(ft_strdup2("PWD", data), d, data);
 		return (0);
 	}
 	else if (ft_strcmp(path, ft_getenv("PWD", data->env)) == 0)
 	{
-		ft_setenv("OLDPWD", ft_getenv("PWD", data->env), data);
+		ft_setenv(ft_strdup2("OLDPWD", data), ft_strdup2(ft_getenv("PWD", data->env), data), data);
 		return (0);
 	}
-	ft_setenv("OLDPWD", ft_strdup2(ft_getenv("PWD", data->env), data), data);
-	ft_setenv("PWD", d, data);
+	ft_setenv(ft_strdup2("OLDPWD", data), ft_strdup2(ft_getenv("PWD", data->env), data), data);
+	ft_setenv(ft_strdup2("PWD", data), d, data);
 	return (0);
 }

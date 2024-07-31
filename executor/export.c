@@ -39,7 +39,9 @@ void	ft_setenv(char *key, char *value, t_data *data)
 	{
 		if (ft_strcmp(tmp->key, key) == 0)
 		{
+			free(tmp->key);
 			free(tmp->value);
+			tmp->key = key;
 			tmp->value = value;
 			break ;
 		}
