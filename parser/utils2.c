@@ -34,7 +34,7 @@ char	*ft_substr2(char *s, unsigned int start, size_t len, t_data *data)
 	size_t	i;
 
 	i = 0;
-	str = malloc(sizeof(char) * (len + 1), &data->allocated);
+	str = malloc(sizeof(char) * (len + 1));
 	if (!str)
 		fail_error("malloc failed", &data->allocated);
 	while (i < len && s[start + i])

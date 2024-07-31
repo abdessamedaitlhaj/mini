@@ -47,7 +47,7 @@ void	init_envs(char **envp, t_data *data)
 			j = 0;
 			while (envp[i][j] && envp[i][j] != '=')
 				j++;
-			key = ft_substr(envp[i], 0, j, data);
+			key = ft_substr2(envp[i], 0, j, data);
 			value = ft_strdup2(ft_strchr(envp[i], '=') + 1, data);
 			if (!key || !value)
 				continue ;
