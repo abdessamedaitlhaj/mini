@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   expanding_utils2.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aait-lha <aait-lha@student.1337.ma>        +#+  +:+       +#+        */
+/*   By: ael-hara <ael-hara@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/30 02:16:42 by ael-hara          #+#    #+#             */
-/*   Updated: 2024/07/30 07:49:09 by aait-lha         ###   ########.fr       */
+/*   Updated: 2024/07/30 15:17:47 by ael-hara         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-void expand_var(char **pipe, int *i, t_data *data)
+void	expand_var(char **pipe, int *i, t_data *data)
 {
 	char	*var_value;
 	int		j;
@@ -36,13 +36,11 @@ void expand_var(char **pipe, int *i, t_data *data)
 		if ((*pipe)[z] == '>' || (*pipe)[z] == '<')
 			flag = 1;
 		if (!flag)
-		{
 			expand_flag(pipe, i, j, data);
-		}
 	}
 }
 
-int expand_help(char **pipe, int *i, t_data *data)
+int	expand_help(char **pipe, int *i, t_data *data)
 {
 	if ((*pipe)[*i + 1] && (*pipe)[*i + 1] == '?')
 	{
@@ -56,14 +54,10 @@ int expand_help(char **pipe, int *i, t_data *data)
 		return (-1);
 	}
 	else if ((*pipe)[*i + 1] && ft_isnum((*pipe)[*i + 1]))
-	{
 		expand_num(pipe, *i, data);
-	}
 	else if ((*pipe)[*i + 1] && ((*pipe)[*i + 1] == '"'
 		|| (*pipe)[*i + 1] == '\''))
-	{
 		expand_case(pipe, i, data);
-	}
 	else if ((*pipe)[*i + 1] && ft_isspace((*pipe)[*i + 1]))
 		(*i)++;
 	else
@@ -71,21 +65,20 @@ int expand_help(char **pipe, int *i, t_data *data)
 	return (0);
 }
 
-char *expanding_outside(char *pipe, t_data *data)
+char	*expanding_outside(char *pipe, t_data *data)
 {
 	int	i;
 
 	i = -1;
 	while (pipe[++i])
 	{
-		if ((pipe[i] == '<' || pipe[i] =='>') && pipe[i + 1] &&( pipe[i + 1] == '<' || pipe[i + 1] == '>'))
-	{			
-	i = skip_redirection(pipe, i, 0);
-	}		
-			else if (pipe[i] == '<'  || pipe[i] == '>')
-			{
+		if ((pipe[i] == '<' || pipe[i] == '>') && pipe[i + 1]
+			&& (pipe[i + 1] == '<' || pipe[i + 1] == '>'))
+			i = skip_redirection(pipe, i, 0);
+		else if (pipe[i] == '<' || pipe[i] == '>')
+		{
 			i = skip_redirection(pipe, i, 1);
-			}
+		}
 		else if (pipe[i] == '$')
 		{
 			if (expand_help(&pipe, &i, data) == -1)
@@ -97,7 +90,7 @@ char *expanding_outside(char *pipe, t_data *data)
 	return (pipe);
 }
 
-void inside_exit(char **pipe, int *i, t_data *data)
+void	inside_exit(char **pipe, int *i, t_data *data)
 {
 	char	*exit_status_str;
 	char	*before;
@@ -112,7 +105,7 @@ void inside_exit(char **pipe, int *i, t_data *data)
 	*i += ft_strlen(exit_status_str) - 1;
 }
 
-void inside_number(char **pipe, int *i, t_data *data)
+void	inside_number(char **pipe, int *i, t_data *data)
 {
 	char	*before;
 	char	*after;

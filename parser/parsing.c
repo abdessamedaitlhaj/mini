@@ -6,17 +6,16 @@
 /*   By: aait-lha <aait-lha@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/26 20:34:56 by ael-hara          #+#    #+#             */
-/*   Updated: 2024/07/30 14:09:56 by aait-lha         ###   ########.fr       */
+/*   Updated: 2024/07/31 08:25:31 by aait-lha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-extern int g_signal_flag;
+extern int	g_signal_flag;
 
 void	handle_heredoc(t_indexes indexes, t_data *data)
 {
-	char	*index_str;
 	char	*base_path;
 	char	*path;
 
@@ -24,11 +23,12 @@ void	handle_heredoc(t_indexes indexes, t_data *data)
 		empty_line(data->cmds[indexes.i].files[indexes.j]->file, data);
 	else
 	{
-		index_str = ft_itoa(indexes.index, data);
 		base_path = "/tmp/heredoc";
-		path = ft_strjoin(base_path, index_str, data);
+		path = ft_strjoin(base_path, ft_itoa(indexes.index, data), data);
 		indexes.index++;
 		indexes.l = open(path, O_CREAT | O_RDWR | O_TRUNC, 0644);
+		if (indexes.l == -1)
+			fail_error("open failed", &data->allocated);
 		if (data->cmds[indexes.i].files[indexes.j]->expanding_heredoc == 0)
 			push_line_expand(indexes.l, data
 				->cmds[indexes.i].files[indexes.j]->file, data);

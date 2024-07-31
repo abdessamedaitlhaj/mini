@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expanding_utils3.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aait-lha <aait-lha@student.1337.ma>        +#+  +:+       +#+        */
+/*   By: ael-hara <ael-hara@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/30 02:25:30 by ael-hara          #+#    #+#             */
-/*   Updated: 2024/07/30 07:50:02 by aait-lha         ###   ########.fr       */
+/*   Updated: 2024/07/30 15:00:41 by ael-hara         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ void	inside_quote_ex(char **pipe, int i, t_data *data)
 	char	*tmp;
 
 	before = ft_substr(*pipe, 0, i, data);
-	after = ft_substr(*pipe, i , ft_strlen(*pipe) - i, data);
+	after = ft_substr(*pipe, i, ft_strlen(*pipe) - i, data);
 	tmp = ft_strjoin(before, after, data);
 	*pipe = tmp;
 }

@@ -6,13 +6,13 @@
 /*   By: ael-hara <ael-hara@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/30 02:39:58 by ael-hara          #+#    #+#             */
-/*   Updated: 2024/07/30 03:01:46 by ael-hara         ###   ########.fr       */
+/*   Updated: 2024/07/30 23:11:25 by ael-hara         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-extern int g_signal_flag;
+extern int	g_signal_flag;
 
 void	process_pipes(char **pipes, t_data *data)
 {

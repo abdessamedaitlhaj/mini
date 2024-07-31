@@ -6,7 +6,7 @@
 /*   By: aait-lha <aait-lha@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/30 04:30:21 by ael-hara          #+#    #+#             */
-/*   Updated: 2024/07/31 07:53:24 by aait-lha         ###   ########.fr       */
+/*   Updated: 2024/07/31 08:24:47 by aait-lha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -209,6 +209,13 @@ char				*remove_q(char* str, t_data *data);
 void				remove_quotes(t_cmd *cmd, t_data *data);
 int					check_null(char *str);
 void				ambigious (t_cmd *cmd, t_data *data);
+void				fill_command_help(t_cmd *cmds, t_data *data);
+void				fill_command_index(t_cmd *cmds, t_indexes *indexes, 
+					char **split, t_data *data);
+void				init_fill_command(t_cmd *cmds, t_indexes *indexes, 
+					char **split, t_data *data);
+void				check_null_command(t_cmd *cmds , t_data *data);
+void				heredoc_loop(t_cmd *cmds, t_data *data);
 
 //=============================================================================ME==================================================================================================
 

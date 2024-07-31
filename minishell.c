@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   minishell.c                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: aait-lha <aait-lha@student.1337.ma>        +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/07/31 08:07:08 by aait-lha          #+#    #+#             */
+/*   Updated: 2024/07/31 08:27:40 by aait-lha         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "includes/minishell.h"
 
 int g_signal_flag = 0;
@@ -53,7 +65,7 @@ int main (int ac, char **av, char **envp)
 	struct termios	term;
 	t_data	data;
 
-	atexit(ll);
+	//atexit(ll);
 	if (ac != 1)
 	{
 		ft_putstr_fd("minishell: no arguments needed!\n", 2);
@@ -99,7 +111,6 @@ int main (int ac, char **av, char **envp)
 		free(line);
 		free_allocated(&data.allocated);
 		tcsetattr(0, TCSANOW, &term);
-		break ;
 	}
 	free_env(&data.env);
 	return (data.exit_status);
