@@ -77,8 +77,8 @@ char	*find_cmd(t_data *data, char *cmd)
 	i = -1;
 	while (paths && paths[++i])
 	{
-		tmp = ft_strjoin2(paths[i], "/", data);
-		path = ft_strjoin2(tmp, cmd, data);
+		tmp = ft_strjoin(paths[i], "/", data);
+		path = ft_strjoin(tmp, cmd, data);
 		free(tmp);
 		if (check_access(data, path, cmd))
 			return (path);

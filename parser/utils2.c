@@ -54,9 +54,7 @@ char	*ft_strjoin(char *s1, char *s2, t_data *data)
 
 	i = 0;
 	j = 0;
-	str = malloc(sizeof(char) * (ft_strlen(s1) + ft_strlen(s2) + 1));
-	if (!str)
-		fail_error("malloc failed", &data->allocated);
+	str = ft_malloc(sizeof(char) * (ft_strlen(s1) + ft_strlen(s2) + 1), &data->allocated);
 	while (s1[i])
 	{
 		str[i] = s1[i];

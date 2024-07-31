@@ -61,7 +61,7 @@ void	replace_env(t_key_value *k_v, t_data *data)
 		if (ft_strcmp(tmp->key, k_v->key) == 0)
 		{
 			if (k_v->append)
-				tmp->value = ft_strjoin(tmp->value, k_v->value, data);
+				tmp->value = ft_strjoin2(tmp->value, k_v->value, data);
 			else
 			{
 				free(tmp->value);

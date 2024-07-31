@@ -111,6 +111,7 @@ int main (int ac, char **av, char **envp)
 		free(line);
 		free_allocated(&data.allocated);
 		tcsetattr(0, TCSANOW, &term);
+		break;
 	}
 	free_env(&data.env);
 	return (data.exit_status);

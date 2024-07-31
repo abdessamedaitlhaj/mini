@@ -85,8 +85,8 @@ int	ft_cd(char *path, t_data *data)
 	d = copy_cwd(getcwd(NULL, 0), data);
 	if (!d)
 	{
-		tmp = ft_strjoin(ft_getenv("PWD", data->env), "/", data);
-		d = ft_strjoin(tmp, path, data);
+		tmp = ft_strjoin2(ft_getenv("PWD", data->env), "/", data);
+		d = ft_strjoin2(tmp, path, data);
 		free(tmp);
 		ft_setenv(ft_strdup2("OLDPWD", data), ft_strdup2(ft_getenv("PWD", data->env), data), data);
 		ft_setenv(ft_strdup2("PWD", data), d, data);
