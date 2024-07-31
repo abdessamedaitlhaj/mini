@@ -6,7 +6,7 @@
 /*   By: aait-lha <aait-lha@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/31 08:07:08 by aait-lha          #+#    #+#             */
-/*   Updated: 2024/07/31 08:27:40 by aait-lha         ###   ########.fr       */
+/*   Updated: 2024/07/31 10:48:22 by aait-lha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,7 @@ int main (int ac, char **av, char **envp)
 	struct termios	term;
 	t_data	data;
 
-	//atexit(ll);
+	atexit(ll);
 	if (ac != 1)
 	{
 		ft_putstr_fd("minishell: no arguments needed!\n", 2);
@@ -101,7 +101,12 @@ int main (int ac, char **av, char **envp)
 			g_signal_flag = 0;
 		}
 		if (!parsing(line, &data))
-			continue ;
+		{
+			//continue ;
+			free_allocated(&data.allocated);
+			//free(line);
+			break;
+		}
 		if (g_signal_flag == 1)
 		{
 			g_signal_flag = 0;
