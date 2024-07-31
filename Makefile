@@ -1,6 +1,6 @@
 CC = cc
 S =  -fsanitize=address -ggdb3
-CFLAGS = -Wall -Wextra -Werror
+CFLAGS =
 NAME = minishell
 RM = rm -f
 READLINEDIR    =    $(shell brew --prefix readline)
