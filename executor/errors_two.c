@@ -6,7 +6,7 @@
 /*   By: aait-lha <aait-lha@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/17 21:55:20 by aait-lha          #+#    #+#             */
-/*   Updated: 2024/07/30 07:50:18 by aait-lha         ###   ########.fr       */
+/*   Updated: 2024/07/31 14:11:52 by aait-lha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,8 @@ int	common_error(char *str1, char *str2, char *str3)
 	ft_putstr_fd(str1, 2);
 	ft_putstr_fd(str2, 2);
 	ft_putstr_fd(": ", 2);
-	perror(str3);
+	if (str3)
+		perror(str3);
 	return (1);
 }
 

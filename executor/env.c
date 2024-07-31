@@ -6,7 +6,7 @@
 /*   By: aait-lha <aait-lha@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/15 19:39:04 by aait-lha          #+#    #+#             */
-/*   Updated: 2024/07/31 07:49:08 by aait-lha         ###   ########.fr       */
+/*   Updated: 2024/07/31 14:17:19 by aait-lha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,15 @@ void	init_envs(char **envp, t_data *data)
 int	ft_env(t_env *env, int arg_number)
 {
 	if (arg_number)
-		return (0);
+	{
+		ft_putendl_fd("env: No such file or directory", 2);
+		return (127);
+	}
+	if (!ft_getenv("PATH", env))
+	{
+		ft_putendl_fd("minishell: env: No such file or directory", 2);
+		return (127);
+	}
 	while (env)
 	{
 		ft_putstr_fd(env->key, 1);

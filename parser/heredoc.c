@@ -6,7 +6,7 @@
 /*   By: aait-lha <aait-lha@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/08 00:37:39 by ael-hara          #+#    #+#             */
-/*   Updated: 2024/07/31 08:27:07 by aait-lha         ###   ########.fr       */
+/*   Updated: 2024/07/31 13:59:38 by aait-lha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,8 +61,7 @@ void	push_line(int fd, char *limiter, t_data *data)
 		fail_error("fork failed", &data->allocated);
 	if (pid == 0)
 		push_loop(limiter, content, data, fd);
-	if (waitpid(pid, &child_exit_status, 0) > 0)
-		fail_error("waitpid failed", &data->allocated);
+	waitpid(pid, &child_exit_status, 0);
 	if (WIFEXITED(child_exit_status) && WEXITSTATUS(child_exit_status) == 4)
 	{
 		data->exit_status = 1;

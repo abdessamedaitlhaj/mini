@@ -6,7 +6,7 @@
 /*   By: aait-lha <aait-lha@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/30 04:30:21 by ael-hara          #+#    #+#             */
-/*   Updated: 2024/07/31 08:48:33 by aait-lha         ###   ########.fr       */
+/*   Updated: 2024/07/31 14:25:24 by aait-lha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -235,7 +235,7 @@ int					ft_unsetenv(char *key, t_data *data);
 char				*ft_strchr(const char *s, int c);
 char				*find_cmd(t_data *data, char *cmd);
 int					execute_cmds(t_data *data);
-void				ft_exit(char **args, int arg_number);
+int					ft_exit(char **args, int arg_number, t_data *data);
 void				exec_cmd(t_data *data, t_cmd *cmd);
 void				set_last_cmd(char *outfile, int *fd, int her);
 void				ft_close(int *fd, t_data *data);
@@ -308,5 +308,6 @@ void				ft_add_env(t_env **env, t_env *new);
 void				ft_setenv(char *key, char *value, t_data *data);
 char				*copy_cwd(char *cwd, t_data *data);
 char				*ft_substr2(char *s, unsigned int start, size_t len, t_data *data);
+void				not_dir(t_data *data, char *cmd);
 
 #endif

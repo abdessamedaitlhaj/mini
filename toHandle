@@ -1,0 +1,79 @@
+====================
+minishell$ << a << a << a"" cat
+> heloasdfads
+> a
+> asdfadsfadsfasdfasdfasdf
+> asdfasdfadsf
+> a
+> $USER""
+> a
+minishell: waitpid failed: Undefined error: 0
+
+====================
+
+
+minishell$ $?
+minishell: 0: command not found
+minishell$ $?
+minishell: 127: command not found
+minishell$ exit
+exit
+====================
+
+minishell$ exit 9123190 fads
+exit
+minishell: exit: too many arguments
+====================
+
+
+unest PATH
+env
+
+====================
+
+minishell: ./ls/: No such file or directory
+minishell$ echo $?
+127
+====================
+
+minishell: ls/: No such file or directory
+minishell$ $?
+minishell: 127: command not found
+
+====================
+
+minishell$ exit | aklfja | ls | akldja
+minishell: aklfja: command not found
+minishell: akldja: command not found
+minishell$ $?
+minishell: 141: command not found
+minishell$ 
+
+====================
+
+minishell$ export a=" adsad "
+minishell$ >> $a"ad"
+
+====================
+
+export a+=" asjf akladsf " // 2 times
+
+====================
+
+minishell$ cd - asfasdkfj ..
+
+====================
+
+minishell$ << "" cat
+> ^C
+> 
+
+====================
+
+Users/aait-lha/Documents/m/a/b/c/..
+minishell$ cd ..
+minishell(16007,0x10b417dc0) malloc: *** error for object 0x7fa8f8804620: pointer being freed was not allocated
+minishell(16007,0x10b417dc0) malloc: *** set a breakpoint in malloc_error_break to debug
+[1]    16007 abort      ./minishell
+
+====================

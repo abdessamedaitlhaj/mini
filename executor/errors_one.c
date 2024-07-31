@@ -6,7 +6,7 @@
 /*   By: aait-lha <aait-lha@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/11 23:28:08 by aait-lha          #+#    #+#             */
-/*   Updated: 2024/07/28 14:04:55 by aait-lha         ###   ########.fr       */
+/*   Updated: 2024/07/31 14:24:29 by aait-lha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,15 @@ void	dir_error(t_data *data, char *cmd)
 	ft_putstr_fd("minishell: ", 2);
 	ft_putstr_fd(cmd, 2);
 	ft_putstr_fd(" : is a directory\n", 2);
+	data->exit_status = 126;
+	exit(126);
+}
+
+void	not_dir(t_data *data, char *cmd)
+{
+	ft_putstr_fd("minishell: ", 2);
+	ft_putstr_fd(cmd, 2);
+	ft_putstr_fd(" : Not a directory\n", 2);
 	data->exit_status = 126;
 	exit(126);
 }

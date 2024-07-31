@@ -6,7 +6,7 @@
 /*   By: aait-lha <aait-lha@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/11 23:31:20 by aait-lha          #+#    #+#             */
-/*   Updated: 2024/07/30 11:13:05 by aait-lha         ###   ########.fr       */
+/*   Updated: 2024/07/31 14:09:56 by aait-lha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ int	other_builtins(t_data *data, t_cmd *cmd)
 	else if (ft_strcmp(cmd->cmd, "unset") == 0)
 		return (ft_unset(cmd->args, data, cmd->cmd));
 	else if (ft_strcmp(cmd->cmd, "exit") == 0)
-		ft_exit(cmd->args, cmd->args_number);
+		return (ft_exit(cmd->args, cmd->args_number, data));
 	return (0);
 }
 
