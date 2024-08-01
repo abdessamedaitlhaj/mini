@@ -6,7 +6,7 @@
 /*   By: aait-lha <aait-lha@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/15 19:25:27 by aait-lha          #+#    #+#             */
-/*   Updated: 2024/08/01 13:07:32 by aait-lha         ###   ########.fr       */
+/*   Updated: 2024/08/01 20:00:45 by aait-lha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,28 +37,41 @@ void	ft_remove_env(t_env **env, char	*key)
 	}
 }
 
+int	ft_set_key_value(t_key_value *k_v, char *arg, t_data *data)
+{	
+	k_v->key = extract_key(k_v, arg, data);
+	if (!k_v->key[0])
+	{
+		free(k_v->key);
+		k_v->err = 1;
+		return (1);
+	}
+	if (ft_strchr(arg, '=') && ft_strchr(arg, '=') + 1)
+		k_v->value = ft_strdup2(ft_strchr(arg, '=') + 1, data);
+	return (0);
+}
+
 int	is_valid(t_key_value *k_v, char *arg, t_data *data)
 {
 	int			i;
 
-	k_v->key = extract_key(k_v, arg, data);
 	i = -1;
-	while (k_v->key[++i])
+	while (arg[++i] && arg[i] != '=' && arg[i] != '+')
 	{
-		if (ft_isdigit(k_v->key[0]) || \
-			(!ft_isalnm(k_v->key[i]) && k_v->key[i] != '_'))
+		if (ft_isdigit(arg[0]) || \
+			(!ft_isalnm(arg[i]) && arg[i] != '_'))
 		{
 			k_v->err = 1;
 			return (1);
 		}
 	}
-	if (i == 0 && !k_v->key[0])
+	if (i == 0 && !arg[0])
 	{
 		k_v->err = 1;
 		return (1);
 	}
-	if (ft_strchr(arg, '='))
-		k_v->value = ft_strdup2(ft_strchr(arg, '=') + 1, data);
+	if (ft_set_key_value(k_v, arg, data))
+		return (1);
 	return (0);
 }
 

@@ -6,7 +6,7 @@
 /*   By: aait-lha <aait-lha@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/08 17:48:09 by aait-lha          #+#    #+#             */
-/*   Updated: 2024/08/01 15:04:08 by aait-lha         ###   ########.fr       */
+/*   Updated: 2024/08/01 20:06:42 by aait-lha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,19 @@ int	ft_isdigit(int c)
 	return (0);
 }
 
-int	ft_atoi(char const *str, int *f)
+void	ft_skip_spaces(int *sign, char **str)
+{
+	while (**str && ft_isspace(**str))
+		(*str)++;
+	if (**str == '-' || **str == '+')
+	{
+		if (**str == '-')
+			*sign = -1;
+		(*str)++;
+	}
+}
+
+int	ft_atoi(char *str, int *f)
 {
 	int				sign;
 	long long int	c;
@@ -27,14 +39,7 @@ int	ft_atoi(char const *str, int *f)
 
 	sum = 0;
 	sign = 1;
-	while (*str && ft_isspace(*str))
-		str++;
-	if (*str == '-' || *str == '+')
-	{
-		if (*str == '-')
-			sign = -1;
-		str++;
-	}
+	ft_skip_spaces(&sign, &str);
 	while (*str && ft_isdigit(*str))
 	{
 		c = sum;
@@ -66,6 +71,14 @@ int	is_num(char *str)
 	return (1);
 }
 
+void	no_arg(t_data *data)
+{
+		ft_putendl_fd("exit", 1);
+		free_allocated(&data->allocated);
+		free_env(&data->env);
+		exit(data->exit_status);
+}
+
 int	ft_exit(char **args, int arg_number, t_data *data)
 {
 	int	e;
@@ -73,12 +86,7 @@ int	ft_exit(char **args, int arg_number, t_data *data)
 
 	f = 0;
 	if (!arg_number)
-	{
-		ft_putendl_fd("exit", 1);
-		free_allocated(&data->allocated);
-		free_env(&data->env);
-		exit(data->exit_status);
-	}
+		no_arg(data);
 	if (!is_num(args[0]))
 		exit_error(args[0], data);
 	e = ft_atoi(args[0], &f);

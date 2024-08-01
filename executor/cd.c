@@ -6,7 +6,7 @@
 /*   By: aait-lha <aait-lha@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/15 13:04:10 by aait-lha          #+#    #+#             */
-/*   Updated: 2024/08/01 18:15:11 by aait-lha         ###   ########.fr       */
+/*   Updated: 2024/08/01 20:13:38 by aait-lha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,22 +44,28 @@ int	change(char *path, t_data *data)
 	return (0);
 }
 
-int	check_removed(char *path, t_data *data)
+void	cwd_dir(char *path, char *d, t_data *data)
 {
 	char	*tmp;
+
+	common_error("cd: error retrieving current directory: ", "getcwd",\
+		"cannot access parent directories");
+	tmp = ft_strjoin2(ft_getenv("PWD", data->env), "/", data);
+	d = ft_strjoin2(tmp, path, data);
+	free(tmp);
+	ft_setenv(ft_strdup2("OLDPWD", data), \
+	ft_strdup2(ft_getenv("PWD", data->env), data), data);
+	ft_setenv(ft_strdup2("PWD", data), d, data);
+}
+
+int	check_removed(char *path, t_data *data)
+{
 	char	*d;
 
 	d = getcwd(NULL, 0);
 	if (!d)
 	{
-		common_error("cd: error retrieving current directory: ", "getcwd",\
-		 "cannot access parent directories");
-		tmp = ft_strjoin2(ft_getenv("PWD", data->env), "/", data);
-		d = ft_strjoin2(tmp, path, data);
-		free(tmp);
-		ft_setenv(ft_strdup2("OLDPWD", data), \
-		ft_strdup2(ft_getenv("PWD", data->env), data), data);
-		ft_setenv(ft_strdup2("PWD", data), d, data);
+		cwd_dir(path, d, data);
 		return (1);
 	}
 	else if (ft_strcmp(path, ft_getenv("PWD", data->env)) == 0)

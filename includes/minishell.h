@@ -6,7 +6,7 @@
 /*   By: aait-lha <aait-lha@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/30 04:30:21 by ael-hara          #+#    #+#             */
-/*   Updated: 2024/08/01 15:48:17 by aait-lha         ###   ########.fr       */
+/*   Updated: 2024/08/01 20:04:01 by aait-lha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -300,7 +300,7 @@ int					ft_chdir(char *path);
 int					set_home(t_data *data);
 int					set_prev(t_data *data);
 void				print_args(t_data *data, int i, int n, char **args);
-int					ft_atoi(char const *str, int *f);
+int					ft_atoi(char *str, int *f);
 int					is_num(char *str);
 char				**get_paths(t_data *data, char *cmd);
 void				ft_remove_env(t_env **env, char	*key);
