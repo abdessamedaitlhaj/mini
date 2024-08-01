@@ -6,7 +6,7 @@
 /*   By: aait-lha <aait-lha@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/15 19:25:27 by aait-lha          #+#    #+#             */
-/*   Updated: 2024/07/31 09:22:42 by aait-lha         ###   ########.fr       */
+/*   Updated: 2024/08/01 13:07:32 by aait-lha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,6 +51,11 @@ int	is_valid(t_key_value *k_v, char *arg, t_data *data)
 			k_v->err = 1;
 			return (1);
 		}
+	}
+	if (i == 0 && !k_v->key[0])
+	{
+		k_v->err = 1;
+		return (1);
 	}
 	if (ft_strchr(arg, '='))
 		k_v->value = ft_strdup2(ft_strchr(arg, '=') + 1, data);

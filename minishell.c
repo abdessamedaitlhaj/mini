@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ael-hara <ael-hara@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aait-lha <aait-lha@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/31 08:07:08 by aait-lha          #+#    #+#             */
-/*   Updated: 2024/08/01 02:30:08 by ael-hara         ###   ########.fr       */
+/*   Updated: 2024/08/01 16:28:24 by aait-lha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,10 +94,7 @@ int	main(int ac, char **av, char **envp)
 		init_while(&data, &term);
 		line = readline("minishell$ ");
 		if (!line)
-		{
 			line_exit(&data, line);
-			break ;
-		}
 		check_signal(&data);
 		if (!parsing(line, &data))
 			continue ;
@@ -105,5 +102,4 @@ int	main(int ac, char **av, char **envp)
 			continue ;
 		execute_and_free(&data, line, &term);
 	}
-	return (free_env(&data.env), data.exit_status);
 }

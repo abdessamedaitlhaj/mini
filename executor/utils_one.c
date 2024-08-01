@@ -6,7 +6,7 @@
 /*   By: aait-lha <aait-lha@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/21 15:07:17 by aait-lha          #+#    #+#             */
-/*   Updated: 2024/07/29 21:54:39 by aait-lha         ###   ########.fr       */
+/*   Updated: 2024/08/01 14:38:21 by aait-lha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,9 @@ char	*ft_strjoin2(char *s1, char *s2, t_data *data)
 
 	i = 0;
 	len = ft_strlen(s1) + ft_strlen(s2);
-	str = ft_malloc(len + 1, &data->allocated);
+	str = malloc(len + 1);
+	if (!str)
+		fail_error("malloc", &data->allocated);
 	while (*s1)
 		str[i++] = *s1++;
 	while (*s2)

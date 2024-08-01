@@ -6,7 +6,7 @@
 /*   By: aait-lha <aait-lha@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/15 23:13:15 by aait-lha          #+#    #+#             */
-/*   Updated: 2024/07/31 10:28:23 by aait-lha         ###   ########.fr       */
+/*   Updated: 2024/08/01 12:59:05 by aait-lha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,11 +31,14 @@ void	get_status(t_data *data, int status)
 	else if (WIFSIGNALED(status))
 	{
 		if (WTERMSIG(status) == SIGINT)
+		{
 			ft_putstr_fd("\n", 1);
-		data->exit_status = WTERMSIG(status) + 128;
+			data->exit_status = 130;
+		}
 	}
 	if (WIFSIGNALED(status) && WTERMSIG(status) == SIGQUIT)
 	{
+		data->exit_status = 131;
 		ft_putstr_fd("Quit: ", STDOUT_FILENO);
 		ft_putendl_fd(ft_itoa(WTERMSIG(status), data), STDOUT_FILENO);
 	}

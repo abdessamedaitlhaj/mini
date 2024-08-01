@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ael-hara <ael-hara@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aait-lha <aait-lha@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/30 04:30:21 by ael-hara          #+#    #+#             */
-/*   Updated: 2024/08/01 02:31:18 by ael-hara         ###   ########.fr       */
+/*   Updated: 2024/08/01 15:48:17 by aait-lha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -133,7 +133,6 @@ void				skip_quotes(int *i, char *str);
 void				quote_replace(char *str, char find, char replace);
 int					ft_isspace(char c);
 int					parsing(char *line, t_data *data);
-int					ft_strcmp(const char *s1, const char *s2);
 int					node_compare(t_list *lst, char *str);
 void				replace_node_content(t_list *lst, char *new_str);
 int					count_content_lst(t_list *lst, char *str);
@@ -236,7 +235,6 @@ void				ft_putstr_fd(char *s, int fd);
 int					ft_isalpha(char c);
 void				ft_putendl_fd(char *s, int fd);
 int					ft_strncmp(const char *s1, const char *s2, size_t n);
-int					ft_strcmp(const char *s1, const char *s2);
 char				*ft_strjoin2(char *s1, char *s2, t_data *data);
 char				*ft_getenv(char *key, t_env *env);
 int					ft_get_key_index(char *key, t_env *env);
@@ -285,7 +283,7 @@ void				print_env(t_env *env);
 int					check_empty_args(t_data *data, char **args);
 int					ft_export(char **args, t_data *data, char *cmd);
 int					ft_env(t_env *env, int args_number);
-int					ft_cd(char *path, t_data *data);
+int					ft_cd(char **args, t_data *data);
 int					ft_echo(t_data *data, char **args, int n);
 int					is_valid(t_key_value *k_v, char *key, t_data *data);
 int					is_key_valid(char *arg, char *cmd);
@@ -297,7 +295,7 @@ void				fail_error(char *str, t_list **garbage_collector);
 void				free_env(t_env **env);
 void				get_status(t_data *data, int status);
 char				*ft_strdup2(char *str, t_data *data);
-void				exit_error(char *number);
+void				exit_error(char *number, t_data *data);
 int					ft_chdir(char *path);
 int					set_home(t_data *data);
 int					set_prev(t_data *data);

@@ -6,7 +6,7 @@
 /*   By: aait-lha <aait-lha@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/22 19:09:09 by aait-lha          #+#    #+#             */
-/*   Updated: 2024/07/31 14:58:57 by aait-lha         ###   ########.fr       */
+/*   Updated: 2024/08/01 16:36:34 by aait-lha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ int	execute_one_node(t_data *data)
 	if (data->cmds[0].flag_command)
 		return (close_streams(&data->fd_in, &data->fd_out, data));
 	if (is_builtin(&data->cmds[0]))
-		return (ft_exec_builtin(&data->cmds[0], data));
+		data->exit_status = ft_exec_builtin(&data->cmds[0], data);
 	else
 		create_process(data, &data->cmds[0]);
 	return (data->exit_status);
@@ -80,8 +80,7 @@ int	execute_multiple_nodes(t_data *data)
 				exit(1);
 			}
 		}
-		init_fds(data, &data->cmds[i]);
-		if (!data->cmds[i].flag_command)
+		if (!init_fds(data, &data->cmds[i]) && !data->cmds[i].flag_command)
 			fork_process(data, i, fd, &prev_fd);
 		close_streams(&data->fd_in, &data->fd_out, data);
 		save_last_pipe(data, i, fd, &prev_fd);

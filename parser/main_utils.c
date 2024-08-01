@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main_utils.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ael-hara <ael-hara@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aait-lha <aait-lha@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/01 02:27:21 by ael-hara          #+#    #+#             */
-/*   Updated: 2024/08/01 02:32:00 by ael-hara         ###   ########.fr       */
+/*   Updated: 2024/08/01 16:36:43 by aait-lha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,11 @@ void	init_while(t_data *data, struct termios *term)
 	data->allocated = NULL;
 	data->fd_in = -2;
 	data->fd_out = -2;
-	tcgetattr(0, term);
+	if (tcgetattr(0, term) == -1)
+	{
+		perror("tcgetattr");
+		exit(1);
+	}
 }
 
 void	execute_and_free(t_data *data, char *line, struct termios *term)
@@ -25,7 +29,11 @@ void	execute_and_free(t_data *data, char *line, struct termios *term)
 	execute_cmds(data);
 	free(line);
 	free_allocated(&data->allocated);
-	tcsetattr(0, TCSANOW, term);
+	if (tcsetattr(0, TCSANOW, term) == -1)
+	{
+		perror("tcsetattr");
+		exit(1);
+	}
 }
 
 void	line_exit(t_data *data, char *line)
@@ -33,7 +41,9 @@ void	line_exit(t_data *data, char *line)
 	ft_putstr_fd("exit\n", 1);
 	free(line);
 	free_allocated(&data->allocated);
+	free_env(&data->env);
 	rl_clear_history();
+	exit(data->exit_status);
 }
 
 void	check_signal(t_data *data)

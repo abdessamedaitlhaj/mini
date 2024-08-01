@@ -1,5 +1,4 @@
 CC = cc 
-# CC +=  -fsanitize=address -ggdb3
 CFLAGS = -Wall -Wextra -Werror
 NAME = minishell
 RM = rm -f
@@ -56,17 +55,17 @@ OBJS = $(SRCS:.c=.o)
 all: $(NAME)
 
 $(NAME): $(OBJS) 
-	@$(CC) $(CFLAGS) $(OBJS) -lreadline  -o $(NAME) -L$(READLINEDIR)/lib
+	$(CC) $(CFLAGS) $(OBJS) -lreadline  -o $(NAME) -L$(READLINEDIR)/lib
 
 %.o: %.c includes/minishell.h
-	@mkdir -p $(dir $@)
-	@$(CC) $(CFLAGS) -c $< -o $@ -I$(READLINEDIR)/include
+	mkdir -p $(dir $@)
+	$(CC) $(CFLAGS) -c $< -o $@ -I$(READLINEDIR)/include
 
 clean:
-	@$(RM) -f $(OBJS)
+	$(RM) -f $(OBJS)
 
 fclean: clean
-	@$(RM) $(NAME)
+	$(RM) $(NAME)
 
 re: fclean all
 

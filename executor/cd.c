@@ -6,7 +6,7 @@
 /*   By: aait-lha <aait-lha@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/15 13:04:10 by aait-lha          #+#    #+#             */
-/*   Updated: 2024/07/30 14:14:21 by aait-lha         ###   ########.fr       */
+/*   Updated: 2024/08/01 16:32:20 by aait-lha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,70 +34,95 @@ char	*oldpwd_set(t_data *data)
 	return (NULL);
 }
 
+int	change(char *path, t_data *data)
+{
+	if (chdir(path) == -1)
+		return (common_error("minishell: cd: ", path, ""));
+	ft_setenv(ft_strdup2("OLDPWD", data), \
+	ft_strdup2(ft_getenv("PWD", data->env), data), data);
+	ft_setenv(ft_strdup2("PWD", data), getcwd(NULL, 0), data);
+	return (0);
+}
+
+int	check_removed(char *path, t_data *data)
+{
+	char	*tmp;
+	char	*d;
+
+	d = getcwd(NULL, 0);
+	if (!d)
+	{
+		common_error("cd: error retrieving current directory: ", "getcwd",\
+		 "cannot access parent directories");
+		tmp = ft_strjoin2(ft_getenv("PWD", data->env), "/", data);
+		d = ft_strjoin2(tmp, path, data);
+		free(tmp);
+		ft_setenv(ft_strdup2("OLDPWD", data), \
+		ft_strdup2(ft_getenv("PWD", data->env), data), data);
+		ft_setenv(ft_strdup2("PWD", data), d, data);
+		return (1);
+	}
+	else if (ft_strcmp(path, ft_getenv("PWD", data->env)) == 0)
+	{
+		ft_setenv(ft_strdup2("OLDPWD", data), \
+		ft_strdup2(ft_getenv("PWD", data->env), data), data);
+		return (0);
+	}
+	ft_setenv(ft_strdup2("OLDPWD", data), \
+	ft_strdup2(ft_getenv("PWD", data->env), data), data);
+	ft_setenv(ft_strdup2("PWD", data), d, data);
+	return (0);
+}
+
 int	special_path(char *path, t_data *data)
 {
 	char	*home;
 	char	*oldpwd;
 
-	if (ft_strcmp(path, "~") == 0 || ft_strcmp(path, "~/") == 0 \
-		|| ft_strcmp(path, "--") == 0 || !path)
+	if ((ft_strcmp(path, "~") == 0 && !path[1]) || !path || !path[0])
 	{
 		home = home_set(data);
 		if (home && home[0])
-		{
-			if (chdir(home) == -1)
-				return (common_error("minishell: cd: ", home, ""));
-			ft_setenv(ft_strdup2("OLDPWD", data), ft_strdup2(ft_getenv("PWD", data->env), data), data);
-			ft_setenv(ft_strdup2("PWD", data), copy_cwd(getcwd(NULL, 0), data), data);
-			return (1);
-		}
+			if (change(home, data))
+				return (1);
 	}
-	else if (ft_strcmp(path, "-") == 0)
+	else if (ft_strcmp(path, "-") == 0 && !path[1])
 	{
 		oldpwd = oldpwd_set(data);
 		if (oldpwd && oldpwd[0])
 		{
-			if (chdir(oldpwd) == -1)
-				return (common_error("minishell: cd: ", oldpwd, ""));
-			ft_setenv(ft_strdup2("OLDPWD", data), ft_strdup2(ft_getenv("PWD", data->env), data), data);
-			ft_setenv(ft_strdup2("PWD", data), copy_cwd(getcwd(NULL, 0), data), data);
-			return (1);
+			ft_putendl_fd(oldpwd, 1);
+			if (change(oldpwd, data))
+				return (1);
 		}
 	}
+	else
+		return (1);
 	return (0);
 }
 
-int	ft_cd(char *path, t_data *data)
+int	ft_cd(char **args, t_data *data)
 {
 	DIR		*dir;
-	char	*d;
-	char	*tmp;
+	int		flag;
 
-	if (special_path(path, data))
+	if (args[1])
 		return (0);
-	dir = opendir(path);
-	if (!dir)
-		return (common_error("minishell: cd: ", path, ""));
+	flag = special_path(args[0], data);
+	if (!flag)
+		return (0);
 	else
-		closedir(dir);
-	if (chdir(path) == -1)
-		return (common_error("minishell: cd: ", path, ""));
-	d = copy_cwd(getcwd(NULL, 0), data);
-	if (!d)
 	{
-		tmp = ft_strjoin2(ft_getenv("PWD", data->env), "/", data);
-		d = ft_strjoin2(tmp, path, data);
-		free(tmp);
-		ft_setenv(ft_strdup2("OLDPWD", data), ft_strdup2(ft_getenv("PWD", data->env), data), data);
-		ft_setenv(ft_strdup2("PWD", data), d, data);
-		return (0);
+		dir = opendir(args[0]);
+		if (!dir)
+			return (common_error("minishell: cd: ", args[0], ""));
+		else
+			closedir(dir);
+		if (chdir(args[0]) == -1)
+			return (common_error("minishell: cd: ", args[0], ""));
+		if (check_removed(args[0], data))
+			return (1);
 	}
-	else if (ft_strcmp(path, ft_getenv("PWD", data->env)) == 0)
-	{
-		ft_setenv(ft_strdup2("OLDPWD", data), ft_strdup2(ft_getenv("PWD", data->env), data), data);
-		return (0);
-	}
-	ft_setenv(ft_strdup2("OLDPWD", data), ft_strdup2(ft_getenv("PWD", data->env), data), data);
-	ft_setenv(ft_strdup2("PWD", data), d, data);
 	return (0);
 }
+

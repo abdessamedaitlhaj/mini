@@ -6,7 +6,7 @@
 /*   By: aait-lha <aait-lha@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/18 08:45:10 by aait-lha          #+#    #+#             */
-/*   Updated: 2024/07/29 21:26:28 by aait-lha         ###   ########.fr       */
+/*   Updated: 2024/08/01 14:26:16 by aait-lha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ char	*extract_key(t_key_value *k_v, char *arg, t_data *data)
 	char	*key;
 
 	i = 0;
-	while (arg[i] && arg[i] != '=')
+	while (arg[i] && arg[i] != '=' && arg[i] != '+')
 		i++;
 	key = malloc(sizeof(char) * (i + 1));
 	if (!key)

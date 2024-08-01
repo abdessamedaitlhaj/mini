@@ -6,7 +6,7 @@
 /*   By: aait-lha <aait-lha@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/15 16:55:14 by aait-lha          #+#    #+#             */
-/*   Updated: 2024/07/31 10:16:22 by aait-lha         ###   ########.fr       */
+/*   Updated: 2024/08/01 14:43:28 by aait-lha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,6 +54,7 @@ void	ft_setenv(char *key, char *value, t_data *data)
 void	replace_env(t_key_value *k_v, t_data *data)
 {
 	t_env	*tmp;
+	char	*v;
 
 	tmp = data->env;
 	while (tmp)
@@ -61,7 +62,11 @@ void	replace_env(t_key_value *k_v, t_data *data)
 		if (ft_strcmp(tmp->key, k_v->key) == 0)
 		{
 			if (k_v->append)
-				tmp->value = ft_strjoin2(tmp->value, k_v->value, data);
+			{
+				v = tmp->value;
+				tmp->value = ft_strjoin2(v, k_v->value, data);
+				free(v);
+			}
 			else
 			{
 				free(tmp->value);
@@ -77,27 +82,30 @@ int	ft_export(char **args, t_data *data, char *cmd)
 {
 	int			i;
 	t_key_value	k_v;
+	int			status;
 
 	if (check_empty_args(data, args))
 		return (1);
 	i = -1;
 	while (args[++i])
 	{
+		status = 0;
 		k_v = (t_key_value){NULL, NULL, 0, 0};
 		if (is_valid(&k_v, args[i], data))
 		{
 			if (k_v.err)
-				not_valid_identifier(k_v.key, cmd);
+				not_valid_identifier(args[i], cmd);
 			free(k_v.key);
+			status = 1;
 			continue ;
 		}
 		if (ft_get_key_index(k_v.key, data->env) != -1)
 			replace_env(&k_v, data);
 		else
 		{
-			if (k_v.value)
+			if (k_v.key && k_v.key[0] && k_v.value)
 				ft_add_env(&data->env, ft_new_env(k_v.key, k_v.value, data));
 		}
 	}
-	return (0);
+	return (status);
 }

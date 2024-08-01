@@ -6,7 +6,7 @@
 /*   By: aait-lha <aait-lha@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/17 22:16:07 by aait-lha          #+#    #+#             */
-/*   Updated: 2024/07/31 14:40:55 by aait-lha         ###   ########.fr       */
+/*   Updated: 2024/08/01 15:11:14 by aait-lha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,8 +20,7 @@ int	fork_process(t_data *data, int i, int *fd, int *prev_fd)
 	if (pid == -1)
 	{
 		close_streams(&data->fd_in, &data->fd_out, data);
-		if (i > 0 && i < data->counter_command - 1)
-			ft_close(prev_fd, data);
+		ft_close(prev_fd, data);
 		close_pipe(fd, data);
 		fail_error("fork", &data->allocated);
 	}
@@ -59,7 +58,7 @@ int	create_process(t_data *data, t_cmd *cmd)
 	}
 	waitpid(pid, &status, 0);
 	get_status(data, status);
-	return (data->exit_status);
+	return (0);
 }
 
 void	exec_cmd(t_data *data, t_cmd *cmd)
