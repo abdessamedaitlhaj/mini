@@ -6,13 +6,24 @@
 /*   By: aait-lha <aait-lha@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/31 08:07:08 by aait-lha          #+#    #+#             */
-/*   Updated: 2024/08/01 16:28:24 by aait-lha         ###   ########.fr       */
+/*   Updated: 2024/08/01 18:15:23 by aait-lha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "includes/minishell.h"
 
 int	g_signal_flag = 0;
+
+static void	check_files(t_data *data)
+{
+	if (data->cmds[data->counter_command].files)
+	{
+		if ((data->cmds[data->counter_command - 1].infile && \
+		data->fd_in == -1) || (data->cmds[data->counter_command - \
+		1].outfile && data->fd_out == -1))
+			data->exit_status = 1;
+	}
+}
 
 int	execute_cmds(t_data *data)
 {
@@ -31,6 +42,7 @@ int	execute_cmds(t_data *data)
 		execute_multiple_nodes(data);
 		while (waitpid(-1, &status, 0) > 0)
 			get_status(data, status);
+		check_files(data);
 	}
 	if (dup2(stdin_copy, 0) == -1 || \
 		dup2(stdout_copy, 1) == -1)

@@ -6,7 +6,7 @@
 /*   By: aait-lha <aait-lha@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/11 23:29:45 by aait-lha          #+#    #+#             */
-/*   Updated: 2024/07/28 21:35:24 by aait-lha         ###   ########.fr       */
+/*   Updated: 2024/08/01 16:50:33 by aait-lha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,15 +46,15 @@ int	init_fds(t_data *data, t_cmd *cmd)
 		if (cmd->files[i]->expand_error)
 		{
 			ft_putendl_fd("minishell: ambiguous redirect", 2);
+			data->exit_status = 1;
 			return (1);
 		}
 		set_fd_streams(data, cmd, i, last_heredoc);
 		if (data->fd_in == -1 || data->fd_out == -1)
 		{
-			ft_putstr_fd("minishell: ", 2);
-			ft_putstr_fd(cmd->files[i]->file, 2);
-			ft_putstr_fd(": ", 2);
-			perror("");
+			common_error("minishell: ", cmd->files[i]->file, \
+				"");
+			data->exit_status = 1;
 			return (1);
 		}
 	}

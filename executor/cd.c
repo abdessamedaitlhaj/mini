@@ -6,7 +6,7 @@
 /*   By: aait-lha <aait-lha@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/15 13:04:10 by aait-lha          #+#    #+#             */
-/*   Updated: 2024/08/01 16:32:20 by aait-lha         ###   ########.fr       */
+/*   Updated: 2024/08/01 18:15:11 by aait-lha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,18 +111,15 @@ int	ft_cd(char **args, t_data *data)
 	flag = special_path(args[0], data);
 	if (!flag)
 		return (0);
+	if (chdir(args[0]) == -1)
+		return (common_error("minishell: cd: ", args[0], ""));
+	dir = opendir(args[0]);
+	if (!dir)
+		return (common_error("minishell: cd: ", args[0], ""));
 	else
-	{
-		dir = opendir(args[0]);
-		if (!dir)
-			return (common_error("minishell: cd: ", args[0], ""));
-		else
-			closedir(dir);
-		if (chdir(args[0]) == -1)
-			return (common_error("minishell: cd: ", args[0], ""));
-		if (check_removed(args[0], data))
-			return (1);
-	}
+		closedir(dir);
+	if (check_removed(args[0], data))
+		return (1);
 	return (0);
 }
 
