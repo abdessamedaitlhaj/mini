@@ -3,16 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   heredoc_utils.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aait-lha <aait-lha@student.1337.ma>        +#+  +:+       +#+        */
+/*   By: ael-hara <ael-hara@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/31 01:55:39 by ael-hara          #+#    #+#             */
-/*   Updated: 2024/07/31 08:27:19 by aait-lha         ###   ########.fr       */
+/*   Updated: 2024/08/01 00:44:50 by ael-hara         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
-
-extern int	g_signal_flag;
 
 void	push_expand_loop(char *limiter, char *content, t_data *data, int fd)
 {

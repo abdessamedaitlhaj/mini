@@ -6,7 +6,7 @@
 /*   By: ael-hara <ael-hara@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/30 02:51:00 by ael-hara          #+#    #+#             */
-/*   Updated: 2024/07/30 23:10:54 by ael-hara         ###   ########.fr       */
+/*   Updated: 2024/08/01 01:37:17 by ael-hara         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,9 +61,14 @@ char	*remove_q(char *str, t_data *data)
 
 void	ambiguous_file(t_cmd *cmd, int i, int j, t_data *data)
 {
+	int	expand;
+
 	if (cmd[i].files[j]->type != HEREDOC)
+	{
+		expand = expanded(cmd[i].files[j]->file);
 		cmd[i].files[j]->file = expanding_outside(cmd[i].files[j]->file, data);
-	if (cmd[i].files[j] && check_null(cmd[i].files[j]->file) == 0
+	}
+	if (cmd[i].files[j] && expand && check_null(cmd[i].files[j]->file) == 0
 		&& cmd[i].files[j]->type != HEREDOC)
 		cmd[i].files[j]->expand_error = 1;
 	else

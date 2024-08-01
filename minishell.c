@@ -3,22 +3,22 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aait-lha <aait-lha@student.1337.ma>        +#+  +:+       +#+        */
+/*   By: ael-hara <ael-hara@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/31 08:07:08 by aait-lha          #+#    #+#             */
-/*   Updated: 2024/07/31 15:00:55 by aait-lha         ###   ########.fr       */
+/*   Updated: 2024/08/01 02:30:08 by ael-hara         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "includes/minishell.h"
 
-int g_signal_flag = 0;
+int	g_signal_flag = 0;
 
 int	execute_cmds(t_data *data)
 {
 	int	status;
-	int stdin_copy;
-	int stdout_copy;
+	int	stdin_copy;
+	int	stdout_copy;
 
 	stdin_copy = dup(0);
 	stdout_copy = dup(1);
@@ -39,11 +39,12 @@ int	execute_cmds(t_data *data)
 	return (0);
 }
 
-void	INT_HANDLER(int sig)
+void	int_handler(int sig)
 {
 	if (sig == SIGINT)
 	{
-		if (waitpid(-1, NULL, WNOHANG) == -1) {
+		if (waitpid(-1, NULL, WNOHANG) == -1)
+		{
 			g_signal_flag = 1;
 			ft_putstr_fd("\n", 1);
 			rl_on_new_line();
@@ -53,68 +54,56 @@ void	INT_HANDLER(int sig)
 	}
 }
 
-void ll()
-{
-	system("leaks minishell");
-}
-
-int main (int ac, char **av, char **envp)
+void	check_main(int ac, int isatty_result, char **av)
 {
 	(void)av;
-	char	*line;
-	struct termios	term;
-	t_data	data;
-
-	//atexit(ll);
 	if (ac != 1)
 	{
 		ft_putstr_fd("minishell: no arguments needed!\n", 2);
 		exit(1);
 	}
-	if (!isatty(0))
+	if (!isatty_result)
 	{
 		ft_putstr_fd("minishell: is not a tty!\n", 2);
 		exit(1);
 	}
-	data = (t_data){NULL, NULL, 0, NULL, NULL, \
-		NULL, 0, NULL, 0, 0, -2, -2, envp, 0, NULL};
+}
+
+t_data	init_main(char **envp)
+{
+	t_data	data;
+
+	data = (t_data){NULL, NULL, 0, NULL, NULL, NULL, 0,
+		NULL, 0, 0, -2, -2, envp, 0, NULL};
 	init_envs(envp, &data);
-	signal(SIGINT, INT_HANDLER);
+	signal(SIGINT, int_handler);
 	signal(SIGQUIT, SIG_IGN);
+	return (data);
+}
+
+int	main(int ac, char **av, char **envp)
+{
+	char			*line;
+	struct termios	term;
+	t_data			data;
+
+	check_main(ac, isatty(0), av);
+	data = init_main(envp);
 	while (77)
 	{
-		data.allocated = NULL;
-		data.fd_in = -2;
-		data.fd_out = -2;
-		tcgetattr(0, &term);
+		init_while(&data, &term);
 		line = readline("minishell$ ");
 		if (!line)
 		{
-            ft_putstr_fd("exit\n", 1);
-			free(line);
-			free_allocated(&data.allocated);
-            break;
+			line_exit(&data, line);
+			break ;
 		}
-		if (g_signal_flag == 1 && data.exit_status != 1)
-		{
-			data.exit_status = 1;
-			g_signal_flag = 0;
-		}
+		check_signal(&data);
 		if (!parsing(line, &data))
-		{
-			free_allocated(&data.allocated);
 			continue ;
-		}
-		if (g_signal_flag == 1)
-		{
-			g_signal_flag = 0;
+		if (parsing_signal())
 			continue ;
-		}
-		execute_cmds(&data);
-		free(line);
-		free_allocated(&data.allocated);
-		tcsetattr(0, TCSANOW, &term);
+		execute_and_free(&data, line, &term);
 	}
-	free_env(&data.env);
-	return (data.exit_status);
+	return (free_env(&data.env), data.exit_status);
 }

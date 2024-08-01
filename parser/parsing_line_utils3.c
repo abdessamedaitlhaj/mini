@@ -6,7 +6,7 @@
 /*   By: ael-hara <ael-hara@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/30 15:21:23 by ael-hara          #+#    #+#             */
-/*   Updated: 2024/07/30 23:04:38 by ael-hara         ###   ########.fr       */
+/*   Updated: 2024/08/01 00:13:26 by ael-hara         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,13 +59,19 @@ void	remove_quotes(t_cmd *cmd, t_data *data)
 int	check_null(char *str)
 {
 	int	i;
+	int	len;
 
 	i = 0;
 	if (!str || !str[0])
 		return (0);
-	while (str[i])
+	len = ft_strlen(str);
+	while (str[len - 1] == ' ' || str[len - 1] == '\n' || str[len - 1] == '\t')
+		len--;
+	while (str[i] == ' ' || str[i] == '\n' || str[i] == '\t')
+		i++;
+	while (i < len)
 	{
-		if (str[i] == ' ' && str[i] == '\n' && str[i] == '\t' && str[i] == '*')
+		if (str[i] == ' ' || str[i] == '\n' || str[i] == '\t' || str[i] == '*')
 			return (0);
 		i++;
 	}

@@ -6,7 +6,7 @@
 /*   By: ael-hara <ael-hara@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/30 23:06:30 by ael-hara          #+#    #+#             */
-/*   Updated: 2024/07/30 23:09:44 by ael-hara         ###   ########.fr       */
+/*   Updated: 2024/08/01 01:40:28 by ael-hara         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,4 +32,33 @@ void	fill_command_index(t_cmd *cmds, t_indexes *indexes,
 	cmds[indexes->i].args = ft_malloc((sizeof(char *)
 				* (indexes->k + 1)), &data->allocated);
 	cmds[indexes->i].args[indexes->k] = NULL;
+}
+
+int	expanded(char *str)
+{
+	int	i;
+
+	i = 0;
+	while (str[i])
+	{
+		if (str[i] == '$')
+			return (1);
+		i++;
+	}
+	return (0);
+}
+
+int	ft_min(int a, int b, int c)
+{
+	if (a == -1)
+		a = 2147483647;
+	if (b == -1)
+		b = 2147483647;
+	if (c == -1)
+		c = 2147483647;
+	if (a <= b && a <= c)
+		return (a);
+	if (b <= a && b <= c)
+		return (b);
+	return (c);
 }

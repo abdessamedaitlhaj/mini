@@ -6,13 +6,11 @@
 /*   By: ael-hara <ael-hara@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/30 02:39:58 by ael-hara          #+#    #+#             */
-/*   Updated: 2024/07/30 23:11:25 by ael-hara         ###   ########.fr       */
+/*   Updated: 2024/08/01 02:15:28 by ael-hara         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
-
-extern int	g_signal_flag;
 
 void	process_pipes(char **pipes, t_data *data)
 {
@@ -69,7 +67,7 @@ int	process_errors(char *line, t_data *data)
 	}
 	data->exit_status = 258;
 	write(2, "minishell: syntax error\n", 24);
-	return (free(line), 0);
+	return (free_allocated(&data->allocated), free(line), 0);
 }
 
 int	empty_line_parse(char *line)

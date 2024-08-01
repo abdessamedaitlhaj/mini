@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aait-lha <aait-lha@student.1337.ma>        +#+  +:+       +#+        */
+/*   By: ael-hara <ael-hara@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/30 04:30:21 by ael-hara          #+#    #+#             */
-/*   Updated: 2024/07/31 14:25:24 by aait-lha         ###   ########.fr       */
+/*   Updated: 2024/08/01 02:31:18 by ael-hara         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,8 @@
 # include <signal.h>
 # include <dirent.h>
 # include <sys/wait.h>
+
+extern int	g_signal_flag;
 
 typedef struct s_list
 {
@@ -205,19 +207,27 @@ void				process_heredoc_line(char *line, int min, t_data *data);
 void				process_heredoc_line(char *line, int min, t_data *data);
 void				herdoc_delimiters(char *line, int min, t_data *data);
 char				*ft_strdup_quotes(char *s1, t_data *data);
-char				*remove_q(char* str, t_data *data);
+char				*remove_q(char *str, t_data *data);
 void				remove_quotes(t_cmd *cmd, t_data *data);
 int					check_null(char *str);
-void				ambigious (t_cmd *cmd, t_data *data);
+void				ambigious(t_cmd *cmd, t_data *data);
 void				fill_command_help(t_cmd *cmds, t_data *data);
-void				fill_command_index(t_cmd *cmds, t_indexes *indexes, 
-					char **split, t_data *data);
-void				init_fill_command(t_cmd *cmds, t_indexes *indexes, 
-					char **split, t_data *data);
-void				check_null_command(t_cmd *cmds , t_data *data);
+void				fill_command_index(t_cmd *cmds, t_indexes *indexes,
+						char **split, t_data *data);
+void				init_fill_command(t_cmd *cmds, t_indexes *indexes,
+						char **split, t_data *data);
+void				check_null_command(t_cmd *cmds, t_data *data);
 void				heredoc_loop(t_cmd *cmds, t_data *data);
+int					expanded(char *str);
+int					ft_min(int a, int b, int c);
+void				init_while(t_data *data, struct termios *term);
+void				execute_and_free(t_data *data, char *line,
+						struct termios *term);
+void				line_exit(t_data *data, char *line);
+void				check_signal(t_data *data);
+int					parsing_signal(void);
 
-//=============================================================================ME==================================================================================================
+//===================================================
 
 void				*ft_lstnew(void *content);
 void				init_envs(char **envp, t_data *data);
@@ -307,7 +317,8 @@ void				*ft_new_env(char	*key, char	*value, t_data *data);
 void				ft_add_env(t_env **env, t_env *new);
 void				ft_setenv(char *key, char *value, t_data *data);
 char				*copy_cwd(char *cwd, t_data *data);
-char				*ft_substr2(char *s, unsigned int start, size_t len, t_data *data);
+char				*ft_substr2(char *s, unsigned int start, size_t len,
+						t_data *data);
 void				not_dir(t_data *data, char *cmd);
 
 #endif

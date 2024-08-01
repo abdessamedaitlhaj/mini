@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils2.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aait-lha <aait-lha@student.1337.ma>        +#+  +:+       +#+        */
+/*   By: ael-hara <ael-hara@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/22 15:01:38 by ael-hara          #+#    #+#             */
-/*   Updated: 2024/07/31 09:42:35 by aait-lha         ###   ########.fr       */
+/*   Updated: 2024/08/01 01:40:53 by ael-hara         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,8 @@ char	*ft_strjoin(char *s1, char *s2, t_data *data)
 
 	i = 0;
 	j = 0;
-	str = ft_malloc(sizeof(char) * (ft_strlen(s1) + ft_strlen(s2) + 1), &data->allocated);
+	str = ft_malloc(sizeof(char) * (ft_strlen(s1)
+				+ ft_strlen(s2) + 1), &data->allocated);
 	while (s1[i])
 	{
 		str[i] = s1[i];
@@ -91,21 +92,6 @@ void	quote_replace(char *str, char find, char replace)
 		}
 		i++;
 	}
-}
-
-int	ft_min(int a, int b, int c)
-{
-	if (a == -1)
-		a = 2147483647;
-	if (b == -1)
-		b = 2147483647;
-	if (c == -1)
-		c = 2147483647;
-	if (a <= b && a <= c)
-		return (a);
-	if (b <= a && b <= c)
-		return (b);
-	return (c);
 }
 
 char	*ft_strndup( char *s, size_t n, t_data *data)

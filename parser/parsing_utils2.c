@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing_utils2.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aait-lha <aait-lha@student.1337.ma>        +#+  +:+       +#+        */
+/*   By: ael-hara <ael-hara@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/30 02:40:21 by ael-hara          #+#    #+#             */
-/*   Updated: 2024/07/31 11:06:01 by aait-lha         ###   ########.fr       */
+/*   Updated: 2024/08/01 01:39:37 by ael-hara         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,10 +57,10 @@ void	process_heredoc_line(char *line, int min, t_data *data)
 	int	j;
 	int	start;
 
-	j = 0;
-	data->heredoc = ft_malloc((data->delimiter_count + 1) * sizeof(char *), &data->allocated);
+	data->heredoc = ft_malloc((data->delimiter_count + 1)
+			* sizeof(char *), &data->allocated);
 	data->heredoc[data->delimiter_count] = NULL;
-	i = 0;
+	(1) && (i = 0, j = 0);
 	while (i < min)
 	{
 		if (line[i] == '<' && line[i + 1] == '<')

@@ -3,16 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   heredoc.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aait-lha <aait-lha@student.1337.ma>        +#+  +:+       +#+        */
+/*   By: ael-hara <ael-hara@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/08 00:37:39 by ael-hara          #+#    #+#             */
-/*   Updated: 2024/07/31 13:59:38 by aait-lha         ###   ########.fr       */
+/*   Updated: 2024/08/01 00:45:31 by ael-hara         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
-
-extern int	g_signal_flag;
 
 void	sig_her_child(int sig)
 {
@@ -28,6 +26,8 @@ void	push_loop(char *limiter, char *content, t_data *data, int fd)
 {
 	char	*line;
 
+	signal(SIGINT, sig_her_child);
+	signal(SIGQUIT, SIG_IGN);
 	while (1)
 	{
 		line = readline("> ");

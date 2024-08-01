@@ -3,16 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aait-lha <aait-lha@student.1337.ma>        +#+  +:+       +#+        */
+/*   By: ael-hara <ael-hara@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/26 20:34:56 by ael-hara          #+#    #+#             */
-/*   Updated: 2024/07/31 10:20:12 by aait-lha         ###   ########.fr       */
+/*   Updated: 2024/08/01 02:16:11 by ael-hara         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
-
-extern int	g_signal_flag;
 
 void	handle_heredoc(t_indexes indexes, t_data *data)
 {
@@ -36,10 +34,6 @@ void	handle_heredoc(t_indexes indexes, t_data *data)
 			push_line(indexes.l, data
 				->cmds[indexes.i].files[indexes.j]->file, data);
 		ft_close(&indexes.l, data);
-		// indexes.l = open(path, O_RDONLY);
-		// if (indexes.l == -1)
-		// 	fail_error("open failed", &data->allocated);
-		// data->cmds[indexes.i].files[indexes.j]->fd = indexes.l;
 		data->cmds[indexes.i].files[indexes.j]->file = path;
 	}
 }
@@ -72,7 +66,8 @@ int	parsing(char *line, t_data *data)
 	int		i;
 
 	if (line[0] == '\0' || empty_line_parse(line))
-		return (free(line), data->exit_status = 0, 0);
+		return (free_allocated(&data->allocated),
+			free(line), data->exit_status = 0, 0);
 	process_line_history(line);
 	if (pair_quotes(line).error || parsing_pipe(line).error
 		|| parsing_redir(line).error)
@@ -82,7 +77,7 @@ int	parsing(char *line, t_data *data)
 	process_line(&line, data);
 	pipes = ft_split_str(line, "|", data);
 	if (!pipes)
-		return (0);
+		return (free_allocated(&data->allocated), 0);
 	data->pipes = pipes;
 	i = 0;
 	while (pipes[i])

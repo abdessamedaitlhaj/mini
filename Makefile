@@ -1,11 +1,12 @@
-CC = cc -Wall -Wextra -Werror
+CC = cc 
 # CC +=  -fsanitize=address -ggdb3
-CFLAGS =
+CFLAGS = -Wall -Wextra -Werror
 NAME = minishell
 RM = rm -f
 READLINEDIR    =    $(shell brew --prefix readline)
 SRCS = 	minishell.c 					\
 		parser/parsing_line.c 			\
+		parser/main_utils.c 			\
 		parser/parsing_line_utils.c		\
 		parser/parsing_line_utils2.c	\
 		parser/parsing_line_utils3.c	\
