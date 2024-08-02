@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils1.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aait-lha <aait-lha@student.1337.ma>        +#+  +:+       +#+        */
+/*   By: ael-hara <ael-hara@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/18 18:13:16 by ael-hara          #+#    #+#             */
-/*   Updated: 2024/07/23 15:15:59 by aait-lha         ###   ########.fr       */
+/*   Updated: 2024/08/01 20:41:03 by ael-hara         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ int	ft_strlen(char *str)
 	return (i);
 }
 
-int	count_str_in_2d_array(char *find, char **array)
+int	count_str_in_array(char *find, char **array)
 {
 	int	i;
 	int	count;

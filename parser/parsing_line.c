@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing_line.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aait-lha <aait-lha@student.1337.ma>        +#+  +:+       +#+        */
+/*   By: ael-hara <ael-hara@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/15 18:37:48 by ael-hara          #+#    #+#             */
-/*   Updated: 2024/07/31 11:48:48 by aait-lha         ###   ########.fr       */
+/*   Updated: 2024/08/01 20:41:03 by ael-hara         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,10 +16,10 @@ void	initialize_cmd_and_set_flags(t_cmd *cmds,
 		t_indexes *indexes, char **split, t_data *data)
 {
 	initialize_cmd(&cmds[indexes->i]);
-	cmds[indexes->i].outfile = count_str_in_2d_array(">", split);
-	cmds[indexes->i].append = count_str_in_2d_array(">>", split);
-	cmds[indexes->i].heredoc = count_str_in_2d_array("<<", split);
-	cmds[indexes->i].infile = count_str_in_2d_array("<", split);
+	cmds[indexes->i].outfile = count_str_in_array(">", split);
+	cmds[indexes->i].append = count_str_in_array(">>", split);
+	cmds[indexes->i].heredoc = count_str_in_array("<<", split);
+	cmds[indexes->i].infile = count_str_in_array("<", split);
 	cmds[indexes->i].flag_outfiles = find_last_str("<", "<<", split);
 	cmds[indexes->i].flag_infiles = find_last_str(">", ">>", split);
 	cmds[indexes->i].files = ft_malloc(sizeof(t_redir *)

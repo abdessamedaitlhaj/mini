@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aait-lha <aait-lha@student.1337.ma>        +#+  +:+       +#+        */
+/*   By: ael-hara <ael-hara@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/31 08:07:08 by aait-lha          #+#    #+#             */
-/*   Updated: 2024/08/01 18:29:28 by aait-lha         ###   ########.fr       */
+/*   Updated: 2024/08/01 20:33:22 by ael-hara         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,30 +81,12 @@ void	check_main(int ac, int isatty_result, char **av)
 	}
 }
 
-void	f()
-{
-	system("leaks minishell");
-}
-
-t_data	init_main(char **envp)
-{
-	t_data	data;
-
-	data = (t_data){NULL, NULL, 0, NULL, NULL, NULL, 0,
-		NULL, 0, 0, -2, -2, envp, 0, NULL};
-	init_envs(envp, &data);
-	signal(SIGINT, int_handler);
-	signal(SIGQUIT, SIG_IGN);
-	return (data);
-}
-
 int	main(int ac, char **av, char **envp)
 {
 	char			*line;
 	struct termios	term;
 	t_data			data;
 
-	atexit(f);
 	check_main(ac, isatty(0), av);
 	data = init_main(envp);
 	while (77)
@@ -115,16 +97,9 @@ int	main(int ac, char **av, char **envp)
 			line_exit(&data, line);
 		check_signal(&data);
 		if (!parsing(line, &data))
-		{
-			break ;
-		}
+			continue ;
 		if (parsing_signal())
 			continue ;
 		execute_and_free(&data, line, &term);
-			free_allocated(&data.allocated);
-			free_env(&data.env);
-			break;
 	}
-			free_allocated(&data.allocated);
-			free_env(&data.env);
 }

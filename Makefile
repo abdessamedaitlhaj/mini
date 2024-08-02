@@ -37,6 +37,7 @@ SRCS = 	minishell.c 					\
 		executor/env.c					\
 		executor/echo.c					\
 		executor/cd.c					\
+		executor/cd_utils.c					\
 		executor/handle_cmds.c			\
 		executor/execute_cmd.c			\
 		executor/find_exec.c			\

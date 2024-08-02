@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils_two.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aait-lha <aait-lha@student.1337.ma>        +#+  +:+       +#+        */
+/*   By: ael-hara <ael-hara@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/23 14:26:39 by aait-lha          #+#    #+#             */
-/*   Updated: 2024/07/30 12:34:33 by aait-lha         ###   ########.fr       */
+/*   Updated: 2024/08/01 20:18:52 by ael-hara         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,4 +68,21 @@ char	*copy_cwd(char *cwd, t_data *data)
 	new_str[i] = '\0';
 	free(cwd);
 	return (new_str);
+}
+
+int	ft_unsetenv(char *key, t_data *data)
+{
+	t_env	*tmp;
+
+	tmp = data->env;
+	while (tmp)
+	{
+		if (ft_strcmp(key, tmp->key) == 0)
+		{
+			ft_remove_env(&data->env, key);
+			break ;
+		}
+		tmp = tmp->next;
+	}
+	return (0);
 }

@@ -3,36 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   cd.c                                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aait-lha <aait-lha@student.1337.ma>        +#+  +:+       +#+        */
+/*   By: ael-hara <ael-hara@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/15 13:04:10 by aait-lha          #+#    #+#             */
-/*   Updated: 2024/08/01 20:13:38 by aait-lha         ###   ########.fr       */
+/*   Updated: 2024/08/01 20:24:01 by ael-hara         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
-
-char	*home_set(t_data *data)
-{
-	char	*home;
-
-	home = ft_getenv("HOME", data->env);
-	if (home)
-		return (home);
-	ft_putendl_fd("minishell: cd: HOME not set", 2);
-	return (NULL);
-}
-
-char	*oldpwd_set(t_data *data)
-{
-	char	*oldpwd;
-
-	oldpwd = ft_getenv("OLDPWD", data->env);
-	if (oldpwd)
-		return (oldpwd);
-	ft_putendl_fd("minishell: cd: OLDPWD not set", 2);
-	return (NULL);
-}
 
 int	change(char *path, t_data *data)
 {
@@ -48,7 +26,7 @@ void	cwd_dir(char *path, char *d, t_data *data)
 {
 	char	*tmp;
 
-	common_error("cd: error retrieving current directory: ", "getcwd",\
+	common_error("cd: error retrieving current directory: ", "getcwd", \
 		"cannot access parent directories");
 	tmp = ft_strjoin2(ft_getenv("PWD", data->env), "/", data);
 	d = ft_strjoin2(tmp, path, data);
@@ -128,4 +106,3 @@ int	ft_cd(char **args, t_data *data)
 		return (1);
 	return (0);
 }
-

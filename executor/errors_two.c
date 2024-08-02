@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   errors_two.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aait-lha <aait-lha@student.1337.ma>        +#+  +:+       +#+        */
+/*   By: ael-hara <ael-hara@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/17 21:55:20 by aait-lha          #+#    #+#             */
-/*   Updated: 2024/07/31 14:11:52 by aait-lha         ###   ########.fr       */
+/*   Updated: 2024/08/01 20:26:49 by ael-hara         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ void	ft_close(int *fd, t_data *data)
 	*fd = -2;
 }
 
-int	   close_streams(int *fd1, int *fd2, t_data *data)
+int	close_streams(int *fd1, int *fd2, t_data *data)
 {
 	ft_close(fd1, data);
 	ft_close(fd2, data);

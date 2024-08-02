@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils4.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aait-lha <aait-lha@student.1337.ma>        +#+  +:+       +#+        */
+/*   By: ael-hara <ael-hara@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/30 02:34:27 by ael-hara          #+#    #+#             */
-/*   Updated: 2024/07/31 07:56:09 by aait-lha         ###   ########.fr       */
+/*   Updated: 2024/08/01 20:21:41 by ael-hara         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,4 +77,16 @@ char	*ft_itoa(int n, t_data *data)
 		nbr /= 10;
 	}
 	return (str);
+}
+
+t_data	init_main(char **envp)
+{
+	t_data	data;
+
+	data = (t_data){NULL, NULL, 0, NULL, NULL, NULL, 0,
+		NULL, 0, 0, -2, -2, envp, 0, NULL};
+	init_envs(envp, &data);
+	signal(SIGINT, int_handler);
+	signal(SIGQUIT, SIG_IGN);
+	return (data);
 }

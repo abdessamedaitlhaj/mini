@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aait-lha <aait-lha@student.1337.ma>        +#+  +:+       +#+        */
+/*   By: ael-hara <ael-hara@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/30 04:30:21 by ael-hara          #+#    #+#             */
-/*   Updated: 2024/08/01 20:04:01 by aait-lha         ###   ########.fr       */
+/*   Updated: 2024/08/01 20:41:03 by ael-hara         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -143,7 +143,7 @@ void				allocate_memory_for_files(t_cmd *cmds, t_data *data,
 						char **split, int i);
 int					ft_strlen(char *str);
 char				*ft_strdup(char *str, t_list **allocated);
-int					count_str_in_2d_array(char *find, char **array);
+int					count_str_in_array(char *find, char **array);
 t_list				*init_malloc(void);
 void				*ft_malloc(size_t size, t_list **garbage_collector);
 char				*ft_substr(char *s, unsigned int start,
@@ -225,6 +225,8 @@ void				execute_and_free(t_data *data, char *line,
 void				line_exit(t_data *data, char *line);
 void				check_signal(t_data *data);
 int					parsing_signal(void);
+t_data				init_main(char **envp);
+void				int_handler(int sig);
 
 //===================================================
 
@@ -318,5 +320,10 @@ char				*copy_cwd(char *cwd, t_data *data);
 char				*ft_substr2(char *s, unsigned int start, size_t len,
 						t_data *data);
 void				not_dir(t_data *data, char *cmd);
+void				ft_remove_env(t_env **env, char	*key);
+char				*home_set(t_data *data);
+char				*oldpwd_set(t_data *data);
+int					ft_isdigit(int c);
+void				ft_skip_spaces(int *sign, char **str);
 
 #endif

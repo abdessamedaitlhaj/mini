@@ -6,7 +6,7 @@
 /*   By: ael-hara <ael-hara@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/26 20:34:56 by ael-hara          #+#    #+#             */
-/*   Updated: 2024/08/01 02:16:11 by ael-hara         ###   ########.fr       */
+/*   Updated: 2024/08/01 20:34:12 by ael-hara         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,7 +77,7 @@ int	parsing(char *line, t_data *data)
 	process_line(&line, data);
 	pipes = ft_split_str(line, "|", data);
 	if (!pipes)
-		return (free_allocated(&data->allocated), 0);
+		return (free(line), free_allocated(&data->allocated), 0);
 	data->pipes = pipes;
 	i = 0;
 	while (pipes[i])

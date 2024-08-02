@@ -3,33 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   exit.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aait-lha <aait-lha@student.1337.ma>        +#+  +:+       +#+        */
+/*   By: ael-hara <ael-hara@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/08 17:48:09 by aait-lha          #+#    #+#             */
-/*   Updated: 2024/08/01 20:06:42 by aait-lha         ###   ########.fr       */
+/*   Updated: 2024/08/01 20:29:17 by ael-hara         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
-
-int	ft_isdigit(int c)
-{
-	if (c >= '0' && c <= '9')
-		return (1);
-	return (0);
-}
-
-void	ft_skip_spaces(int *sign, char **str)
-{
-	while (**str && ft_isspace(**str))
-		(*str)++;
-	if (**str == '-' || **str == '+')
-	{
-		if (**str == '-')
-			*sign = -1;
-		(*str)++;
-	}
-}
 
 int	ft_atoi(char *str, int *f)
 {
@@ -73,10 +54,10 @@ int	is_num(char *str)
 
 void	no_arg(t_data *data)
 {
-		ft_putendl_fd("exit", 1);
-		free_allocated(&data->allocated);
-		free_env(&data->env);
-		exit(data->exit_status);
+	ft_putendl_fd("exit", 1);
+	free_allocated(&data->allocated);
+	free_env(&data->env);
+	exit(data->exit_status);
 }
 
 int	ft_exit(char **args, int arg_number, t_data *data)
