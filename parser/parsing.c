@@ -6,7 +6,7 @@
 /*   By: ael-hara <ael-hara@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/26 20:34:56 by ael-hara          #+#    #+#             */
-/*   Updated: 2024/08/04 02:07:04 by ael-hara         ###   ########.fr       */
+/*   Updated: 2024/08/04 19:27:33 by ael-hara         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,7 @@ int	parsing(char *line, t_data *data)
 
 	if (line[0] == '\0' || empty_line_parse(line))
 		return (free_allocated(&data->allocated),
-			free(line), data->exit_status = 0, 0);
+			free(line), 0);
 	process_line_history(line);
 	if (pair_quotes(line).error || parsing_pipe(line).error
 		|| parsing_redir(line).error)
