@@ -3,14 +3,26 @@
 /*                                                        :::      ::::::::   */
 /*   exit.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ael-hara <ael-hara@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aait-lha <aait-lha@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/08 17:48:09 by aait-lha          #+#    #+#             */
-/*   Updated: 2024/08/01 20:29:17 by ael-hara         ###   ########.fr       */
+/*   Updated: 2024/08/03 21:16:47 by aait-lha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
+
+static	void ft_skip_spaces(int *sign, char **str)
+{
+	while (**str && ft_isspace(**str))
+		(*str)++;
+	if (**str == '-' || **str == '+')
+	{
+		if (**str == '-')
+			*sign = -1;
+		(*str)++;
+	}
+}
 
 int	ft_atoi(char *str, int *f)
 {
@@ -36,7 +48,7 @@ int	ft_atoi(char *str, int *f)
 	return (sum);
 }
 
-int	is_num(char *str)
+static int	is_num(char *str)
 {
 	int	i;
 
@@ -52,7 +64,7 @@ int	is_num(char *str)
 	return (1);
 }
 
-void	no_arg(t_data *data)
+static void	no_arg(t_data *data)
 {
 	ft_putendl_fd("exit", 1);
 	free_allocated(&data->allocated);
@@ -68,7 +80,7 @@ int	ft_exit(char **args, int arg_number, t_data *data)
 	f = 0;
 	if (!arg_number)
 		no_arg(data);
-	if (!is_num(args[0]))
+	if (!is_num(args[0]) || !args[0][0])
 		exit_error(args[0], data);
 	e = ft_atoi(args[0], &f);
 	if (f == 1)
@@ -85,11 +97,9 @@ int	ft_exit(char **args, int arg_number, t_data *data)
 	exit(e % 256);
 }
 
-int	is_dir(char *path)
+int	ft_isdigit(int c)
 {
-	struct stat	buf;
-
-	if (stat(path, &buf) != 0)
-		return (0);
-	return (S_ISDIR(buf.st_mode));
+	if (c >= '0' && c <= '9')
+		return (1);
+	return (0);
 }

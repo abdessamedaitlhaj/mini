@@ -6,7 +6,7 @@
 /*   By: aait-lha <aait-lha@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/07 12:08:33 by aait-lha          #+#    #+#             */
-/*   Updated: 2024/07/29 21:55:32 by aait-lha         ###   ########.fr       */
+/*   Updated: 2024/08/03 21:15:53 by aait-lha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,4 +84,13 @@ char	*find_cmd(t_data *data, char *cmd)
 			return (path);
 	}
 	return (NULL);
+}
+
+int	is_dir(char *path)
+{
+	struct stat	buf;
+
+	if (stat(path, &buf) != 0)
+		return (0);
+	return (S_ISDIR(buf.st_mode));
 }

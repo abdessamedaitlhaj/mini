@@ -6,7 +6,7 @@
 /*   By: aait-lha <aait-lha@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/15 16:55:14 by aait-lha          #+#    #+#             */
-/*   Updated: 2024/08/01 20:05:45 by aait-lha         ###   ########.fr       */
+/*   Updated: 2024/08/03 21:18:58 by aait-lha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,6 +66,7 @@ void	replace_env(t_key_value *k_v, t_data *data)
 				v = tmp->value;
 				tmp->value = ft_strjoin2(v, k_v->value, data);
 				free(v);
+				free(k_v->value);
 			}
 			else
 			{
@@ -78,21 +79,15 @@ void	replace_env(t_key_value *k_v, t_data *data)
 	}
 }
 
-int	ft_check(t_key_value *k_v, t_data *data)
+static	void	set_env(t_key_value *k_v, t_data *data)
 {
-	if (!ft_strchr(k_v->key, '=') && !k_v->value)
+	if (ft_get_key_index(k_v->key, data->env) != -1)
 	{
 		free(k_v->key);
-		return (1);
-	}
-	if (ft_get_key_index(k_v->key, data->env) != -1)
 		replace_env(k_v, data);
-	else
-	{
-		if (k_v->key && k_v->key[0])
-			ft_add_env(&data->env, ft_new_env(k_v->key, k_v->value, data));
 	}
-	return (0);
+	else
+		ft_add_env(&data->env, ft_new_env(k_v->key, k_v->value, data));
 }
 
 int	ft_export(char **args, t_data *data, char *cmd)
@@ -115,11 +110,7 @@ int	ft_export(char **args, t_data *data, char *cmd)
 			status = 1;
 			continue ;
 		}
-		if (ft_check(&k_v, data))
-		{
-			status = 1;
-			continue ;
-		}
+		set_env(&k_v, data);
 	}
 	return (status);
 }

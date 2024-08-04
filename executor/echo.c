@@ -6,13 +6,13 @@
 /*   By: aait-lha <aait-lha@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/15 16:20:01 by aait-lha          #+#    #+#             */
-/*   Updated: 2024/07/30 07:47:31 by aait-lha         ###   ########.fr       */
+/*   Updated: 2024/08/03 21:25:59 by aait-lha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-void	print_args(t_data *data, int i, int n, char **args)
+static void	print_args(t_data *data, int i, int n, char **args)
 {
 	while (i < n)
 	{

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   unsetenv.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ael-hara <ael-hara@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aait-lha <aait-lha@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/15 19:25:27 by aait-lha          #+#    #+#             */
-/*   Updated: 2024/08/01 20:18:37 by ael-hara         ###   ########.fr       */
+/*   Updated: 2024/08/02 20:00:27 by aait-lha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,20 +37,6 @@ void	ft_remove_env(t_env **env, char	*key)
 	}
 }
 
-int	ft_set_key_value(t_key_value *k_v, char *arg, t_data *data)
-{
-	k_v->key = extract_key(k_v, arg, data);
-	if (!k_v->key[0])
-	{
-		free(k_v->key);
-		k_v->err = 1;
-		return (1);
-	}
-	if (ft_strchr(arg, '=') && ft_strchr(arg, '=') + 1)
-		k_v->value = ft_strdup2(ft_strchr(arg, '=') + 1, data);
-	return (0);
-}
-
 int	is_valid(t_key_value *k_v, char *arg, t_data *data)
 {
 	int			i;
@@ -65,13 +51,14 @@ int	is_valid(t_key_value *k_v, char *arg, t_data *data)
 			return (1);
 		}
 	}
-	if (i == 0 && !arg[0])
+	if (i == 0 || !arg[0])
 	{
 		k_v->err = 1;
 		return (1);
 	}
-	if (ft_set_key_value(k_v, arg, data))
-		return (1);
+	k_v->key = extract_key(k_v, arg, data);
+	if (ft_strchr(arg, '='))
+		k_v->value = ft_strdup2(ft_strchr(arg, '=') + 1, data);
 	return (0);
 }
 

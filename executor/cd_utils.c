@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cd_utils.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ael-hara <ael-hara@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aait-lha <aait-lha@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/01 20:24:18 by ael-hara          #+#    #+#             */
-/*   Updated: 2024/08/01 20:28:38 by ael-hara         ###   ########.fr       */
+/*   Updated: 2024/08/03 21:16:42 by aait-lha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,23 +32,4 @@ char	*oldpwd_set(t_data *data)
 		return (oldpwd);
 	ft_putendl_fd("minishell: cd: OLDPWD not set", 2);
 	return (NULL);
-}
-
-int	ft_isdigit(int c)
-{
-	if (c >= '0' && c <= '9')
-		return (1);
-	return (0);
-}
-
-void	ft_skip_spaces(int *sign, char **str)
-{
-	while (**str && ft_isspace(**str))
-		(*str)++;
-	if (**str == '-' || **str == '+')
-	{
-		if (**str == '-')
-			*sign = -1;
-		(*str)++;
-	}
 }

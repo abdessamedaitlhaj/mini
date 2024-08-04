@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ael-hara <ael-hara@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aait-lha <aait-lha@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/30 04:30:21 by ael-hara          #+#    #+#             */
-/*   Updated: 2024/08/04 01:58:28 by ael-hara         ###   ########.fr       */
+/*   Updated: 2024/08/04 19:46:25 by aait-lha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -301,29 +301,22 @@ void				exit_error(char *number, t_data *data);
 int					ft_chdir(char *path);
 int					set_home(t_data *data);
 int					set_prev(t_data *data);
-void				print_args(t_data *data, int i, int n, char **args);
 int					ft_atoi(char *str, int *f);
-int					is_num(char *str);
 char				**get_paths(t_data *data, char *cmd);
 void				ft_remove_env(t_env **env, char	*key);
 int					ft_isalnm(int c);
 char				*extract_key(t_key_value *k_v, char *arg, t_data *data);
 void				replace_env(t_key_value *k_v, t_data *data);
 void				init(int *fd, t_data *data);
-char				*home_set(t_data *data);
-char				*oldpwd_set(t_data *data);
-int					special_path(char *path, t_data *data);
 void				*ft_new_env(char	*key, char	*value, t_data *data);
 void				ft_add_env(t_env **env, t_env *new);
 void				ft_setenv(char *key, char *value, t_data *data);
 char				*copy_cwd(char *cwd, t_data *data);
 char				*ft_substr2(char *s, unsigned int start, size_t len,
 						t_data *data);
-void				not_dir(t_data *data, char *cmd);
 void				ft_remove_env(t_env **env, char	*key);
 char				*home_set(t_data *data);
 char				*oldpwd_set(t_data *data);
 int					ft_isdigit(int c);
-void				ft_skip_spaces(int *sign, char **str);
 
 #endif

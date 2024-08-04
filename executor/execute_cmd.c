@@ -6,7 +6,7 @@
 /*   By: aait-lha <aait-lha@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/17 22:16:07 by aait-lha          #+#    #+#             */
-/*   Updated: 2024/08/01 15:11:14 by aait-lha         ###   ########.fr       */
+/*   Updated: 2024/08/03 21:29:38 by aait-lha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,6 +61,23 @@ int	create_process(t_data *data, t_cmd *cmd)
 	return (0);
 }
 
+static void	special_case(char *cmd, t_data *data)
+{
+	char	*dir;
+	int		len_cmd;
+
+	len_cmd = ft_strlen(cmd);
+	while (cmd[len_cmd-- - 1] == '/')
+		;
+	if (cmd[len_cmd - 1] == '/')
+	{
+		dir = ft_substr(cmd, 0, len_cmd, data);
+		if (access(dir, F_OK) == 0)
+			not_dir(data, cmd);
+	}
+	no_such_file(data, cmd);
+}
+
 void	exec_cmd(t_data *data, t_cmd *cmd)
 {
 	char	*path;
@@ -79,10 +96,9 @@ void	exec_cmd(t_data *data, t_cmd *cmd)
 		path = ft_strdup(cmd->cmd, &data->allocated);
 	}
 	else if (ft_strchr(cmd->cmd, '/') && access(cmd->cmd, F_OK) == -1)
-		no_such_file(data, cmd->cmd);
+		special_case(cmd->cmd, data);
 	else
 		path = find_cmd(data, cmd->cmd);
-	if (!path)
+	if (execve(path, args, data->envp) == -1)
 		cmd_not_found(cmd->cmd, data);
-	execve(path, args, data->envp);
 }
