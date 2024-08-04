@@ -26,6 +26,7 @@ SRCS = 	minishell.c 					\
 		parser/expanding_utils.c		\
 		parser/expanding_utils2.c		\
 		parser/expanding_utils3.c		\
+		parser/expanding_utils4.c		\
 		parser/parsing_redir.c			\
 		parser/heredoc.c				\
 		parser/heredoc_utils.c			\
@@ -37,7 +38,7 @@ SRCS = 	minishell.c 					\
 		executor/env.c					\
 		executor/echo.c					\
 		executor/cd.c					\
-		executor/cd_utils.c					\
+		executor/cd_utils.c				\
 		executor/handle_cmds.c			\
 		executor/execute_cmd.c			\
 		executor/find_exec.c			\

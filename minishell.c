@@ -6,7 +6,7 @@
 /*   By: ael-hara <ael-hara@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/31 08:07:08 by aait-lha          #+#    #+#             */
-/*   Updated: 2024/08/01 20:33:22 by ael-hara         ###   ########.fr       */
+/*   Updated: 2024/08/04 00:52:56 by ael-hara         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,7 +98,7 @@ int	main(int ac, char **av, char **envp)
 		check_signal(&data);
 		if (!parsing(line, &data))
 			continue ;
-		if (parsing_signal())
+		if (parsing_signal(&data, line))
 			continue ;
 		execute_and_free(&data, line, &term);
 	}

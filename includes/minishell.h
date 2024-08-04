@@ -6,7 +6,7 @@
 /*   By: ael-hara <ael-hara@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/30 04:30:21 by ael-hara          #+#    #+#             */
-/*   Updated: 2024/08/01 20:41:03 by ael-hara         ###   ########.fr       */
+/*   Updated: 2024/08/04 01:58:28 by ael-hara         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -164,7 +164,6 @@ void				handle_cmd_args(t_cmd *cmds, int *j, int *k, char **split);
 void				count_cmd_args(int *j, int *k, char **split);
 int					ft_min(int a, int b, int c);
 char				*ft_strndup( char *s, size_t n, t_data *data);
-char				*expanding_outside(char *pipe, t_data *data);
 void				ambigious(t_cmd *cmd, t_data *data);
 char				*expanding_inside(char *pipe, t_data *data);
 char				*remove_q(char *str, t_data *data);
@@ -186,7 +185,6 @@ void				expand_exist(char **pipe, int *i, int j, t_data *data);
 void				expand_flag(char **pipe, int *i, int j, t_data *data);
 void				expand_var(char **pipe, int *i, t_data *data);
 int					expand_help(char **pipe, int *i, t_data *data);
-char				*expanding_outside(char *pipe, t_data *data);
 void				inside_exit(char **pipe, int *i, t_data *data);
 void				inside_number(char **pipe, int *i, t_data *data);
 void				expand_var(char **pipe, int *i, t_data *data);
@@ -224,9 +222,11 @@ void				execute_and_free(t_data *data, char *line,
 						struct termios *term);
 void				line_exit(t_data *data, char *line);
 void				check_signal(t_data *data);
-int					parsing_signal(void);
+int					parsing_signal(t_data *data, char *line);
 t_data				init_main(char **envp);
 void				int_handler(int sig);
+void				quotes_to_ascii(char *str);
+void				ascii_to_quotes(char *str);
 
 //===================================================
 

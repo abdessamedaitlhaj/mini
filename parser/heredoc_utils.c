@@ -6,7 +6,7 @@
 /*   By: ael-hara <ael-hara@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/31 01:55:39 by ael-hara          #+#    #+#             */
-/*   Updated: 2024/08/02 22:35:16 by ael-hara         ###   ########.fr       */
+/*   Updated: 2024/08/04 00:06:40 by ael-hara         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,7 @@ void	push_line_expand(int fd, char *limiter, t_data *data)
 	if (pid == 0)
 		push_expand_loop(limiter, content, data, fd);
 	waitpid(pid, &child_exit_status, 0);
-	if (WIFEXITED(child_exit_status) && WEXITSTATUS(child_exit_status) == 4)
+	if (WEXITSTATUS(child_exit_status) == 4)
 	{
 		data->exit_status = 1;
 		g_signal_flag = 1;

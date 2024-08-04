@@ -6,7 +6,7 @@
 /*   By: ael-hara <ael-hara@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/08 00:37:39 by ael-hara          #+#    #+#             */
-/*   Updated: 2024/08/02 22:35:12 by ael-hara         ###   ########.fr       */
+/*   Updated: 2024/08/04 00:07:02 by ael-hara         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,7 @@ void	push_line(int fd, char *limiter, t_data *data)
 	if (pid == 0)
 		push_loop(limiter, content, data, fd);
 	waitpid(pid, &child_exit_status, 0);
-	if (WIFEXITED(child_exit_status) && WEXITSTATUS(child_exit_status) == 4)
+	if (WEXITSTATUS(child_exit_status) == 4)
 	{
 		data->exit_status = 1;
 		g_signal_flag = 1;
@@ -105,7 +105,7 @@ void	empty_line(char *limiter, t_data *data)
 	if (pid == 0)
 		empty_line_loop(limiter);
 	waitpid(pid, &child_exit_status, 0);
-	if (WIFEXITED(child_exit_status) && WEXITSTATUS(child_exit_status) == 4)
+	if (WEXITSTATUS(child_exit_status) == 4)
 	{
 		data->exit_status = 1;
 		g_signal_flag = 1;

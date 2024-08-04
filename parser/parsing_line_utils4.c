@@ -6,11 +6,38 @@
 /*   By: ael-hara <ael-hara@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/30 23:06:30 by ael-hara          #+#    #+#             */
-/*   Updated: 2024/08/01 01:40:28 by ael-hara         ###   ########.fr       */
+/*   Updated: 2024/08/04 01:56:35 by ael-hara         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
+
+void	loop_ascii(t_cmd *cmds, t_data *data)
+{
+	int	i;
+	int	j;
+
+	i = 0;
+	while (i < data->counter_command)
+	{
+		j = 0;
+		if (cmds[i].cmd)
+			ascii_to_quotes(cmds[i].cmd);
+		while (cmds[i].files[j])
+		{
+			if (cmds[i].files[j]->type != HEREDOC)
+				ascii_to_quotes(cmds[i].files[j]->file);
+			j++;
+		}
+		j = 0;
+		while (cmds[i].args[j])
+		{
+			ascii_to_quotes(cmds[i].args[j]);
+			j++;
+		}
+		i++;
+	}
+}
 
 void	fill_command_help(t_cmd *cmds, t_data *data)
 {
@@ -18,6 +45,7 @@ void	fill_command_help(t_cmd *cmds, t_data *data)
 	ambigious(cmds, data);
 	heredoc_loop(cmds, data);
 	remove_quotes(cmds, data);
+	loop_ascii(cmds, data);
 	data->cmds = cmds;
 }
 

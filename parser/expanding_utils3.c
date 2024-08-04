@@ -6,7 +6,7 @@
 /*   By: ael-hara <ael-hara@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/30 02:25:30 by ael-hara          #+#    #+#             */
-/*   Updated: 2024/07/30 15:00:41 by ael-hara         ###   ########.fr       */
+/*   Updated: 2024/08/04 01:49:16 by ael-hara         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,6 +49,7 @@ char	*normal_expand(char *pipe, int i, t_data *data)
 		j++;
 	var_value = ft_getenv(ft_substr(pipe, i + 1, j - i - 1, data),
 			data->env);
+	quotes_to_ascii(var_value);
 	if (var_value)
 	{
 		before = ft_substr(pipe, 0, i, data);

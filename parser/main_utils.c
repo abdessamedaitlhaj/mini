@@ -6,7 +6,7 @@
 /*   By: ael-hara <ael-hara@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/01 02:27:21 by ael-hara          #+#    #+#             */
-/*   Updated: 2024/08/01 20:17:54 by ael-hara         ###   ########.fr       */
+/*   Updated: 2024/08/04 02:04:23 by ael-hara         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,11 +60,13 @@ void	check_signal(t_data *data)
 	}
 }
 
-int	parsing_signal(void)
+int	parsing_signal(t_data *data, char *line)
 {
 	if (g_signal_flag == 1)
 	{
 		g_signal_flag = 0;
+		free_allocated(&data->allocated);
+		free(line);
 		return (1);
 	}
 	return (0);
