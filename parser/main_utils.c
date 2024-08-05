@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main_utils.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ael-hara <ael-hara@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aait-lha <aait-lha@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/01 02:27:21 by ael-hara          #+#    #+#             */
-/*   Updated: 2024/08/04 02:04:23 by ael-hara         ###   ########.fr       */
+/*   Updated: 2024/08/05 20:18:16 by aait-lha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,11 +27,6 @@ void	init_while(t_data *data, struct termios *term)
 void	execute_and_free(t_data *data, char *line, struct termios *term)
 {
 	execute_cmds(data);
-	if (data->counter_command > 0 && data->exit_status == 1)
-	{
-		if (data->cmds->cmd && !data->cmds->cmd[0])
-			data->exit_status = 0;
-	}
 	free(line);
 	free_allocated(&data->allocated);
 	if (tcsetattr(0, TCSANOW, term) == -1)

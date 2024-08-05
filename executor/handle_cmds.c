@@ -6,7 +6,7 @@
 /*   By: aait-lha <aait-lha@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/22 19:09:09 by aait-lha          #+#    #+#             */
-/*   Updated: 2024/08/01 18:15:29 by aait-lha         ###   ########.fr       */
+/*   Updated: 2024/08/05 21:57:29 by aait-lha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,6 +59,15 @@ void	init(int *fd, t_data *data)
 	data->exit_status = 0;
 }
 
+void	init_status(t_data *data)
+{
+	int	i;
+
+	i = -1;
+	while (++i < data->counter_command)
+		data->status[i].pid = -1;
+}
+
 int	execute_multiple_nodes(t_data *data)
 {
 	int	i;
@@ -67,6 +76,8 @@ int	execute_multiple_nodes(t_data *data)
 
 	i = -1;
 	prev_fd = -2;
+	data->status = ft_malloc(sizeof(t_status) * data->counter_command, &data->allocated);
+	init_status(data);
 	while (++i < data->counter_command)
 	{
 		init(fd, data);
@@ -80,10 +91,12 @@ int	execute_multiple_nodes(t_data *data)
 				exit(1);
 			}
 		}
-		if (!init_fds(data, &data->cmds[i]) && !data->cmds[i].flag_command)
+		if ((!init_fds(data, &data->cmds[i]) && !data->cmds[i].flag_command))
 			fork_process(data, i, fd, &prev_fd);
 		close_streams(&data->fd_in, &data->fd_out, data);
 		save_last_pipe(data, i, fd, &prev_fd);
+		if (data->exit_status == 1)
+			data->status[i].status = 1;
 	}
 	return (0);
 }

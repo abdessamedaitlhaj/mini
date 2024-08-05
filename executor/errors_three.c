@@ -6,7 +6,7 @@
 /*   By: aait-lha <aait-lha@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/23 14:30:08 by aait-lha          #+#    #+#             */
-/*   Updated: 2024/08/01 14:59:53 by aait-lha         ###   ########.fr       */
+/*   Updated: 2024/08/04 21:39:08 by aait-lha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,8 @@ void	fail_error(char *str, t_list **garbage_collector)
 
 void	exit_error(char *number, t_data *data)
 {
-	ft_putendl_fd("exit", 1);
+	if (data->counter_command == 1)
+		ft_putendl_fd("exit", 1);
 	ft_putstr_fd("minishell: exit: ", 1);
 	ft_putstr_fd(number, 1);
 	ft_putendl_fd(": numeric argument required", 1);

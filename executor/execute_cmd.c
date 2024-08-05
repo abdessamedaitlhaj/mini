@@ -6,7 +6,7 @@
 /*   By: aait-lha <aait-lha@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/17 22:16:07 by aait-lha          #+#    #+#             */
-/*   Updated: 2024/08/03 21:29:38 by aait-lha         ###   ########.fr       */
+/*   Updated: 2024/08/05 20:28:57 by aait-lha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,17 +14,15 @@
 
 int	fork_process(t_data *data, int i, int *fd, int *prev_fd)
 {
-	pid_t	pid;
-
-	pid = fork();
-	if (pid == -1)
+	data->status[i].pid = fork();
+	if (data->status[i].pid == -1)
 	{
 		close_streams(&data->fd_in, &data->fd_out, data);
 		ft_close(prev_fd, data);
 		close_pipe(fd, data);
 		fail_error("fork", &data->allocated);
 	}
-	if (pid == 0)
+	if (data->status[i].pid == 0)
 	{
 		signal(SIGQUIT, SIG_DFL);
 		signal(SIGINT, sig_handler);
@@ -33,6 +31,7 @@ int	fork_process(t_data *data, int i, int *fd, int *prev_fd)
 			exit(ft_exec_builtin(&data->cmds[i], data));
 		else
 			exec_cmd(data, &data->cmds[i]);
+		exit(0);
 	}
 	return (0);
 }
@@ -99,6 +98,8 @@ void	exec_cmd(t_data *data, t_cmd *cmd)
 		special_case(cmd->cmd, data);
 	else
 		path = find_cmd(data, cmd->cmd);
-	if (execve(path, args, data->envp) == -1)
+	if (!path)
 		cmd_not_found(cmd->cmd, data);
+	if (execve(path, args, data->envp) == -1)
+		exit(1);
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ael-hara <ael-hara@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aait-lha <aait-lha@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/31 08:07:08 by aait-lha          #+#    #+#             */
-/*   Updated: 2024/08/04 00:52:56 by ael-hara         ###   ########.fr       */
+/*   Updated: 2024/08/05 20:57:50 by aait-lha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,20 +16,24 @@ int	g_signal_flag = 0;
 
 static void	check_files(t_data *data)
 {
-	if (data->cmds[data->counter_command].files)
-	{
-		if ((data->cmds[data->counter_command - 1].infile && \
-		data->fd_in == -1) || (data->cmds[data->counter_command - \
-		1].outfile && data->fd_out == -1))
-			data->exit_status = 1;
-	}
+	(void)data;
+	// if (data->cmds[data->counter_command - 1].files)
+	// {
+	// 	if ((data->cmds[data->counter_command - 1].infile && \
+	// 	data->fd_in == -1) || (data->cmds[data->counter_command - \
+	// 	1].outfile && data->fd_out == -1))
+	// 		data->exit_status = 1;
+	// }
+	// if ((data->cmds[data->counter_command - 1].flag_command && \
+	// !data->cmds[data->counter_command - 1].cmd[0]))
+	// 	data->exit_status = 0;
 }
 
 int	execute_cmds(t_data *data)
 {
-	int	status;
 	int	stdin_copy;
 	int	stdout_copy;
+	int	i;
 
 	stdin_copy = dup(0);
 	stdout_copy = dup(1);
@@ -40,8 +44,14 @@ int	execute_cmds(t_data *data)
 	else
 	{
 		execute_multiple_nodes(data);
-		while (waitpid(-1, &status, 0) > 0)
-			get_status(data, status);
+		i = 0;
+		while (i < data->counter_command)
+		{
+			if (data->status[i].pid != -1)
+				waitpid(data->status[i].pid, &data->status[i].status, 0);
+			i++;
+		}
+		get_status(data, data->status[i - 1].status);
 		check_files(data);
 	}
 	if (dup2(stdin_copy, 0) == -1 || \

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils4.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ael-hara <ael-hara@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aait-lha <aait-lha@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/30 02:34:27 by ael-hara          #+#    #+#             */
-/*   Updated: 2024/08/01 20:21:41 by ael-hara         ###   ########.fr       */
+/*   Updated: 2024/08/05 19:13:56 by aait-lha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,7 +84,7 @@ t_data	init_main(char **envp)
 	t_data	data;
 
 	data = (t_data){NULL, NULL, 0, NULL, NULL, NULL, 0,
-		NULL, 0, 0, -2, -2, envp, 0, NULL};
+		NULL, 0, 0, -2, -2, envp, 0, NULL, NULL, NULL};
 	init_envs(envp, &data);
 	signal(SIGINT, int_handler);
 	signal(SIGQUIT, SIG_IGN);

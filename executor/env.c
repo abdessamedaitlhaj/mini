@@ -6,7 +6,7 @@
 /*   By: aait-lha <aait-lha@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/15 19:39:04 by aait-lha          #+#    #+#             */
-/*   Updated: 2024/07/31 14:17:19 by aait-lha         ###   ########.fr       */
+/*   Updated: 2024/08/05 18:44:04 by aait-lha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,16 +15,15 @@
 void	handle_empty_env(t_data *data)
 {
 	char	*path;
-	char	*pwd;
 	char	*shlvl;
 	char	*last_cmd;
 
 	data->empty_env = 1;
 	path = ft_strdup2("/usr/bin:/bin:/usr/sbin:/sbin:.", data);
-	pwd = copy_cwd(getcwd(NULL, 0), data);
+	data->pwd = copy_cwd(getcwd(NULL, 0), data);
 	shlvl = ft_strdup2("1", data);
 	last_cmd = ft_strdup2("/usr/bin/env", data);
-	ft_add_env(&data->env, ft_new_env(ft_strdup2("PWD", data), pwd, data));
+	ft_add_env(&data->env, ft_new_env(ft_strdup2("PWD", data), data->pwd, data));
 	ft_add_env(&data->env, ft_new_env(ft_strdup2("PATH", data), path, data));
 	ft_add_env(&data->env, ft_new_env(ft_strdup2("SHLVL", data), shlvl, data));
 	ft_add_env(&data->env, ft_new_env(ft_strdup2("_", data), last_cmd, data));
@@ -41,6 +40,7 @@ void	init_envs(char **envp, t_data *data)
 		handle_empty_env(data);
 	else
 	{
+		data->pwd = copy_cwd(getcwd(NULL, 0), data);
 		i = -1;
 		while (envp[++i])
 		{

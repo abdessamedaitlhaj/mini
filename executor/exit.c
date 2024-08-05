@@ -6,7 +6,7 @@
 /*   By: aait-lha <aait-lha@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/08 17:48:09 by aait-lha          #+#    #+#             */
-/*   Updated: 2024/08/03 21:16:47 by aait-lha         ###   ########.fr       */
+/*   Updated: 2024/08/04 21:39:42 by aait-lha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,8 @@ static int	is_num(char *str)
 
 static void	no_arg(t_data *data)
 {
-	ft_putendl_fd("exit", 1);
+	if (data->counter_command == 1)
+		ft_putendl_fd("exit", 1);
 	free_allocated(&data->allocated);
 	free_env(&data->env);
 	exit(data->exit_status);
@@ -87,13 +88,15 @@ int	ft_exit(char **args, int arg_number, t_data *data)
 		exit_error(args[0], data);
 	if (args[1])
 	{
-		ft_putendl_fd("exit", 1);
+		if (data->counter_command == 1)
+			ft_putendl_fd("exit", 1);
 		ft_putendl_fd("minishell: exit: too many arguments", 1);
 		return (1);
 	}
 	free_allocated(&data->allocated);
 	free_env(&data->env);
-	ft_putendl_fd("exit", 1);
+	if (data->counter_command == 1)
+		ft_putendl_fd("exit", 1);
 	exit(e % 256);
 }
 

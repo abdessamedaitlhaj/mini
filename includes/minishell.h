@@ -6,7 +6,7 @@
 /*   By: aait-lha <aait-lha@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/30 04:30:21 by ael-hara          #+#    #+#             */
-/*   Updated: 2024/08/04 19:46:25 by aait-lha         ###   ########.fr       */
+/*   Updated: 2024/08/05 19:12:28 by aait-lha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,23 +81,31 @@ typedef struct s_env
 	struct s_env	*next;
 }	t_env;
 
+typedef struct s_status
+{
+	int		status;
+	int		pid;
+}	t_status;
+
 typedef struct s_data
 {
-	char	*line;
-	char	**pipes;
-	int		counter_command;
-	t_cmd	*cmds;
-	t_list	*allocated;
-	char	**heredoc;
-	int		heredoc_error;
-	t_env	*env;
-	int		empty_env;
-	int		delimiter_count;
-	int		fd_in;
-	int		fd_out;
-	char	**envp;
-	int		exit_status;
-	char	*help;
+	char		*line;
+	char		**pipes;
+	int			counter_command;
+	t_cmd		*cmds;
+	t_list		*allocated;
+	char		**heredoc;
+	int			heredoc_error;
+	t_env		*env;
+	int			empty_env;
+	int			delimiter_count;
+	int			fd_in;
+	int			fd_out;
+	char		**envp;
+	int			exit_status;
+	char		*help;
+	char		*pwd;
+	t_status	*status;
 }	t_data;
 
 typedef struct s_split_args

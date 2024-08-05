@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing_line_utils3.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ael-hara <ael-hara@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aait-lha <aait-lha@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/30 15:21:23 by ael-hara          #+#    #+#             */
-/*   Updated: 2024/08/01 00:13:26 by ael-hara         ###   ########.fr       */
+/*   Updated: 2024/08/05 22:04:44 by aait-lha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,7 +71,7 @@ int	check_null(char *str)
 		i++;
 	while (i < len)
 	{
-		if (str[i] == ' ' || str[i] == '\n' || str[i] == '\t' || str[i] == '*')
+		if (str[i] == ' ' || str[i] == '\n' || str[i] == '\t')
 			return (0);
 		i++;
 	}
