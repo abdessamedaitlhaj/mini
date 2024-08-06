@@ -6,7 +6,7 @@
 /*   By: aait-lha <aait-lha@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/15 19:39:04 by aait-lha          #+#    #+#             */
-/*   Updated: 2024/08/05 18:44:04 by aait-lha         ###   ########.fr       */
+/*   Updated: 2024/08/06 01:06:59 by aait-lha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,8 @@ void	handle_empty_env(t_data *data)
 	data->pwd = copy_cwd(getcwd(NULL, 0), data);
 	shlvl = ft_strdup2("1", data);
 	last_cmd = ft_strdup2("/usr/bin/env", data);
-	ft_add_env(&data->env, ft_new_env(ft_strdup2("PWD", data), data->pwd, data));
+	ft_add_env(&data->env, ft_new_env(ft_strdup2("PWD", data), \
+	data->pwd, data));
 	ft_add_env(&data->env, ft_new_env(ft_strdup2("PATH", data), path, data));
 	ft_add_env(&data->env, ft_new_env(ft_strdup2("SHLVL", data), shlvl, data));
 	ft_add_env(&data->env, ft_new_env(ft_strdup2("_", data), last_cmd, data));

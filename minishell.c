@@ -6,7 +6,7 @@
 /*   By: aait-lha <aait-lha@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/31 08:07:08 by aait-lha          #+#    #+#             */
-/*   Updated: 2024/08/05 20:57:50 by aait-lha         ###   ########.fr       */
+/*   Updated: 2024/08/06 01:11:23 by aait-lha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,51 +14,29 @@
 
 int	g_signal_flag = 0;
 
-static void	check_files(t_data *data)
-{
-	(void)data;
-	// if (data->cmds[data->counter_command - 1].files)
-	// {
-	// 	if ((data->cmds[data->counter_command - 1].infile && \
-	// 	data->fd_in == -1) || (data->cmds[data->counter_command - \
-	// 	1].outfile && data->fd_out == -1))
-	// 		data->exit_status = 1;
-	// }
-	// if ((data->cmds[data->counter_command - 1].flag_command && \
-	// !data->cmds[data->counter_command - 1].cmd[0]))
-	// 	data->exit_status = 0;
-}
-
 int	execute_cmds(t_data *data)
 {
 	int	stdin_copy;
 	int	stdout_copy;
 	int	i;
 
-	stdin_copy = dup(0);
-	stdout_copy = dup(1);
-	if (stdin_copy == -1 || stdout_copy == -1)
-		fail_error("dup", &data->allocated);
 	if (data->counter_command == 1)
 		data->exit_status = execute_one_node(data);
 	else
 	{
 		execute_multiple_nodes(data);
-		i = 0;
-		while (i < data->counter_command)
+		i = -1;
+		while (++i < data->counter_command)
 		{
 			if (data->status[i].pid != -1)
 				waitpid(data->status[i].pid, &data->status[i].status, 0);
-			i++;
 		}
 		get_status(data, data->status[i - 1].status);
-		check_files(data);
 	}
 	if (dup2(stdin_copy, 0) == -1 || \
 		dup2(stdout_copy, 1) == -1)
 		fail_error("dup2", &data->allocated);
-	close_streams(&stdin_copy, &stdout_copy, data);
-	return (0);
+	return (close_streams(&stdin_copy, &stdout_copy, data), 0);
 }
 
 void	int_handler(int sig)

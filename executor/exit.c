@@ -6,13 +6,13 @@
 /*   By: aait-lha <aait-lha@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/08 17:48:09 by aait-lha          #+#    #+#             */
-/*   Updated: 2024/08/04 21:39:42 by aait-lha         ###   ########.fr       */
+/*   Updated: 2024/08/06 01:08:43 by aait-lha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-static	void ft_skip_spaces(int *sign, char **str)
+static void	ft_skip_spaces(int *sign, char **str)
 {
 	while (**str && ft_isspace(**str))
 		(*str)++;
@@ -98,11 +98,4 @@ int	ft_exit(char **args, int arg_number, t_data *data)
 	if (data->counter_command == 1)
 		ft_putendl_fd("exit", 1);
 	exit(e % 256);
-}
-
-int	ft_isdigit(int c)
-{
-	if (c >= '0' && c <= '9')
-		return (1);
-	return (0);
 }

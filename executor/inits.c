@@ -6,7 +6,7 @@
 /*   By: aait-lha <aait-lha@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/11 23:29:45 by aait-lha          #+#    #+#             */
-/*   Updated: 2024/08/01 16:50:33 by aait-lha         ###   ########.fr       */
+/*   Updated: 2024/08/06 01:08:31 by aait-lha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,4 +59,20 @@ int	init_fds(t_data *data, t_cmd *cmd)
 		}
 	}
 	return (0);
+}
+
+int	ft_isdigit(int c)
+{
+	if (c >= '0' && c <= '9')
+		return (1);
+	return (0);
+}
+
+void	init_status(t_data *data)
+{
+	int	i;
+
+	i = -1;
+	while (++i < data->counter_command)
+		data->status[i].pid = -1;
 }

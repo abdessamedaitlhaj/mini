@@ -6,7 +6,7 @@
 /*   By: aait-lha <aait-lha@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/30 04:30:21 by ael-hara          #+#    #+#             */
-/*   Updated: 2024/08/05 19:12:28 by aait-lha         ###   ########.fr       */
+/*   Updated: 2024/08/06 01:07:36 by aait-lha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -326,5 +326,5 @@ void				ft_remove_env(t_env **env, char	*key);
 char				*home_set(t_data *data);
 char				*oldpwd_set(t_data *data);
 int					ft_isdigit(int c);
-
+void				init_status(t_data *data);
 #endif

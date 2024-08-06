@@ -6,7 +6,7 @@
 /*   By: aait-lha <aait-lha@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/15 13:04:10 by aait-lha          #+#    #+#             */
-/*   Updated: 2024/08/05 23:05:59 by aait-lha         ###   ########.fr       */
+/*   Updated: 2024/08/06 01:09:09 by aait-lha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ static int	check_removed(char *path, t_data *data)
 {
 	char	*d;
 
-	d = copy_cwd(getcwd(NULL, 0), data);
+	d = getcwd(NULL, 0);
 	if (!d)
 	{
 		cwd_dir(path, data);
@@ -65,6 +65,7 @@ char	*home_set(t_data *data)
 	ft_putendl_fd("minishell: cd: HOME not set", 2);
 	return (NULL);
 }
+
 int	ft_cd(char **args, t_data *data)
 {
 	DIR		*dir;
