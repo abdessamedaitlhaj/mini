@@ -6,7 +6,7 @@
 /*   By: aait-lha <aait-lha@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/31 08:07:08 by aait-lha          #+#    #+#             */
-/*   Updated: 2024/08/06 01:11:23 by aait-lha         ###   ########.fr       */
+/*   Updated: 2024/08/06 01:13:03 by aait-lha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,10 @@ int	execute_cmds(t_data *data)
 	int	stdout_copy;
 	int	i;
 
+	stdin_copy = dup(0);
+	stdout_copy = dup(1);
+	if (stdin_copy == -1 || stdout_copy == -1)
+		fail_error("dup", &data->allocated);
 	if (data->counter_command == 1)
 		data->exit_status = execute_one_node(data);
 	else

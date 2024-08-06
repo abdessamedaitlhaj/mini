@@ -6,7 +6,7 @@
 /*   By: aait-lha <aait-lha@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/22 19:09:09 by aait-lha          #+#    #+#             */
-/*   Updated: 2024/08/06 01:07:47 by aait-lha         ###   ########.fr       */
+/*   Updated: 2024/08/06 01:13:17 by aait-lha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,9 +62,9 @@ void	init(int *fd, t_data *data)
 void	exec(t_data *data, int i, int *fd, int *prev_fd)
 {
 	if ((!init_fds(data, &data->cmds[i]) && !data->cmds[i].flag_command))
-		fork_process(data, i, fd, &prev_fd);
+		fork_process(data, i, fd, prev_fd);
 	close_streams(&data->fd_in, &data->fd_out, data);
-	save_last_pipe(data, i, fd, &prev_fd);
+	save_last_pipe(data, i, fd, prev_fd);
 	if (data->exit_status == 1)
 		data->status[i].status = 1;
 }
